@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Deploy kubernetes by manual on centos 7 | Hellwen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="环境信息   ip role hostname     10.10.0.1 master&amp;amp;minion k8s-master-1   10.10.0.2 minion k8s-node-1   10.10.0.3 minion k8s-node-2    on all machineNote: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修">
+<meta name="keywords" content="docker,kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deploy kubernetes by manual on centos 7">
+<meta property="og:url" content="https://hellwen.github.io/2017/01/18/deploy-kubernetes/index.html">
+<meta property="og:site_name" content="Hellwen">
+<meta property="og:description" content="环境信息   ip role hostname     10.10.0.1 master&amp;amp;minion k8s-master-1   10.10.0.2 minion k8s-node-1   10.10.0.3 minion k8s-node-2    on all machineNote: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2018-06-05T15:07:18.002Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Deploy kubernetes by manual on centos 7">
+<meta name="twitter:description" content="环境信息   ip role hostname     10.10.0.1 master&amp;amp;minion k8s-master-1   10.10.0.2 minion k8s-node-1   10.10.0.3 minion k8s-node-2    on all machineNote: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修">
+  
+    <link rel="alternate" href="/atom.xml" title="Hellwen" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hellwen</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Go on...</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://hellwen.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-deploy-kubernetes" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/01/18/deploy-kubernetes/" class="article-date">
+  <time datetime="2017-01-17T16:00:00.000Z" itemprop="datePublished">2017-01-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Deploy kubernetes by manual on centos 7
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h1><table>
+<thead>
+<tr>
+<th>ip</th>
+<th>role</th>
+<th>hostname</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10.10.0.1</td>
+<td>master&amp;minion</td>
+<td>k8s-master-1</td>
+</tr>
+<tr>
+<td>10.10.0.2</td>
+<td>minion</td>
+<td>k8s-node-1</td>
+</tr>
+<tr>
+<td>10.10.0.3</td>
+<td>minion</td>
+<td>k8s-node-2</td>
+</tr>
+</tbody>
+</table>
+<h1 id="on-all-machine"><a href="#on-all-machine" class="headerlink" title="on all machine"></a>on all machine</h1><p><em>Note: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的)</em></p>
+<h2 id="修改hostname"><a href="#修改hostname" class="headerlink" title="修改hostname"></a>修改hostname</h2><p>用户名建议使用中横杠，因为后面在进行kubernetes配置的时候可以直接使用hostname作为节点名称</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "k8s-node-xx" &gt; /etc/hostname</span><br></pre></td></tr></table></figure>
+<h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><p>关闭防火墙<br>安装ntp</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop firewalld</span><br><span class="line">sudo systemctl disable firewalld</span><br><span class="line"></span><br><span class="line">sudo yum -y install ntp</span><br><span class="line">sudo systemctl start ntpd</span><br><span class="line">sudo systemctl enable ntpd</span><br><span class="line">sudo systemctl status ntpd</span><br></pre></td></tr></table></figure>
+<p>创建k8s帐号和sudo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd -u 1008 k8s -m &amp;&amp; sudo passwd k8s</span><br><span class="line"></span><br><span class="line">sudo echo &quot;&quot; &gt;&gt; /etc/sudoers</span><br><span class="line">sudo echo &quot;#add k8s user&quot; &gt;&gt; /etc/sudoers</span><br><span class="line">sudo echo &quot;k8s ALL=(ALL) NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers</span><br></pre></td></tr></table></figure>
+<p>从下面开始所以操作都是在k8s这个用户下进行</p>
+<h1 id="on-master"><a href="#on-master" class="headerlink" title="on master"></a>on master</h1><h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><h3 id="Download-amp-amp-Install-etcd"><a href="#Download-amp-amp-Install-etcd" class="headerlink" title="Download &amp;&amp; Install etcd"></a>Download &amp;&amp; Install etcd</h3><p>etcd是类似与zookeeper的分布式配置存储解决方案，特意加了“配置”两个字是因为它的设计目标主要是用来存储配置文件</p>
+<p>下载地址：<a href="https://github.com/coreos/etcd/releases/download/v3.0.9/etcd-v3.0.9-linux-amd64.tar.gz" target="_blank" rel="noopener">etcd v3.0.9</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/coreos/etcd/releases/download/v3.0.9/etcd-v3.0.9-linux-amd64.tar.gz</span><br><span class="line">tar -zxf etcd-v3.0.9-linux-amd64.tar.gz</span><br><span class="line">ln -s etcd-v3.0.9-linux-amd64 etcd</span><br></pre></td></tr></table></figure>
+<h3 id="启动配置脚本"><a href="#启动配置脚本" class="headerlink" title="启动配置脚本"></a>启动配置脚本</h3><p>因为这是实验环境，所以这里的etcd只使用一个节点，如果你是用于生产环境建议配置3个以上的etcd节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd ~/etcd</span><br><span class="line">cat &lt;&lt;EOF &gt; etcd-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">THIS_IP=10.10.0.1</span><br><span class="line"></span><br><span class="line">./etcd \</span><br><span class="line">--name=infra1 \</span><br><span class="line">--advertise-client-urls http://$&#123;THIS_IP&#125;:2379 \</span><br><span class="line">--listen-client-urls http://$&#123;THIS_IP&#125;:2379,http://127.0.0.1:2379 \</span><br><span class="line">--data-dir=data  \</span><br><span class="line">1&gt; etcd.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x etcd-start.sh</span><br></pre></td></tr></table></figure>
+<h3 id="使用配置脚本启动etcd"><a href="#使用配置脚本启动etcd" class="headerlink" title="使用配置脚本启动etcd"></a>使用配置脚本启动etcd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd-start.sh</span><br></pre></td></tr></table></figure>
+<h3 id="测试etcd"><a href="#测试etcd" class="headerlink" title="测试etcd"></a>测试etcd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl ls</span><br></pre></td></tr></table></figure>
+<p>如果上述命令成功，那么etcd处于正常运行中</p>
+<h3 id="添加flannel的网络地址范围到etcd中"><a href="#添加flannel的网络地址范围到etcd中" class="headerlink" title="添加flannel的网络地址范围到etcd中"></a>添加flannel的网络地址范围到etcd中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/etcd</span><br><span class="line">./etcdctl mk /flannel/network/config &apos;&#123;&quot;Network&quot;:&quot;172.1.0.0/16&quot;&#125;&apos;</span><br></pre></td></tr></table></figure>
+<p>其中 /flannel/network/config这个地址是可以自己指定的，需要配置到flannel中</p>
+<h2 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h2><h3 id="下载并配置kubernetes"><a href="#下载并配置kubernetes" class="headerlink" title="下载并配置kubernetes"></a>下载并配置kubernetes</h3><p>kubernetes因为发布节奏很快，所以各种仓库都不会及时更新，所以本文采用手动安装方式，安装包可以直接在github上下载</p>
+<p>下载地址：<a href="https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz" target="_blank" rel="noopener">kubernetes v1.4.6</a></p>
+<p>这里需要注意，kubernetes v1.5以后不再提供bin文件，所以你如果下载1.5以后的版本需要另外下载bin文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz</span><br><span class="line">tar zxf kubernetes.tar.gz</span><br><span class="line">cd kubernetes/server</span><br><span class="line">tar zxf kubernetes-server-linux-amd64.tar.gz</span><br><span class="line">cd kubernetes/server/bin</span><br><span class="line">mkdir -p ~/kubernetes-master/log</span><br><span class="line">cp kube-apiserver kube-controller-manager kubectl kube-dns kube-scheduler ~/kubernetes-master/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 将bin添加到path中</span><br><span class="line">echo "export PATH=~/kubernetes-master:\$PATH" &gt;&gt; ~/.bash_profile</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<h3 id="init配置文件"><a href="#init配置文件" class="headerlink" title="init配置文件"></a>init配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; init.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">KUBE_MASTER=10.10.0.1</span><br><span class="line"></span><br><span class="line"># Change to root auth</span><br><span class="line">sudo chown root.root kube-dns</span><br><span class="line">sudo chmod u+s kube-dns</span><br><span class="line">EOF</span><br><span class="line">chmod a+x init.sh</span><br><span class="line">./init.sh</span><br></pre></td></tr></table></figure>
+<p>kube-dns需要使用root权限</p>
+<h3 id="api启动配置文件"><a href="#api启动配置文件" class="headerlink" title="api启动配置文件"></a>api启动配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_api.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line"># start the main server of k8s master</span><br><span class="line">sudo ./kube-apiserver \</span><br><span class="line">    --bind-address=0.0.0.0 \</span><br><span class="line">    --insecure-bind-address=0.0.0.0 \</span><br><span class="line">    --insecure-port=8080 \</span><br><span class="line">    --etcd_servers=http://10.10.0.1:2379 \</span><br><span class="line">    --allow-privileged=true \</span><br><span class="line">    --service-cluster-ip-range=182.1.0.0/16 \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-api.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_api.sh</span><br></pre></td></tr></table></figure>
+<h3 id="controller-manager配置文件"><a href="#controller-manager配置文件" class="headerlink" title="controller-manager配置文件"></a>controller-manager配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_cm.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">./kube-controller-manager \</span><br><span class="line">    --master=&quot;http://127.0.0.1:8080&quot; \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-cm.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_cm.sh</span><br></pre></td></tr></table></figure>
+<h3 id="dns配置文件"><a href="#dns配置文件" class="headerlink" title="dns配置文件"></a>dns配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_dns.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">KUBE_DOMAIN=&quot;cluster.local&quot;</span><br><span class="line"></span><br><span class="line">sudo ./kube-dns \</span><br><span class="line">    --domain=$&#123;KUBE_DOMAIN&#125; \</span><br><span class="line">    --kube-master-url=&quot;http://127.0.0.1:8080&quot; \</span><br><span class="line">    --dns-port=53 \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-dns.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_dns.sh</span><br></pre></td></tr></table></figure>
+<h3 id="scheduler配置文件"><a href="#scheduler配置文件" class="headerlink" title="scheduler配置文件"></a>scheduler配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_scd.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">./kube-scheduler \</span><br><span class="line">    --master=&quot;http://127.0.0.1:8080&quot; \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-scd.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_scd.sh</span><br></pre></td></tr></table></figure>
+<h3 id="start-master"><a href="#start-master" class="headerlink" title="start master"></a>start master</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd ~/etcd</span><br><span class="line">./start_etcd.sh</span><br><span class="line"></span><br><span class="line">cd ~/kubernetes-master</span><br><span class="line">./start_k8s_api.sh</span><br><span class="line">./start_k8s_dns.sh</span><br><span class="line">./start_k8s_cm.sh</span><br><span class="line">./start_k8s_scd.sh</span><br></pre></td></tr></table></figure>
+<h1 id="on-minions"><a href="#on-minions" class="headerlink" title="on minions"></a>on minions</h1><p>minion需要部署所有机器上<br>master上也需要部署minion</p>
+<h2 id="flannel"><a href="#flannel" class="headerlink" title="flannel"></a>flannel</h2><h3 id="Download-amp-amp-Install-flannel"><a href="#Download-amp-amp-Install-flannel" class="headerlink" title="Download &amp;&amp; Install flannel"></a>Download &amp;&amp; Install flannel</h3><p><a href="https://github.com/coreos/flannel/releases/download/v0.6.1/flannel-v0.6.1-linux-amd64.tar.gz" target="_blank" rel="noopener">flannel v0.6.1</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget https://github.com/coreos/flannel/releases/download/v0.6.1/flannel-v0.6.1-linux-amd64.tar.gz</span><br><span class="line">tar -zxf flannel-v0.6.1-linux-amd64.tar.gz</span><br><span class="line">mkdir flannel</span><br><span class="line">mv flannel-v0.6.1-linux-amd64.tar.gz flannel</span><br><span class="line">cd ~/flannel/</span><br><span class="line">tar -zxf flannel-v0.6.1-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="启动配置脚本-1"><a href="#启动配置脚本-1" class="headerlink" title="启动配置脚本"></a>启动配置脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cd ~/flannel</span><br><span class="line">cat &lt;&lt;EOF &gt; flanneld-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">ETCD_PREFIX=/flannel/network</span><br><span class="line"></span><br><span class="line"># delete docker0. it will recreate in docker starting</span><br><span class="line">rc=0</span><br><span class="line">ip link show docker0 &gt;/dev/null 2&gt;&amp;1 || rc=&quot;$?&quot;</span><br><span class="line">if [[ &quot;$rc&quot; -eq &quot;0&quot; ]]; then</span><br><span class="line">  sudo ip link set dev docker0 down</span><br><span class="line">  sudo ip link delete docker0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">sudo ./flanneld \</span><br><span class="line">    --ip-masq \</span><br><span class="line">    --subnet-file=&quot;run/subnet.env&quot; \</span><br><span class="line">    --etcd-endpoints=http://10.10.0.1:2379 \</span><br><span class="line">    --etcd-prefix=$ETCD_PREFIX &gt; flanneld.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x flanneld-start.sh</span><br></pre></td></tr></table></figure>
+<h2 id="kubernetes"><a href="#kubernetes" class="headerlink" title="kubernetes"></a>kubernetes</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz</span><br><span class="line">tar zxf kubernetes.tar.gz</span><br><span class="line">cd kubernetes/server</span><br><span class="line">tar zxf kubernetes-server-linux-amd64.tar.gz</span><br><span class="line">cd kubernetes/server/bin</span><br><span class="line">mkdir -p ~/kubernetes/log</span><br><span class="line">mkdir -p ~/kubernetes/cert</span><br><span class="line">mv kubelet kube-proxy ~/kubernetes/</span><br></pre></td></tr></table></figure>
+<h3 id="kubeconfig配置文件"><a href="#kubeconfig配置文件" class="headerlink" title="kubeconfig配置文件"></a>kubeconfig配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /home/k8s/kubernetes/kubeconfig</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    insecure-skip-tls-verify: true</span><br><span class="line">    server: https://10.10.0.1:8080</span><br><span class="line">  name: k8s-cluster</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: k8s-cluster</span><br><span class="line">    namespace: default</span><br><span class="line">  name: dft</span><br><span class="line">- context:</span><br><span class="line">    cluster: k8s-cluster</span><br><span class="line">    namespace: kube-system</span><br><span class="line">  name: sys</span><br><span class="line">current-context: dft</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h3 id="kubelet配置文件"><a href="#kubelet配置文件" class="headerlink" title="kubelet配置文件"></a>kubelet配置文件</h3><p>NODE_IP分别指定两台minion机器，分别是10.10.0.2和10.10.0.3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes</span><br><span class="line">cat &lt;&lt;EOF &gt; k8s-let-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">KUBE_MASTER=10.10.0.1</span><br><span class="line">NODE_IP=10.10.0.1</span><br><span class="line">CLUSTER_DOMAIN=cluster.local</span><br><span class="line"></span><br><span class="line">sudo ./kubelet \</span><br><span class="line">    --address=0.0.0.0 \</span><br><span class="line">    --port=10250 \</span><br><span class="line">    --hostname_override=$NODE_IP \</span><br><span class="line">    --require-kubeconfig=true \</span><br><span class="line">    --kubeconfig=&quot;/home/k8s/kubernetes/kubeconfig&quot; \</span><br><span class="line">    --cni-bin-dir=cni/bin \</span><br><span class="line">    --cni-conf-dir=cni/net.d \</span><br><span class="line">    --logtostderr=false \</span><br><span class="line">    --allow-privileged=true \</span><br><span class="line">    --pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest \</span><br><span class="line">    --cluster-dns=$KUBE_MASTER \</span><br><span class="line">    --cluster-domain=$CLUSTER_DOMAIN \</span><br><span class="line">    --pod-manifest-path=&quot;manifests&quot; \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-let.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x k8s-let-start.sh</span><br></pre></td></tr></table></figure>
+<h3 id="kube-proxy配置文件"><a href="#kube-proxy配置文件" class="headerlink" title="kube-proxy配置文件"></a>kube-proxy配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes</span><br><span class="line">cat &lt;&lt;EOF &gt; k8s-proxy-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">NODE_IP=10.10.0.1</span><br><span class="line"></span><br><span class="line">sudo ./kube-proxy \</span><br><span class="line">    --kubeconfig=&quot;/home/k8s/kubernetes/kubeconfig&quot; \</span><br><span class="line">    --hostname_override=$NODE_IP \</span><br><span class="line">    --proxy-mode=iptables \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-proxy.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x k8s-proxy-start.sh</span><br></pre></td></tr></table></figure>
+<h2 id="Init-amp-Start-minion"><a href="#Init-amp-Start-minion" class="headerlink" title="Init &amp; Start minion"></a>Init &amp; Start minion</h2><h3 id="配置flannel和docker0"><a href="#配置flannel和docker0" class="headerlink" title="配置flannel和docker0"></a>配置flannel和docker0</h3><p>启动flannel</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/flannel</span><br><span class="line">./start_flanneld.sh</span><br></pre></td></tr></table></figure>
+<p>如果是第一次启动需要进行docker的ip配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ./mk-docker-opts.sh -f ./run/subnet.env -d ./run/docker.env</span><br><span class="line">cat ./run/docker.env | grep -i DOCKER_OPTS</span><br></pre></td></tr></table></figure>
+<p>记录下上面命令输出的内容，内容大概如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--bip=172.17.95.1/24 --mtu=1472</span><br></pre></td></tr></table></figure>
+<p>编辑docker-network，并修改DOCKER_NETWORK_OPTIONS参数，填入上面输出的内容</p>
+<p>类似与下面的结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/sysconfig/docker-network</span><br><span class="line">DOCKER_NETWORK_OPTIONS=&quot; --bip=172.17.95.1/24 --mtu=1472&quot;</span><br></pre></td></tr></table></figure>
+<p>上述步骤是用于配置docker0中可分配的网段，如果使用yum install flannel在启动时会自动配置</p>
+<p>重新启动docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>通过ip a确定docker0和flannel0是在同一个网段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip a</span><br></pre></td></tr></table></figure>
+<h3 id="start-kubelet"><a href="#start-kubelet" class="headerlink" title="start kubelet"></a>start kubelet</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes</span><br><span class="line">./start_k8s_let.sh</span><br><span class="line">./start_k8s_proxy.sh</span><br></pre></td></tr></table></figure>
+<p>相同的步骤配置10.10.0.2和10.10.0.3<br>配置完成后三个节点都会加入到集群中</p>
+<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>登录到10.10.0.1上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get no</span><br></pre></td></tr></table></figure>
+<p>检查上个节点是否已配置完成</p>
+<p>Done</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://hellwen.github.io/2017/01/18/deploy-kubernetes/" data-id="cji1u48u000032tsb0k880g86" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          kuberntes heapster cannot write to influxdb
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/18/docker-thin-pool/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker Thin pool</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/arch/">arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conntrack/">conntrack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harbor/">harbor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heapster/">heapster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/registry/">registry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollout/">rollout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/arch/" style="font-size: 10px;">arch</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/conntrack/" style="font-size: 10px;">conntrack</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/harbor/" style="font-size: 10px;">harbor</a> <a href="/tags/heapster/" style="font-size: 10px;">heapster</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/registry/" style="font-size: 10px;">registry</a> <a href="/tags/rollout/" style="font-size: 10px;">rollout</a> <a href="/tags/traefik/" style="font-size: 10px;">traefik</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/16/tuning_conntrack/">Tuning The Linux Connection Tracking System</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/19/harbor-deploy/">Harbor Deploy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/09/markdown-sample/">Markdown sample</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Hellwen wu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

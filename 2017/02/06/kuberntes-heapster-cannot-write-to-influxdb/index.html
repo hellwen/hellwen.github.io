@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>kuberntes heapster cannot write to influxdb | Hellwen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="kubernetes 1.5heapster 1.2influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 influxdb日志如下： 12[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &amp;quot;POST /write?consis">
+<meta name="keywords" content="kubernetes,heapster">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kuberntes heapster cannot write to influxdb">
+<meta property="og:url" content="https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/index.html">
+<meta property="og:site_name" content="Hellwen">
+<meta property="og:description" content="kubernetes 1.5heapster 1.2influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 influxdb日志如下： 12[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &amp;quot;POST /write?consis">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2018-06-05T15:07:18.002Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kuberntes heapster cannot write to influxdb">
+<meta name="twitter:description" content="kubernetes 1.5heapster 1.2influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 influxdb日志如下： 12[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &amp;quot;POST /write?consis">
+  
+    <link rel="alternate" href="/atom.xml" title="Hellwen" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hellwen</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Go on...</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://hellwen.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kuberntes-heapster-cannot-write-to-influxdb" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/" class="article-date">
+  <time datetime="2017-02-05T16:00:00.000Z" itemprop="datePublished">2017-02-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      kuberntes heapster cannot write to influxdb
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>kubernetes 1.5<br>heapster 1.2<br>influxdb 1.2</p>
+<p>heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入</p>
+<p>heapster未见任何错误日志</p>
+<p>influxdb日志如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &quot;POST /write?consistency=&amp;db=k8s&amp;precision=&amp;rp=default HTTP/1.1&quot; 500 72 &quot;-&quot; &quot;heapster/v1.3.0-beta.0&quot; 2ece120b-df51-11e6-808e-000000000000 15630</span><br><span class="line">[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &quot;GET /ping HTTP/1.1&quot; 204 0 &quot;-&quot; &quot;heapster/v1.3.0-beta.0&quot; 2ed087a5-df51-11e6-808f-000000000000 14</span><br></pre></td></tr></table></figure>
+<p>该问题为heapster和influxdb版本不兼容导致，</p>
+<p>heapster在创建k8s后默认使用default 的retention，因为influxdb1.2默认retention是autogen导致heapster无法使用到default导致数据写入失败</p>
+<p>解决办法：<br>在k8s库下面创建default的retention</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create retention policy &quot;default&quot; on &quot;k8s&quot; duration 0d replication 1 default</span><br></pre></td></tr></table></figure>
+<p>link:<br><a href="https://github.com/kubernetes/heapster/issues/1474" target="_blank" rel="noopener">heapster issues 1474</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/" data-id="cji1u48uf000f2tsbwf0off31" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/heapster/">heapster</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/02/22/docker-var-lib-docker-directory-move/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker, move the /var/lib/docker directory
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/01/18/deploy-kubernetes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Deploy kubernetes by manual on centos 7</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/arch/">arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conntrack/">conntrack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harbor/">harbor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heapster/">heapster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/registry/">registry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollout/">rollout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/arch/" style="font-size: 10px;">arch</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/conntrack/" style="font-size: 10px;">conntrack</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/harbor/" style="font-size: 10px;">harbor</a> <a href="/tags/heapster/" style="font-size: 10px;">heapster</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/registry/" style="font-size: 10px;">registry</a> <a href="/tags/rollout/" style="font-size: 10px;">rollout</a> <a href="/tags/traefik/" style="font-size: 10px;">traefik</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/16/tuning_conntrack/">Tuning The Linux Connection Tracking System</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/19/harbor-deploy/">Harbor Deploy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/09/markdown-sample/">Markdown sample</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Hellwen wu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Ingress Controller with Traefik on Kubernetes | Hellwen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Kubernetes Ingresskubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: 1234  internet      |------------[ Services ] 如果增加Ingress: 12345 internet     |[ Ingress ]--|-----|--[ Services ] Ingress部署在Service前面">
+<meta name="keywords" content="kubernetes,traefik">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ingress Controller with Traefik on Kubernetes">
+<meta property="og:url" content="https://hellwen.github.io/2017/03/03/deploy-traefik/index.html">
+<meta property="og:site_name" content="Hellwen">
+<meta property="og:description" content="Kubernetes Ingresskubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: 1234  internet      |------------[ Services ] 如果增加Ingress: 12345 internet     |[ Ingress ]--|-----|--[ Services ] Ingress部署在Service前面">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2018-06-05T15:07:18.002Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ingress Controller with Traefik on Kubernetes">
+<meta name="twitter:description" content="Kubernetes Ingresskubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: 1234  internet      |------------[ Services ] 如果增加Ingress: 12345 internet     |[ Ingress ]--|-----|--[ Services ] Ingress部署在Service前面">
+  
+    <link rel="alternate" href="/atom.xml" title="Hellwen" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hellwen</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Go on...</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://hellwen.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-deploy-traefik" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/03/deploy-traefik/" class="article-date">
+  <time datetime="2017-03-02T16:00:00.000Z" itemprop="datePublished">2017-03-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ingress Controller with Traefik on Kubernetes
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Kubernetes-Ingress"><a href="#Kubernetes-Ingress" class="headerlink" title="Kubernetes Ingress"></a>Kubernetes <a href="https://kubernetes.io/docs/user-guide/ingress/" target="_blank" rel="noopener">Ingress</a></h1><p>kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  internet</span><br><span class="line">      |</span><br><span class="line">------------</span><br><span class="line">[ Services ]</span><br></pre></td></tr></table></figure>
+<p>如果增加Ingress:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> internet</span><br><span class="line">     |</span><br><span class="line">[ Ingress ]</span><br><span class="line">--|-----|--</span><br><span class="line">[ Services ]</span><br></pre></td></tr></table></figure>
+<p>Ingress部署在Service前面进行域名的解析和分发</p>
+<h1 id="Ingress-Controller"><a href="#Ingress-Controller" class="headerlink" title="Ingress Controller"></a>Ingress Controller</h1><p>上文提到的Ingress对象实际上只是kubernetes中的一些配置文件，真正实现Ingress功能的实际是Ingress Controller。</p>
+<p>Ingress Controller的功能主要有：</p>
+<ul>
+<li>访问kubernetes api，来感知Service的变化和Ingress的配置</li>
+<li>当感知到Service变化时，将配置应用的本身的配置文件中</li>
+<li>Reload配置，实现分发</li>
+</ul>
+<p>目前Kubernetes官方提供gce和nginx的Controller，相见：<a href="https://github.com/kubernetes/ingress/tree/master/controllers" target="_blank" rel="noopener">Ingress</a></p>
+<h1 id="Traefik"><a href="#Traefik" class="headerlink" title="Traefik"></a><a href="https://github.com/containous/traefik" target="_blank" rel="noopener">Traefik</a></h1><p>traefik是一个为容器而生的反向代理和负载均衡服务，很轻量，采用go语言。可以支持很多容器相关架构，如：Consul, Etcd, Docker, Kubernetes, Messos等等</p>
+<p>另外，traefik支持Let\’s Encrypt</p>
+<h1 id="Traefik-deploy-on-Kubernetes"><a href="#Traefik-deploy-on-Kubernetes" class="headerlink" title="Traefik deploy on Kubernetes"></a>Traefik deploy on Kubernetes</h1><h2 id="traefik-deployment"><a href="#traefik-deployment" class="headerlink" title="traefik deployment"></a>traefik deployment</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    nodePort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      terminationGracePeriodSeconds:</span> <span class="number">60</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - image:</span> <span class="attr">traefik:v1.1.2-alpine</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">        resources:</span></span><br><span class="line"><span class="attr">          limits:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">200</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">30</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">          requests:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">100</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">20</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">          containerPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">admin</span></span><br><span class="line"><span class="attr">          containerPort:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">        args:</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">-d</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--web</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--web.address=:8081</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--kubernetes</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--kubernetes.endpoint=http://139.119.3.113:6550/</span></span><br></pre></td></tr></table></figure>
+<p><code>web.address=:8081</code>指示启动traefik的web端口<br><code>kubernetes.endpoint</code>指向kubernetes的api地址（apiserver）</p>
+<p>这里部署了2个traefik，是为了在集群中作为HA</p>
+<p>service采用nodePort方式，在所有node上映射80端口（因为域名通常不需要端口，如果你指定了其他端口那么域名增加相应的端口即可）。为了指定80端口需要开发kubernetes api的限制，配置参数：<code>--service-node-port-range=1-65535</code></p>
+<h2 id="deploy-traefik-ui"><a href="#deploy-traefik-ui" class="headerlink" title="deploy traefik ui"></a>deploy traefik ui</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-web-ui</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">web</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-web-ui</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">traefik-ui.local.io</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">        backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">traefik-web-ui</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">web</span></span><br></pre></td></tr></table></figure>
+<p>第一部分是traefik ui的service，ingress需要转发到service上<br>第二部分创建ingress，如果访问的是指定域名traefik-ui.local.io，那么重定向到traefik-web-ui这个service的web端口上</p>
+<h2 id="验证traefik-ui"><a href="#验证traefik-ui" class="headerlink" title="验证traefik ui"></a>验证traefik ui</h2><p>如果是实际环境只需要将域名配置执行集群中的node的ip即可，默认是80端口</p>
+<p>使用curl验证地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -H &quot;Host: traefik-ui.local.io&quot; http://192.168.72.2</span><br></pre></td></tr></table></figure>
+<p><code>-H</code> 用于指定访问域名</p>
+<p>或者可以直接在浏览器中打开</p>
+<h2 id="deploy-testpage-app"><a href="#deploy-testpage-app" class="headerlink" title="deploy testpage app"></a>deploy testpage app</h2><p>testpage是一个python的测试页面，通过http访问该页面会返回一个配置好的版本号</p>
+<p>Deployment:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">registry.local.com/testpage:0.5</span></span><br><span class="line"><span class="attr">        imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">        resources:</span></span><br><span class="line"><span class="attr">          limits:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">20</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">VERSION</span></span><br><span class="line"><span class="attr">          value:</span> <span class="string">"0.5"</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<p>Ingress:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">testpage.local.io</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">        backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">http</span></span><br></pre></td></tr></table></figure></p>
+<p>验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -H &quot;Host: testpage.local.io&quot; http://192.168.72.2</span><br><span class="line">I am1: 172.1.14.4, the version is: 0.5</span><br></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://docs.traefik.io/user-guide/kubernetes/" target="_blank" rel="noopener">Kubernetes Ingress Controller</a><br><a href="https://blog.osones.com/en/kubernetes-ingress-controller-with-traefik-and-lets-encrypt.html" target="_blank" rel="noopener">Kubernetes : Ingress Controller with Træfɪk and Let’s Encrypt</a><br><a href="http://www.colabug.com/thread-1703745-1-1.html" target="_blank" rel="noopener">Traefik-kubernetes 初试</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://hellwen.github.io/2017/03/03/deploy-traefik/" data-id="cji1u48u200042tsb8bnmcq5u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/08/kuberntes-rollout-update/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          kuberntes rollout update
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/02/22/docker-var-lib-docker-directory-move/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker, move the /var/lib/docker directory</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/arch/">arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conntrack/">conntrack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harbor/">harbor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heapster/">heapster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/registry/">registry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollout/">rollout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/arch/" style="font-size: 10px;">arch</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/conntrack/" style="font-size: 10px;">conntrack</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/harbor/" style="font-size: 10px;">harbor</a> <a href="/tags/heapster/" style="font-size: 10px;">heapster</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/registry/" style="font-size: 10px;">registry</a> <a href="/tags/rollout/" style="font-size: 10px;">rollout</a> <a href="/tags/traefik/" style="font-size: 10px;">traefik</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/16/tuning_conntrack/">Tuning The Linux Connection Tracking System</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/19/harbor-deploy/">Harbor Deploy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/09/markdown-sample/">Markdown sample</a>
+          </li>
+        
+          <li>
+            <a href="/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Hellwen wu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
