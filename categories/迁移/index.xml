@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>迁移 on Hellwen - A private blog</title>
+    <link>https://hellwen.github.io/categories/%E8%BF%81%E7%A7%BB/</link>
+    <description>Recent content in 迁移 on Hellwen - A private blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>hellwen</copyright>
+    <lastBuildDate>Tue, 27 Nov 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hellwen.github.io/categories/%E8%BF%81%E7%A7%BB/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CICD从Gitlab迁移到Coderun</title>
+      <link>https://hellwen.github.io/post/migrate-cicd-from-gitlab-to-coderun/</link>
+      <pubDate>Tue, 27 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/migrate-cicd-from-gitlab-to-coderun/</guid>
+      <description>背景 我们是一个10人小团队，因为本人之前接触过Docker和Drone，所有项目开发阶段开始的时候就确定使用CICD和Docker的方式进行</description>
+    </item>
+    
+  </channel>
+</rss>
