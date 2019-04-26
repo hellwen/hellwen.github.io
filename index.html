@@ -1,965 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  
+  <link href="//gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.55.2" />
 
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Hellwen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="this is a private blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hellwen">
-<meta property="og:url" content="https://hellwen.github.io/index.html">
-<meta property="og:site_name" content="Hellwen">
-<meta property="og:description" content="this is a private blog">
-<meta property="og:locale" content="cn">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hellwen">
-<meta name="twitter:description" content="this is a private blog">
+
   
-    <link rel="alternate" href="/atom.xml" title="Hellwen" type="application/atom+xml">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
   
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
   
-    <link rel="icon" href="/favicon.png">
+  <link href="https://hellwen.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Hellwen" />
+
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hellwen</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">Go on...</a>
-        </h2>
-      
+  <body class="theme-base-09 ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://hellwen.github.io/"><h1>Hellwen</h1></a>
+      <p class="lead">
+       This a private blog 
+      </p>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://hellwen.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-archlinux-hibernate" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/06/05/archlinux-hibernate/" class="article-date">
-  <time datetime="2018-06-04T16:00:00.000Z" itemprop="datePublished">2018-06-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="修改swap-partition-file-size"><a href="#修改swap-partition-file-size" class="headerlink" title="修改swap partition/file size"></a>修改swap partition/file size</h1><p>image_size的容量用于控制休眠的时候内存dump到swap的最大大小，设置成0不受大小限制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /sys/power/image_size &lt;&lt;&lt; 0</span><br></pre></td></tr></table></figure>
-<p>image_size重启后会被恢复，可以采用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - root -c &apos;echo &quot;w /sys/power/image_size - - - - 0&quot; &gt; /etc/tmpfiles.d/modify_power_image_size.conf&apos;</span><br></pre></td></tr></table></figure>
-<h1 id="修改grub2"><a href="#修改grub2" class="headerlink" title="修改grub2"></a>修改grub2</h1><p>在文件<code>/etc/grub.d/40_custom</code>添加下面内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">menuentry &apos;My Arch Linux&apos; &#123;</span><br><span class="line">        load_video</span><br><span class="line">        set gfxpayload=keep</span><br><span class="line">        insmod gzio</span><br><span class="line">        insmod part_gpt</span><br><span class="line">        insmod xfs</span><br><span class="line">        set root=&apos;hd0,gpt2&apos;</span><br><span class="line">        if [ x$feature_platform_search_hint = xy ]; then</span><br><span class="line">          search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt2 --hint-efi=hd0,gpt2 --hint-baremetal=ahci0,gpt2  cda52f03-ea43-44dd-bf62-6defe65cc765</span><br><span class="line">        else</span><br><span class="line">          search --no-floppy --fs-uuid --set=root cda52f03-ea43-44dd-bf62-6defe65cc765</span><br><span class="line">        fi</span><br><span class="line">        echo    &apos;Loading Linux linux ...&apos;</span><br><span class="line">        linux   /vmlinuz-linux root=UUID=412d830c-e11e-44b4-abb9-3b59f885b803 rw quiet resume=/dev/sda5</span><br><span class="line">        echo    &apos;Loading initial ramdisk ...&apos;</span><br><span class="line">        initrd  /initramfs-linux.img</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其中增加了resume参数，该参数指定了swap所在分区，如果不清楚swap是哪个分区可以使用<code>lsblk</code>查看</p>
-<p>将配置信息独立在40_custom的好处是不破坏其他默认配置文件和原有启动菜单</p>
-<p>grub配置信息每台机器不一样，建议从<code>/boot/grub/grub.cfg</code>复制出对应的菜单进行修改</p>
-<p>生成grub.cfg</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo grub-mkconfig -o /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure>
-<h1 id="修改mkinitcpio-conf"><a href="#修改mkinitcpio-conf" class="headerlink" title="修改mkinitcpio.conf"></a>修改mkinitcpio.conf</h1><p>在<code>/etc/mkinitcpio.conf</code>的HOOKS中增加<code>resume</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HOOKS=(base udev autodetect modconf block resume filesystems keyboard fsck)</span><br></pre></td></tr></table></figure>
-<p><code>resume</code>最好增加在<code>filesystems</code>前面</p>
-<p>生成initramfs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkinitcpio -p linux</span><br></pre></td></tr></table></figure>
-<h1 id="测试休眠"><a href="#测试休眠" class="headerlink" title="测试休眠"></a>测试休眠</h1><p>使用systemctl进入休眠</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl hibernate</span><br></pre></td></tr></table></figure>
-<p>命令执行后等待电脑关机，关机后使用电源键选择增加的grub菜单进行启动即可恢复原有环境</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://wiki.archlinux.org/index.php/Power_management/Suspend_and_hibernate#Hibernation" target="_blank" rel="noopener">Power management/Suspend and hibernate</a><br><a href="https://superuser.com/questions/383140/linux-grub2-how-to-resume-from-hibernation" target="_blank" rel="noopener">Linux GRUB2: How to resume from hibernation?</a><br><a href="http://www.cnblogs.com/xiaozhang9/p/6443478.html" target="_blank" rel="noopener">Archlinux休眠设置</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2018/06/05/archlinux-hibernate/" data-id="cji1u48to00002tsb4eia7l0d" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/arch/">arch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-tuning_conntrack" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/16/tuning_conntrack/" class="article-date">
-  <time datetime="2017-05-15T16:00:00.000Z" itemprop="datePublished">2017-05-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/16/tuning_conntrack/">Tuning The Linux Connection Tracking System</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackTable满的告警，分析发现node-exporter(Prometheus node-exporter)监控的node_nf_conntrack_entries / node_nf_conntrack_entries_limit满。既然告警了就应该了解下这个告警是什么意思。</p>
-<p>下面是google到的内容，看看Conntract table做什么的：</p>
-<h1 id="The-Connection-Tracking-Conntrack-Modules"><a href="#The-Connection-Tracking-Conntrack-Modules" class="headerlink" title="The Connection Tracking/Conntrack Modules"></a>The Connection Tracking/Conntrack Modules</h1><p>It is a tracking technique of the connections. It is used to know how the packets that pass through the system are related to their connections. The connection tracking does NOT manipulate the packets and It works independently of the NAT module. The conntrack entry looks like:</p>
-<p>udp 17 170 src=192.168.1.2 dst=192.168.1.5 sport=137 dport=1025 src=192.168.1.5 dst=192.168.1.2 sport=1025 dport=137 [ASSURED] use=1</p>
-<p>The conntrack entry is stored into two separate tuples (one for the original direction (red) and another for the reply direction (blue)). Tuples could belong to different linked lists/buckets in conntrack hash table. The connection tracking modules is responsible for creating and removing the tuples.</p>
-<p>Note: The tracking of the connections is ALSO used by iptables to do packet matching based on the connection state.</p>
-<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>要查询Conntract table的内容可以通过/proc</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># cat /proc/net/nf_conntrack | head -5</span><br><span class="line">ipv4     2 tcp      6 86385 ESTABLISHED src=192.168.10.1 dst=192.168.10.1 sport=41230 dport=2379 src=192.168.10.1 dst=192.168.10.1 sport=2379 dport=41230 [ASSURED] mark=0 zone=0 use=2</span><br><span class="line">ipv4     2 tcp      6 86389 ESTABLISHED src=127.0.0.1 dst=127.0.0.1 sport=33294 dport=8080 src=127.0.0.1 dst=127.0.0.1 sport=8080 dport=33294 [ASSURED] mark=0 zone=0 use=2</span><br><span class="line">ipv4     2 tcp      6 86398 ESTABLISHED src=192.168.10.1 dst=192.168.10.1 sport=55688 dport=2379 src=192.168.10.1 dst=192.168.10.1 sport=2379 dport=55688 [ASSURED] mark=0 zone=0 use=2</span><br><span class="line">ipv4     2 tcp      6 86393 ESTABLISHED src=192.168.10.1 dst=192.168.10.1 sport=57118 dport=2379 src=192.168.10.1 dst=192.168.10.1 sport=2379 dport=57118 [ASSURED] mark=0 zone=0 use=2</span><br><span class="line">ipv4     2 tcp      6 86386 ESTABLISHED src=127.0.0.1 dst=127.0.0.1 sport=39722 dport=8080 src=127.0.0.1 dst=127.0.0.1 sport=8080 dport=39722 [ASSURED] mark=0 zone=0 use=2</span><br></pre></td></tr></table></figure>
-<p>从上面的内容看出nf_conntrack记录的是ip和port的映射情况</p>
-<p>统计nf_conntrack_entries可以通过wc</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /proc/net/nf_conntrack | wc -l</span><br></pre></td></tr></table></figure>
-<p>因为k8s的proxy目前采用的是iptables，所以必然需要存放大量的nf_conntrack链接信息，如果k8s节点的通讯量太大就可能导致nf_conntrack表的信息满，所以这个参数应该是k8s中相对比较重要的一个监控指标</p>
-<p>查看nf_conntrack table的限制</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -a|grep -i nf_conntrack_max</span><br><span class="line">net.netfilter.nf_conntrack_max = 262144</span><br><span class="line">net.nf_conntrack_max = 262144</span><br></pre></td></tr></table></figure>
-<p>conntrack bucket</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -a|grep -i nf_conntrack_buckets</span><br><span class="line">net.netfilter.nf_conntrack_buckets = 65536</span><br></pre></td></tr></table></figure>
-<p>bucket size = 4 (262144/65536)</p>
-<p>修改max</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;net.netfilter.nf_conntrack_max = 131072&quot; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sysct -p</span><br></pre></td></tr></table></figure>
-<p>其他配置参数：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -a|grep -i nf_conntrack</span><br><span class="line">net.netfilter.nf_conntrack_acct = 0</span><br><span class="line">net.netfilter.nf_conntrack_buckets = 65536</span><br><span class="line">net.netfilter.nf_conntrack_checksum = 1</span><br><span class="line">net.netfilter.nf_conntrack_count = 431</span><br><span class="line">net.netfilter.nf_conntrack_events = 1</span><br><span class="line">net.netfilter.nf_conntrack_events_retry_timeout = 15</span><br><span class="line">net.netfilter.nf_conntrack_expect_max = 1024</span><br><span class="line">net.netfilter.nf_conntrack_frag6_high_thresh = 4194304</span><br><span class="line">net.netfilter.nf_conntrack_frag6_low_thresh = 3145728</span><br><span class="line">net.netfilter.nf_conntrack_frag6_timeout = 60</span><br><span class="line">net.netfilter.nf_conntrack_generic_timeout = 600</span><br><span class="line">net.netfilter.nf_conntrack_helper = 1</span><br><span class="line">net.netfilter.nf_conntrack_icmp_timeout = 30</span><br><span class="line">net.netfilter.nf_conntrack_icmpv6_timeout = 30</span><br><span class="line">net.netfilter.nf_conntrack_log_invalid = 0</span><br><span class="line">net.netfilter.nf_conntrack_max = 262144</span><br><span class="line">net.netfilter.nf_conntrack_tcp_be_liberal = 0</span><br><span class="line">net.netfilter.nf_conntrack_tcp_loose = 1</span><br><span class="line">net.netfilter.nf_conntrack_tcp_max_retrans = 3</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_close = 10</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_close_wait = 3600</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_established = 86400</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 120</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_last_ack = 30</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_max_retrans = 300</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_syn_recv = 60</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_syn_sent = 120</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_time_wait = 120</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_unacknowledged = 300</span><br><span class="line">net.netfilter.nf_conntrack_timestamp = 0</span><br><span class="line">net.netfilter.nf_conntrack_udp_timeout = 30</span><br><span class="line">net.netfilter.nf_conntrack_udp_timeout_stream = 180</span><br><span class="line">net.nf_conntrack_max = 262144</span><br></pre></td></tr></table></figure>
-<p>ref:<br><a href="https://voipmagazine.wordpress.com/tag/nf_conntrack/" target="_blank" rel="noopener">https://voipmagazine.wordpress.com/tag/nf_conntrack/</a><br><a href="https://voipmagazine.wordpress.com/tag/conntrack-entry/" target="_blank" rel="noopener">https://voipmagazine.wordpress.com/tag/conntrack-entry/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/05/16/tuning_conntrack/" data-id="cji1u48ui000i2tsbve6mlfzh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/conntrack/">conntrack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iptables/">iptables</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-harbor-deploy" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/04/19/harbor-deploy/" class="article-date">
-  <time datetime="2017-04-18T16:00:00.000Z" itemprop="datePublished">2017-04-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/19/harbor-deploy/">Harbor Deploy</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能：<br>1.权限管理<br>2.同步功能</p>
-<p>这篇文章主要介绍下harbor的部署，另外也会结合Kubernetes介绍如何在访问需要帐号的docker registry</p>
-<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>Centos 7<br>Harbor v1.1.0<br>Kubernetes 1.5</p>
-<h1 id="安装docker和docker-compose"><a href="#安装docker和docker-compose" class="headerlink" title="安装docker和docker-compose"></a>安装docker和docker-compose</h1><p>harbor 官方文档使用docker-compose进行部署，当然现在也增加了部署在kubernetes上，这里选择使用docker-compose进行部署，以后有机会再研究下Kuberentes部署方式</p>
-<p>安装docker<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install docker -y</span><br><span class="line"></span><br><span class="line">systemctl enable docker</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure></p>
-<p>安装docker-compose<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install python-pip -y</span><br><span class="line">pip install docker-compose</span><br></pre></td></tr></table></figure></p>
-<h1 id="配置harbor"><a href="#配置harbor" class="headerlink" title="配置harbor"></a>配置harbor</h1><p>直接在Harbor的github上下载online安装文件：<a href="https://github.com/vmware/harbor/releases" target="_blank" rel="noopener">https://github.com/vmware/harbor/releases</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/vmware/harbor/releases/download/v1.1.0/harbor-online-installer-v1.1.0.tgz</span><br><span class="line">tar -zxf harbor-online-installer-v1.1.0.tgz</span><br></pre></td></tr></table></figure>
-<h2 id="配置ssl"><a href="#配置ssl" class="headerlink" title="配置ssl"></a>配置ssl</h2><p><code>/data</code>用于harbor的数据存储，最好挂载在存储上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/cert/</span><br></pre></td></tr></table></figure>
-<p>生成ssl keys<br>这里需要注意的是生成key过程中的Common Name填入你要使用的域名，如:reg.local.com</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">cd /data/cert/</span><br><span class="line">$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 365 -out ca.crt</span><br><span class="line">Generating a 4096 bit RSA private key</span><br><span class="line">...........................................................................................................................................................................................................................................................................................................................................................................................++</span><br><span class="line">..++</span><br><span class="line">writing new private key to &apos;ca.key&apos;</span><br><span class="line">-----</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter &apos;.&apos;, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [XX]:</span><br><span class="line">State or Province Name (full name) []:</span><br><span class="line">Locality Name (eg, city) [Default City]:</span><br><span class="line">Organization Name (eg, company) [Default Company Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (eg, your name or your server&apos;s hostname) []:reg.local.com</span><br><span class="line">Email Address []:</span><br><span class="line"></span><br><span class="line">$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout server.key -out server.csr</span><br><span class="line">Generating a 4096 bit RSA private key</span><br><span class="line">..........................................................................................................................................................................++</span><br><span class="line">...................................................................................++</span><br><span class="line">writing new private key to &apos;server.key&apos;</span><br><span class="line">-----</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter &apos;.&apos;, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [XX]:</span><br><span class="line">State or Province Name (full name) []:</span><br><span class="line">Locality Name (eg, city) [Default City]:</span><br><span class="line">Organization Name (eg, company) [Default Company Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (eg, your name or your server&apos;s hostname) []:reg.local.com</span><br><span class="line">Email Address []:</span><br><span class="line"></span><br><span class="line">Please enter the following &apos;extra&apos; attributes</span><br><span class="line">to be sent with your certificate request</span><br><span class="line">A challenge password []:</span><br><span class="line">An optional company name []:</span><br><span class="line"> </span><br><span class="line">$ openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt</span><br><span class="line">Signature ok</span><br><span class="line">subject=/C=XX/L=Default City/O=Default Company Ltd/CN=reg.local.com</span><br><span class="line">Getting CA Private Key</span><br></pre></td></tr></table></figure>
-<p>这里不详细介绍这几个key的原理了，大家可以自行baidu，ssl key还是建议大家去研究下，毕竟很多产品部署都会用到</p>
-<h2 id="修改配置文件：harbor-cfg"><a href="#修改配置文件：harbor-cfg" class="headerlink" title="修改配置文件：harbor.cfg"></a>修改配置文件：harbor.cfg</h2><ul>
-<li>hostname 如果是域名访问则设置成域名，否则使用IP，本文使用：reg.local.com</li>
-<li>db_password MySQL的数据库密码</li>
-<li>harbor_admin_password Harbor默认的管理员admin的密码</li>
-</ul>
-<p>其他参数可以不修改，但需要注意默认的ssl key配置的路径和文件名和我们生成的是一样的，如果不一样需要修改对应的配置</p>
-<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
-<p>这里会执行一堆检查，然后启动docker-compose来拉去harbor使用的几个docker，执行时间主要依赖你的网络拉去镜像的速度。</p>
-<p>如果这一步没有报错harbor就部署完成了。</p>
-<p>查看harbor启动情况<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># docker ps</span><br><span class="line">CONTAINER ID        IMAGE                              COMMAND                  CREATED             STATUS              PORTS                                                              NAMES</span><br><span class="line">15452d1c314e        vmware/nginx:1.11.5-patched        &quot;nginx -g &apos;daemon off&quot;   20 hours ago        Up 20 hours         0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:4443-&gt;4443/tcp   nginx</span><br><span class="line">252065f73780        vmware/harbor-jobservice:v1.1.0    &quot;/harbor/harbor_jobse&quot;   20 hours ago        Up 20 hours                                                                            harbor-jobservice</span><br><span class="line">281a82e4373c        vmware/harbor-ui:v1.1.0            &quot;/harbor/harbor_ui&quot;      20 hours ago        Up 20 hours                                                                            harbor-ui</span><br><span class="line">644245ba9fbf        vmware/harbor-adminserver:v1.1.0   &quot;/harbor/harbor_admin&quot;   21 hours ago        Up 20 hours                                                                            harbor-adminserver</span><br><span class="line">02900a2759b6        vmware/harbor-db:v1.1.0            &quot;docker-entrypoint.sh&quot;   21 hours ago        Up 20 hours         3306/tcp                                                           harbor-db</span><br><span class="line">814b2c0df893        vmware/registry:photon-2.6.0       &quot;/entrypoint.sh serve&quot;   21 hours ago        Up 20 hours         5000/tcp                                                           registry</span><br><span class="line">ee32489ccee9        vmware/harbor-log:v1.1.0           &quot;/bin/sh -c &apos;crond &amp;&amp;&quot;   21 hours ago        Up 20 hours         127.0.0.1:1514-&gt;514/tcp                                            harbor-log</span><br></pre></td></tr></table></figure></p>
-<p>接下来将域名reg.local.com配置指向Harbor部署的机器，就可以通过浏览器访问：<a href="https://reg.local.com" target="_blank" rel="noopener">https://reg.local.com</a><br>帐号为admin, 密码在harbor.cfg的harbor_admin_password配置的：Harbor12345</p>
-<h1 id="harbor-基本维护操作"><a href="#harbor-基本维护操作" class="headerlink" title="harbor 基本维护操作"></a>harbor 基本维护操作</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/harbor</span><br><span class="line">docker-compose down</span><br><span class="line">docker-compose start</span><br></pre></td></tr></table></figure>
-<h1 id="docker-使用"><a href="#docker-使用" class="headerlink" title="docker 使用"></a>docker 使用</h1><p>docker 要连接harbor需要两个条件</p>
-<ol>
-<li>ca证书</li>
-<li>帐号密码</li>
-</ol>
-<p>ca证书就是我们刚才生成的文件ca.crt证书，该证书需要放置在要访问harbor的机器的<code>/etc/docker/certs.d</code>目录</p>
-<p>创建证书目录，证书目录使用域名作为目录名称<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /etc/docker/certs.d/reg.local.com</span><br></pre></td></tr></table></figure></p>
-<p>将ca.crt放置在上述目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv ca.crt /etc/docker/certs.d/reg.local.com</span><br></pre></td></tr></table></figure></p>
-<p>登录harbor<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker login reg.local.com</span><br><span class="line">Username (test): test</span><br><span class="line">Password: </span><br><span class="line">WARNING: login credentials saved in /home/docker/.docker/config.json</span><br><span class="line">Login Succeeded</span><br></pre></td></tr></table></figure></p>
-<p>登录的帐号可以是admin，也可以是其他你通过web上创建的帐号</p>
-<p>注意上面的WARNING，它告诉我们auth key放置在文件<code>/home/docker/.docker/config.json</code>中（我发现在archlinux如果你用非root帐号执行，这个key也是会放到<code>/home/root/.docker/config.json</code>中）</p>
-<p>这个auth key在结合其他产品的时候会用到，如kubernetes、drone等</p>
-<p>push镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker tag busybox reg.local.com/test/busybox</span><br><span class="line">$ docker push reg.local.com/test/busybox</span><br><span class="line">The push refers to a repository [reg.local.com/test/busybox]</span><br><span class="line">c0de73ac9968: Layer already exists </span><br><span class="line">latest: digest: sha256:92b7c19467bf868e52949d7e5404e309486ba9ee7eb4b88b882747ee1522d3cd size: 505</span><br></pre></td></tr></table></figure></p>
-<h1 id="kubernetes连接harbor"><a href="#kubernetes连接harbor" class="headerlink" title="kubernetes连接harbor"></a>kubernetes连接harbor</h1><p>需要几个东西</p>
-<ol>
-<li>docker 的 auth key</li>
-<li>ca.crt证书</li>
-<li>帐号的secret</li>
-</ol>
-<p>获取k8s所有node的ip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ nodes=$(kubectl get nodes -o jsonpath=&apos;&#123;range.items[*].status.addresses[?(@.type==&quot;InternalIP&quot;)]&#125;&#123;.address&#125; &#123;end&#125;&apos;)</span><br><span class="line">$ echo $nodes</span><br><span class="line">192.168.1.1 192.168.1.2 192.168.1.3</span><br></pre></td></tr></table></figure></p>
-<p>使用<code>docker login reg.local.com</code>生成auth key</p>
-<p>这里默认为<code>~/.docker/config.json</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~/.docker/config.json</span><br><span class="line">&#123;</span><br><span class="line">        &quot;auths&quot;: &#123;</span><br><span class="line">                &quot;reg.local.com&quot;: &#123;</span><br><span class="line">                        &quot;auth&quot;: &quot;dGVzdDpEWFEefMTIzNDU=&quot;,</span><br><span class="line">                        &quot;email&quot;: &quot;test@local.com&quot;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>复制auth key到所有节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ for n in $nodes; do ssh root@$n mkdir -p /root/.docker; scp ~/.docker/config.json root@$n:/root/.docker/config.json; done</span><br></pre></td></tr></table></figure></p>
-<p>复制ca.crt到所有节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cert_path=&quot;/etc/docker/certs.d/reg.local.com&quot;</span><br><span class="line">for n in $nodes; do ssh root@$n mkdir -p $cert_path; scp $cert_path/ca.crt root@$n:$cert_path/ca.crt; done</span><br></pre></td></tr></table></figure></p>
-<p>创建帐号secret<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry myregistrykey --docker-server=reg.local.com --docker-username=test --docker-password=Test12345 --docker-email=test@local.com</span><br></pre></td></tr></table></figure></p>
-<p>pod配置中增加<code>imagePullSecrets</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: busybox</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - image: reg.local.com/test/busybox</span><br><span class="line">    imagePullPolicy: IfNotPresent</span><br><span class="line">    name: busybox</span><br><span class="line">    command:</span><br><span class="line">      - sleep</span><br><span class="line">      - &quot;3600&quot;</span><br><span class="line">  restartPolicy: Always</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">    - name: myregistrykey</span><br></pre></td></tr></table></figure></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>到这里docker和kubernetes都可以访问harbor</p>
-<p>下次有机会介绍下几个内容：</p>
-<ul>
-<li>harbor的ha方案，基于它自己提供的复制功能</li>
-<li>harbor部署在kubernetes上</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/04/19/harbor-deploy/" data-id="cji1u48u8000a2tsby4nxiect" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/harbor/">harbor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/registry/">registry</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-markdown-sample" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/09/markdown-sample/" class="article-date">
-  <time datetime="2017-03-08T16:00:00.000Z" itemprop="datePublished">2017-03-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/09/markdown-sample/">Markdown sample</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>测试下使用markdown</p>
-<h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><ul>
-<li>第一</li>
-<li>第二</li>
-</ul>
-<h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><ol>
-<li>我们</li>
-<li>他们</li>
-<li>你们</li>
-</ol>
-<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p><a href="http://www.jianshu.com" target="_blank" rel="noopener">简书</a></p>
-<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><p><img src="http://ww4.sinaimg.cn/bmiddle/aa397b7fjw1dzplsgpdw5j.jpg" alt=""></p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
-<p>引用他人的文字</p>
-</blockquote>
-<h1 id="测试2"><a href="#测试2" class="headerlink" title="测试2"></a>测试2</h1><h2 id="斜体和粗体"><a href="#斜体和粗体" class="headerlink" title="斜体和粗体"></a>斜体和粗体</h2><p><em>一盏灯</em>， 一片昏黄；<strong>一简书</strong>， 一杯淡茶。 守着那一份淡定， 品读属于自己的寂寞。 保持淡定， 才能欣赏到最美丽的风景！ 保持淡定， 人生从此不再寂寞。</p>
-<h2 id="代码引用"><a href="#代码引用" class="headerlink" title="代码引用"></a>代码引用</h2><p><code>hello word</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">第一行</span><br><span class="line">第二行</span><br></pre></td></tr></table></figure>
-<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>dog</th>
-<th>bird</th>
-<th>cat</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>foo</td>
-<td>foo</td>
-<td>foo</td>
-</tr>
-<tr>
-<td>bar</td>
-<td>bar</td>
-<td>bar</td>
-</tr>
-<tr>
-<td>baz</td>
-<td>baz</td>
-<td>baz</td>
-</tr>
-</tbody>
-</table>
-<h2 id="显示链接中带括号的图片"><a href="#显示链接中带括号的图片" class="headerlink" title="显示链接中带括号的图片"></a>显示链接中带括号的图片</h2><p>![][1]<br>[1]: <a href="http://latex.codecogs.com/gif.latex?\prod%20\(n_{i}\)+1" target="_blank" rel="noopener">http://latex.codecogs.com/gif.latex?\prod%20\(n_{i}\)+1</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/03/09/markdown-sample/" data-id="cji1u48u9000b2tsbz1afm1z0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kuberntes-rollout-update" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/08/kuberntes-rollout-update/" class="article-date">
-  <time datetime="2017-03-07T16:00:00.000Z" itemprop="datePublished">2017-03-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="“灰度”发布"><a href="#“灰度”发布" class="headerlink" title="“灰度”发布"></a>“灰度”发布</h1><p>这次聊聊“灰度”发布（也叫“滚动”发布）</p>
-<p>因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就慢慢出现了“灰度”发布这种业务零中断的发布方式。</p>
-<p>所谓的“灰度”发布是指为了让老版本更新成新版本，以及为了更充分测试老版本会让部署在生产环境的应用处于老版本和新版本共存，并逐渐过度到新版本的一种发布方式。</p>
-<p>其实应用很容易支持“灰度”发布，因为它是无状态的。但是如果应用依赖了数据库那么它就可能变成“有状态”。这里的可能是指当需要变更数据库的时候它是有状态，如果不需要变更数据库它依然是无状态。</p>
-<p>所以为了让应用可以支持“灰度”发布，就应该考虑好数据库的依赖问题，主要有两个方面：</p>
-<ol>
-<li>在对事务要求不高的应用上使用非关系数据库，如，mongo，hbase等这类弱模式的数据库。这样在进行应用变更时可以动态变更数据库的表结构（或者说无需变更表结构）</li>
-<li>在设计关系数据库时需要考虑好扩容问题，应避免因表结构变动影响到新老应用的兼容问题</li>
-</ol>
-<p>在容器之前一般有两种办法进行“灰度发布”：</p>
-<ol>
-<li>最早采用手工一台一台应用进行发布</li>
-<li>采用部署工具，比如salt或者ansible等进行自动发布</li>
-</ol>
-<p>不管采用哪种方式，其原理都是一样的：</p>
-<ol>
-<li>部署一台新的应用</li>
-<li>验证新应用是否正常</li>
-<li>正常后停掉一台老应用</li>
-<li>继续1-3步骤，直到所有应用升级完成</li>
-</ol>
-<p>我们目前大部分应用采用的是kubernetes进行的容器化部署，kubernetes本身有一个“滚动”发布的功能用于进行“灰度”发布。下面我们来测试下kuberentes的“滚动”发布是如果玩的。</p>
-<h1 id="基础测试程序"><a href="#基础测试程序" class="headerlink" title="基础测试程序"></a>基础测试程序</h1><p>这里准备了一个叫做testpage的简单应用，这个应用提供一个rest的访问接口返回自身ip和版本，如：I am: 172.1.62.11, the version is: 0.5</p>
-<p>Dockerfile:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM python:2.7-alpine</span><br><span class="line"></span><br><span class="line">ADD testpage.py /testpage.py</span><br><span class="line"></span><br><span class="line">CMD ["python", "/testpage.py"]</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br></pre></td></tr></table></figure></p>
-<p>testpage.py:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> fcntl</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ip_address</span><span class="params">(ifname)</span>:</span></span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">    <span class="keyword">return</span> socket.inet_ntoa(fcntl.ioctl(</span><br><span class="line">        s.fileno(),</span><br><span class="line">        <span class="number">0x8915</span>,  <span class="comment"># SIOCGIFADDR</span></span><br><span class="line">        struct.pack(<span class="string">'256s'</span>, ifname[:<span class="number">15</span>])</span><br><span class="line">    )[<span class="number">20</span>:<span class="number">24</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> BaseHTTPServer</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestHandler</span><span class="params">(BaseHTTPServer.BaseHTTPRequestHandler)</span>:</span></span><br><span class="line"></span><br><span class="line">    Page = <span class="string">'I am: %s, the version is: %s\n'</span> % (get_ip_address(<span class="string">'eth0'</span>), os.environ.get(<span class="string">'VERSION'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_GET</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.send_response(<span class="number">200</span>)</span><br><span class="line">        self.send_header(<span class="string">"Content-Type"</span>, <span class="string">"text/html"</span>)</span><br><span class="line">        self.send_header(<span class="string">"Content-Length"</span>, str(len(self.Page)))</span><br><span class="line">        self.end_headers()</span><br><span class="line">        self.wfile.write(self.Page)</span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    serverAddress = (<span class="string">''</span>, <span class="number">8080</span>)</span><br><span class="line">    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)</span><br><span class="line">    server.serve_forever()</span><br></pre></td></tr></table></figure></p>
-<p>python脚本启动一个web服务，接受一个VERSION的操作系统环境变量，然后将自身的ip和version返回</p>
-<p>build好上述镜像，取名testpage:[version]</p>
-<h1 id="kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes-io脑补下）"><a href="#kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes-io脑补下）" class="headerlink" title="kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）"></a>kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）</h1><p>service是为了让集群外的测试脚本可以访问到容器，不是必须</p>
-<p>service.yaml<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">    nodePort:</span> <span class="number">21000</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br></pre></td></tr></table></figure></p>
-<p>deployment.yaml<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">  revisionHistoryLimit:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">  strategy:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">RollingUpdate</span></span><br><span class="line"><span class="attr">    rollingUpdate:</span></span><br><span class="line"><span class="attr">      maxSurge:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">      maxUnavailable:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">dean/testpage:0.5</span></span><br><span class="line"><span class="attr">        imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">        resources:</span></span><br><span class="line"><span class="attr">          limits:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">20</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">VERSION</span></span><br><span class="line"><span class="attr">          value:</span> <span class="string">"0.5"</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">        readinessProbe:</span></span><br><span class="line"><span class="attr">          tcpSocket:</span></span><br><span class="line"><span class="attr">            port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">        livenessProbe:</span></span><br><span class="line"><span class="attr">          tcpSocket:</span></span><br><span class="line"><span class="attr">            port:</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure></p>
-<p>deployment.yaml几个需要注意：</p>
-<ol>
-<li>revisionHistoryLimit用于限制保留多少份历史版本，因为“滚动”发布每次发布都会最为一个版本来进行管理，默认所有历史版本都会保留，也提供你进行回退等操作</li>
-<li>strategy这里制定了“滚动”发布的策略，maxSurge是最大的变动pod数量（这里主要是只新增pod个数）maxUnavailable指定允许最大的无效pod数量，这个值等于0的意义是我们在“滚动”发布的过程中必须保证有replicas个的pod在提供服务</li>
-<li>livenessProbe和readinessProbe，这两个参数用于指定如何验证pod的“存活”和“可使用”。“滚动”发布主要使用readinessProbe进行验证。当“滚动”发布过程中一个新pod创建，那么kubernetes需要检查readinessProbe为ok（这里是验证端口8080是否可访问）才会删除老的pod</li>
-</ol>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="部署testpage"><a href="#部署testpage" class="headerlink" title="部署testpage"></a>部署testpage</h2><p>部署testpage<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl create -f service.yaml</span><br><span class="line">$ kubectl create -f deployment.yaml</span><br><span class="line">$ kubectl get po -o wide -l type=testpage</span><br><span class="line">NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Running   0          4m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running   0          4m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running   0          4m        172.1.14.7    192.168.72.128</span><br></pre></td></tr></table></figure></p>
-<h2 id="测试脚本"><a href="#测试脚本" class="headerlink" title="测试脚本"></a>测试脚本</h2><p>这个脚本每一秒访问一次testpage服务，返回访问到的pod的ip和version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; curl http://192.168.72.2:21000; sleep 1; done</span><br></pre></td></tr></table></figure></p>
-<p>监控testpage的pod变化情况<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done</span><br></pre></td></tr></table></figure></p>
-<p>监控testpage的deployment“滚动”发布状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; kubectl rollout status deployment testpage; sleep 1; done</span><br></pre></td></tr></table></figure></p>
-<h2 id="开始测试"><a href="#开始测试" class="headerlink" title="开始测试"></a>开始测试</h2><p>我们模拟的testpage当前版本是0.8，这时我们需要将其升级到0.9</p>
-<ol>
-<li>根据上述dockerfile大家可以直接build出0.9的镜像: dean/testpage:0.9</li>
-<li><p>修改deployment.yaml（将镜像版本和VERSION变量修改成0.9）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: testpage</span><br><span class="line">  namespace: default</span><br><span class="line">  labels:</span><br><span class="line">    type: testpage</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  revisionHistoryLimit: 3</span><br><span class="line">  strategy:</span><br><span class="line">    type: RollingUpdate</span><br><span class="line">    rollingUpdate:</span><br><span class="line">      maxSurge: 1</span><br><span class="line">      maxUnavailable: 0</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        type: testpage</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: testpage</span><br><span class="line">        image: dean/testpage:0.9</span><br><span class="line">        imagePullPolicy: Always</span><br><span class="line">        resources:</span><br><span class="line">          limits:</span><br><span class="line">            cpu: 10m</span><br><span class="line">            memory: 20Mi</span><br><span class="line">        env:</span><br><span class="line">        - name: VERSION</span><br><span class="line">          value: &quot;0.9&quot;</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080</span><br><span class="line">        readinessProbe:</span><br><span class="line">          tcpSocket:</span><br><span class="line">            port: 8080</span><br><span class="line">        livenessProbe:</span><br><span class="line">          tcpSocket:</span><br><span class="line">            port: 8080</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行测试脚本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; curl http://192.168.72.2:21000; sleep 1; done</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>该脚本持续返回：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:39:09 CST 2017</span><br><span class="line">I am: 172.1.14.7, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:10 CST 2017</span><br><span class="line">I am: 172.1.14.7, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:11 CST 2017</span><br><span class="line">I am: 172.1.14.7, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:12 CST 2017</span><br><span class="line">I am: 172.1.60.5, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:13 CST 2017</span><br><span class="line">I am: 172.1.62.10, the version is: 0.8</span><br></pre></td></tr></table></figure></p>
-<p>从上面的输出我们可以看到总共有三个pod对应的ip地址</p>
-<p>这里会返回三个ip，对应的三个pod，版本是0.5</p>
-<ol start="4">
-<li><p>执行两个监控脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done</span><br><span class="line">while true; do date; kubectl rollout status deployment testpage; sleep 1; done</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开始“滚动”发布</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f deployment.yaml</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>观察测试脚本和监控脚本的变化（因为都是动态的就不录制视频了）：</p>
-</li>
-</ol>
-<p>rollout status结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:42:24 CST 2017</span><br><span class="line">deployment &quot;testpage&quot; successfully rolled out</span><br><span class="line">Thu Mar  9 10:42:25 CST 2017</span><br><span class="line">Waiting for deployment spec update to be observed...</span><br><span class="line">Waiting for rollout to finish: 1 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 1 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 1 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 2 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 2 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 2 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 1 old replicas are pending termination...</span><br><span class="line">Waiting for rollout to finish: 1 old replicas are pending termination...</span><br><span class="line">deployment &quot;testpage&quot; successfully rolled out</span><br></pre></td></tr></table></figure></p>
-<p>上述过程可以看到kuberentes的pod是一个一个更新的。直到最后老pod被清理掉。升级完成</p>
-<p>kubectl get po输出, 这里可以直观看出整个过程，下列的输出我是截取了关键的变化点。</p>
-<p>我在几个关键点后面写上（标注N）用于进行过程解释</p>
-<p>标注1，因为配置文件中strategy的配置，不运行kuberentes进行同位替换，所有kuberentes创建了一个新pod<br>标注2，新pod创建成功，但是因为readinessProbe的配置kubernetes需要检测到8080端口的可访问才算是READY状态，所以状态READY为0/1（这里数字的原因是一个pod中可以有多个容器）<br>标注3，新pod创建成功，并且READY处于1/1（说明一个pod中的容器全部ready）这是该新pod会被添加到service中接受访问，我们结合testpage的访问数据可以看到在43:09时新pod被访问到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:43:09 CST 2017</span><br><span class="line">I am: 172.1.65.4, the version is: 0.9</span><br></pre></td></tr></table></figure></p>
-<p>标注4，包括新pod因为有3个pod可以提供服务，所有这是kubernetes下令中止一个老pod<br>标注5，因老pod已被中止（这里是异步的），kuberentes下令开始再创建一个新pod用于进行下一个老pod的替换<br>循环这个过程直到所有老pod替换完成，升级结束</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:42:39 CST 2017</span><br><span class="line">NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Running             0          7m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   0/1       ContainerCreating   0          14s       &lt;none&gt;        192.168.72.190   (标注1)</span><br><span class="line">Thu Mar  9 10:42:40 CST 2017</span><br><span class="line">NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Running   0          7m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running   0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running   0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   0/1       Running   0          15s       172.1.65.4    192.168.72.190    (标注2)</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:06 CST 2017</span><br><span class="line">NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Terminating         0          7m        172.1.62.10   192.168.72.233   (标注4)</span><br><span class="line">testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running             0          41s       172.1.65.4    192.168.72.190   (标注3)</span><br><span class="line">testpage-515849216-1sf6b   0/1       ContainerCreating   0          1s        &lt;none&gt;        192.168.72.233   (标注5)</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:18 CST 2017</span><br><span class="line">NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Terminating   0          7m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running       0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running       0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running       0          53s       172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   0/1       Running       0          13s       172.1.62.11   192.168.72.233</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:36 CST 2017</span><br><span class="line">NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-glvbz   1/1       Terminating         0          8m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running             0          8m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running             0          1m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running             0          31s       172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   0/1       ContainerCreating   0          0s        &lt;none&gt;        192.168.72.2</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:49 CST 2017</span><br><span class="line">NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-glvbz   1/1       Terminating   0          8m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running       0          8m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running       0          44s       172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   0/1       Running       0          13s       172.1.60.11   192.168.72.2</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:44:07 CST 2017</span><br><span class="line">NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-hpx9s   1/1       Terminating   0          8m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running       0          1m        172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   1/1       Running       0          31s       172.1.60.11   192.168.72.2</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:47:46 CST 2017</span><br><span class="line">NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-515849216-059b0   1/1       Running   0          5m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running   0          4m        172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   1/1       Running   0          4m        172.1.60.11   192.168.72.2</span><br></pre></td></tr></table></figure>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
-<li>策略配置让kubernetes必须先创建一个新pod去替换老pod（而不是删除老pod再创建新pod，这个策略可自行配置）</li>
-<li>每次仅替换一个pod，并进行业务的无缝切换</li>
-<li>整个过程readinessProbe非常重要，确定着业务是否会被中断（必须确保readinessProbe的验证是对业务的准确验证，因为测试这里仅进行端口验证）</li>
-</ol>
-<h1 id="kubernetes支持其他rollout操作"><a href="#kubernetes支持其他rollout操作" class="headerlink" title="kubernetes支持其他rollout操作"></a>kubernetes支持其他rollout操作</h1><p>Read the deployment history</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout history deployment testpage</span><br><span class="line">kubectl rollout history deployment testpage --revision 42</span><br></pre></td></tr></table></figure>
-<p>Rollback to the previous deployed version</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout undo deployment testpage</span><br><span class="line">kubectl rollout undo deployment testpage --to-revision 21</span><br></pre></td></tr></table></figure>
-<p>Pause and Resume</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout pause deployment testpage</span><br><span class="line">kubectl rollout resume deployment testpage</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/" data-id="cji1u48ub000d2tsbo2cd9kx2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollout/">rollout</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-deploy-traefik" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/03/deploy-traefik/" class="article-date">
-  <time datetime="2017-03-02T16:00:00.000Z" itemprop="datePublished">2017-03-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/03/deploy-traefik/">Ingress Controller with Traefik on Kubernetes</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Kubernetes-Ingress"><a href="#Kubernetes-Ingress" class="headerlink" title="Kubernetes Ingress"></a>Kubernetes <a href="https://kubernetes.io/docs/user-guide/ingress/" target="_blank" rel="noopener">Ingress</a></h1><p>kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  internet</span><br><span class="line">      |</span><br><span class="line">------------</span><br><span class="line">[ Services ]</span><br></pre></td></tr></table></figure>
-<p>如果增加Ingress:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> internet</span><br><span class="line">     |</span><br><span class="line">[ Ingress ]</span><br><span class="line">--|-----|--</span><br><span class="line">[ Services ]</span><br></pre></td></tr></table></figure>
-<p>Ingress部署在Service前面进行域名的解析和分发</p>
-<h1 id="Ingress-Controller"><a href="#Ingress-Controller" class="headerlink" title="Ingress Controller"></a>Ingress Controller</h1><p>上文提到的Ingress对象实际上只是kubernetes中的一些配置文件，真正实现Ingress功能的实际是Ingress Controller。</p>
-<p>Ingress Controller的功能主要有：</p>
-<ul>
-<li>访问kubernetes api，来感知Service的变化和Ingress的配置</li>
-<li>当感知到Service变化时，将配置应用的本身的配置文件中</li>
-<li>Reload配置，实现分发</li>
-</ul>
-<p>目前Kubernetes官方提供gce和nginx的Controller，相见：<a href="https://github.com/kubernetes/ingress/tree/master/controllers" target="_blank" rel="noopener">Ingress</a></p>
-<h1 id="Traefik"><a href="#Traefik" class="headerlink" title="Traefik"></a><a href="https://github.com/containous/traefik" target="_blank" rel="noopener">Traefik</a></h1><p>traefik是一个为容器而生的反向代理和负载均衡服务，很轻量，采用go语言。可以支持很多容器相关架构，如：Consul, Etcd, Docker, Kubernetes, Messos等等</p>
-<p>另外，traefik支持Let\’s Encrypt</p>
-<h1 id="Traefik-deploy-on-Kubernetes"><a href="#Traefik-deploy-on-Kubernetes" class="headerlink" title="Traefik deploy on Kubernetes"></a>Traefik deploy on Kubernetes</h1><h2 id="traefik-deployment"><a href="#traefik-deployment" class="headerlink" title="traefik deployment"></a>traefik deployment</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    nodePort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      terminationGracePeriodSeconds:</span> <span class="number">60</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - image:</span> <span class="attr">traefik:v1.1.2-alpine</span></span><br><span class="line"><span class="attr">        name:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="attr">        resources:</span></span><br><span class="line"><span class="attr">          limits:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">200</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">30</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">          requests:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">100</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">20</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">          containerPort:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">admin</span></span><br><span class="line"><span class="attr">          containerPort:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">        args:</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">-d</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--web</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--web.address=:8081</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--kubernetes</span></span><br><span class="line"><span class="bullet">        -</span> <span class="bullet">--kubernetes.endpoint=http://139.119.3.113:6550/</span></span><br></pre></td></tr></table></figure>
-<p><code>web.address=:8081</code>指示启动traefik的web端口<br><code>kubernetes.endpoint</code>指向kubernetes的api地址（apiserver）</p>
-<p>这里部署了2个traefik，是为了在集群中作为HA</p>
-<p>service采用nodePort方式，在所有node上映射80端口（因为域名通常不需要端口，如果你指定了其他端口那么域名增加相应的端口即可）。为了指定80端口需要开发kubernetes api的限制，配置参数：<code>--service-node-port-range=1-65535</code></p>
-<h2 id="deploy-traefik-ui"><a href="#deploy-traefik-ui" class="headerlink" title="deploy traefik ui"></a>deploy traefik ui</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-web-ui</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">web</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">80</span></span><br><span class="line"><span class="attr">    targetPort:</span> <span class="number">8081</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    k8s-app:</span> <span class="string">traefik-ingress-controller</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">traefik-web-ui</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">traefik-ui.local.io</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">        backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">traefik-web-ui</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">web</span></span><br></pre></td></tr></table></figure>
-<p>第一部分是traefik ui的service，ingress需要转发到service上<br>第二部分创建ingress，如果访问的是指定域名traefik-ui.local.io，那么重定向到traefik-web-ui这个service的web端口上</p>
-<h2 id="验证traefik-ui"><a href="#验证traefik-ui" class="headerlink" title="验证traefik ui"></a>验证traefik ui</h2><p>如果是实际环境只需要将域名配置执行集群中的node的ip即可，默认是80端口</p>
-<p>使用curl验证地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -H &quot;Host: traefik-ui.local.io&quot; http://192.168.72.2</span><br></pre></td></tr></table></figure>
-<p><code>-H</code> 用于指定访问域名</p>
-<p>或者可以直接在浏览器中打开</p>
-<h2 id="deploy-testpage-app"><a href="#deploy-testpage-app" class="headerlink" title="deploy testpage app"></a>deploy testpage app</h2><p>testpage是一个python的测试页面，通过http访问该页面会返回一个配置好的版本号</p>
-<p>Deployment:</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - name:</span> <span class="string">http</span></span><br><span class="line"><span class="attr">    port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">registry.local.com/testpage:0.5</span></span><br><span class="line"><span class="attr">        imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">        resources:</span></span><br><span class="line"><span class="attr">          limits:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">20</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">VERSION</span></span><br><span class="line"><span class="attr">          value:</span> <span class="string">"0.5"</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure>
-<p>Ingress:<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  rules:</span></span><br><span class="line"><span class="attr">  - host:</span> <span class="string">testpage.local.io</span></span><br><span class="line"><span class="attr">    http:</span></span><br><span class="line"><span class="attr">      paths:</span></span><br><span class="line"><span class="attr">      - path:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">        backend:</span></span><br><span class="line"><span class="attr">          serviceName:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">          servicePort:</span> <span class="string">http</span></span><br></pre></td></tr></table></figure></p>
-<p>验证</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -H &quot;Host: testpage.local.io&quot; http://192.168.72.2</span><br><span class="line">I am1: 172.1.14.4, the version is: 0.5</span><br></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://docs.traefik.io/user-guide/kubernetes/" target="_blank" rel="noopener">Kubernetes Ingress Controller</a><br><a href="https://blog.osones.com/en/kubernetes-ingress-controller-with-traefik-and-lets-encrypt.html" target="_blank" rel="noopener">Kubernetes : Ingress Controller with Træfɪk and Let’s Encrypt</a><br><a href="http://www.colabug.com/thread-1703745-1-1.html" target="_blank" rel="noopener">Traefik-kubernetes 初试</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/03/03/deploy-traefik/" data-id="cji1u48u200042tsb8bnmcq5u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-var-lib-docker-directory-move" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/22/docker-var-lib-docker-directory-move/" class="article-date">
-  <time datetime="2017-02-21T16:00:00.000Z" itemprop="datePublished">2017-02-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/22/docker-var-lib-docker-directory-move/">Docker, move the /var/lib/docker directory</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>docker 默认的数据存储目录为：/var/lib/docker，主要的文件是/var/lib/docker/devicemapper/devicemapper/data,该文件存储docker的镜像文件，如果镜像过多经常会导致/var使用率100%，当然如果是生产环境你可能不会使用文件系统而是使用thinpool来存储镜像文件，而且一般生产上一台机器上的docker镜像和容器一般也会不过多。</p>
-<p>下面我们分别介绍下修改thinpool和移动/var/lib/docker的基本操作：</p>
-<h1 id="Docker-config-thin-pool"><a href="#Docker-config-thin-pool" class="headerlink" title="Docker config thin pool"></a>Docker config thin pool</h1><p>about: <a href="https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/" target="_blank" rel="noopener">device-mapper-driver</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br><span class="line">rm -rf /var/lib/docker</span><br><span class="line"></span><br><span class="line">pvcreate /dev/vdb</span><br><span class="line">vgcreate docker /dev/vdb</span><br><span class="line"></span><br><span class="line">cat &lt;&lt; EOF &gt; /etc/sysconfig/docker-storage-setup</span><br><span class="line">STORAGE_DRIVER=devicemapper</span><br><span class="line">VG=docker</span><br><span class="line">EXTRA_DOCKER_STORAGE_OPTIONS=" --storage-opt dm.use_deferred_removal=true"</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">docker-storage-setup</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
-<h1 id="Move-var-lib-docker-centos-7"><a href="#Move-var-lib-docker-centos-7" class="headerlink" title="Move /var/lib/docker ( centos 7 )"></a>Move /var/lib/docker ( centos 7 )</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br></pre></td></tr></table></figure>
-<p>set in the <code>/etc/sysconfig/docker</code> file, add <code>-g</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OPTIONS='--selinux-enabled --log-driver=journald'</span><br></pre></td></tr></table></figure>
-<p>to </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OPTIONS='--selinux-enabled --log-driver=journald -g /data/docker/'</span><br></pre></td></tr></table></figure>
-<p>the <code>/data/docker/</code> is new docker directory</p>
-<p>if <code>/var/lib/docker</code> have your images and want to save it. Move the data to <code>/data/docker</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /var/lib/docker /data/</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
-<p>link:<br><a href="https://github.com/docker/docker/issues/3127" target="_blank" rel="noopener">#3127</a><br><a href="https://forums.docker.com/t/how-do-i-change-the-docker-image-installation-directory/1169/2" target="_blank" rel="noopener">How do I change the Docker image installation directory</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/02/22/docker-var-lib-docker-directory-move/" data-id="cji1u48u500072tsbu7ag8s9a" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kuberntes-heapster-cannot-write-to-influxdb" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/" class="article-date">
-  <time datetime="2017-02-05T16:00:00.000Z" itemprop="datePublished">2017-02-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/">kuberntes heapster cannot write to influxdb</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>kubernetes 1.5<br>heapster 1.2<br>influxdb 1.2</p>
-<p>heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入</p>
-<p>heapster未见任何错误日志</p>
-<p>influxdb日志如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &quot;POST /write?consistency=&amp;db=k8s&amp;precision=&amp;rp=default HTTP/1.1&quot; 500 72 &quot;-&quot; &quot;heapster/v1.3.0-beta.0&quot; 2ece120b-df51-11e6-808e-000000000000 15630</span><br><span class="line">[httpd] 192.168.56.207 - root [20/Jan/2017:20:44:05 +0000] &quot;GET /ping HTTP/1.1&quot; 204 0 &quot;-&quot; &quot;heapster/v1.3.0-beta.0&quot; 2ed087a5-df51-11e6-808f-000000000000 14</span><br></pre></td></tr></table></figure>
-<p>该问题为heapster和influxdb版本不兼容导致，</p>
-<p>heapster在创建k8s后默认使用default 的retention，因为influxdb1.2默认retention是autogen导致heapster无法使用到default导致数据写入失败</p>
-<p>解决办法：<br>在k8s库下面创建default的retention</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create retention policy &quot;default&quot; on &quot;k8s&quot; duration 0d replication 1 default</span><br></pre></td></tr></table></figure>
-<p>link:<br><a href="https://github.com/kubernetes/heapster/issues/1474" target="_blank" rel="noopener">heapster issues 1474</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/" data-id="cji1u48uf000f2tsbwf0off31" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/heapster/">heapster</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-deploy-kubernetes" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/01/18/deploy-kubernetes/" class="article-date">
-  <time datetime="2017-01-17T16:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/18/deploy-kubernetes/">Deploy kubernetes by manual on centos 7</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h1><table>
-<thead>
-<tr>
-<th>ip</th>
-<th>role</th>
-<th>hostname</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>10.10.0.1</td>
-<td>master&amp;minion</td>
-<td>k8s-master-1</td>
-</tr>
-<tr>
-<td>10.10.0.2</td>
-<td>minion</td>
-<td>k8s-node-1</td>
-</tr>
-<tr>
-<td>10.10.0.3</td>
-<td>minion</td>
-<td>k8s-node-2</td>
-</tr>
-</tbody>
-</table>
-<h1 id="on-all-machine"><a href="#on-all-machine" class="headerlink" title="on all machine"></a>on all machine</h1><p><em>Note: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的)</em></p>
-<h2 id="修改hostname"><a href="#修改hostname" class="headerlink" title="修改hostname"></a>修改hostname</h2><p>用户名建议使用中横杠，因为后面在进行kubernetes配置的时候可以直接使用hostname作为节点名称</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo "k8s-node-xx" &gt; /etc/hostname</span><br></pre></td></tr></table></figure>
-<h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><p>关闭防火墙<br>安装ntp</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop firewalld</span><br><span class="line">sudo systemctl disable firewalld</span><br><span class="line"></span><br><span class="line">sudo yum -y install ntp</span><br><span class="line">sudo systemctl start ntpd</span><br><span class="line">sudo systemctl enable ntpd</span><br><span class="line">sudo systemctl status ntpd</span><br></pre></td></tr></table></figure>
-<p>创建k8s帐号和sudo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo useradd -u 1008 k8s -m &amp;&amp; sudo passwd k8s</span><br><span class="line"></span><br><span class="line">sudo echo &quot;&quot; &gt;&gt; /etc/sudoers</span><br><span class="line">sudo echo &quot;#add k8s user&quot; &gt;&gt; /etc/sudoers</span><br><span class="line">sudo echo &quot;k8s ALL=(ALL) NOPASSWD: ALL&quot; &gt;&gt; /etc/sudoers</span><br></pre></td></tr></table></figure>
-<p>从下面开始所以操作都是在k8s这个用户下进行</p>
-<h1 id="on-master"><a href="#on-master" class="headerlink" title="on master"></a>on master</h1><h2 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h2><h3 id="Download-amp-amp-Install-etcd"><a href="#Download-amp-amp-Install-etcd" class="headerlink" title="Download &amp;&amp; Install etcd"></a>Download &amp;&amp; Install etcd</h3><p>etcd是类似与zookeeper的分布式配置存储解决方案，特意加了“配置”两个字是因为它的设计目标主要是用来存储配置文件</p>
-<p>下载地址：<a href="https://github.com/coreos/etcd/releases/download/v3.0.9/etcd-v3.0.9-linux-amd64.tar.gz" target="_blank" rel="noopener">etcd v3.0.9</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/coreos/etcd/releases/download/v3.0.9/etcd-v3.0.9-linux-amd64.tar.gz</span><br><span class="line">tar -zxf etcd-v3.0.9-linux-amd64.tar.gz</span><br><span class="line">ln -s etcd-v3.0.9-linux-amd64 etcd</span><br></pre></td></tr></table></figure>
-<h3 id="启动配置脚本"><a href="#启动配置脚本" class="headerlink" title="启动配置脚本"></a>启动配置脚本</h3><p>因为这是实验环境，所以这里的etcd只使用一个节点，如果你是用于生产环境建议配置3个以上的etcd节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd ~/etcd</span><br><span class="line">cat &lt;&lt;EOF &gt; etcd-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">THIS_IP=10.10.0.1</span><br><span class="line"></span><br><span class="line">./etcd \</span><br><span class="line">--name=infra1 \</span><br><span class="line">--advertise-client-urls http://$&#123;THIS_IP&#125;:2379 \</span><br><span class="line">--listen-client-urls http://$&#123;THIS_IP&#125;:2379,http://127.0.0.1:2379 \</span><br><span class="line">--data-dir=data  \</span><br><span class="line">1&gt; etcd.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x etcd-start.sh</span><br></pre></td></tr></table></figure>
-<h3 id="使用配置脚本启动etcd"><a href="#使用配置脚本启动etcd" class="headerlink" title="使用配置脚本启动etcd"></a>使用配置脚本启动etcd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcd-start.sh</span><br></pre></td></tr></table></figure>
-<h3 id="测试etcd"><a href="#测试etcd" class="headerlink" title="测试etcd"></a>测试etcd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./etcdctl ls</span><br></pre></td></tr></table></figure>
-<p>如果上述命令成功，那么etcd处于正常运行中</p>
-<h3 id="添加flannel的网络地址范围到etcd中"><a href="#添加flannel的网络地址范围到etcd中" class="headerlink" title="添加flannel的网络地址范围到etcd中"></a>添加flannel的网络地址范围到etcd中</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/etcd</span><br><span class="line">./etcdctl mk /flannel/network/config &apos;&#123;&quot;Network&quot;:&quot;172.1.0.0/16&quot;&#125;&apos;</span><br></pre></td></tr></table></figure>
-<p>其中 /flannel/network/config这个地址是可以自己指定的，需要配置到flannel中</p>
-<h2 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h2><h3 id="下载并配置kubernetes"><a href="#下载并配置kubernetes" class="headerlink" title="下载并配置kubernetes"></a>下载并配置kubernetes</h3><p>kubernetes因为发布节奏很快，所以各种仓库都不会及时更新，所以本文采用手动安装方式，安装包可以直接在github上下载</p>
-<p>下载地址：<a href="https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz" target="_blank" rel="noopener">kubernetes v1.4.6</a></p>
-<p>这里需要注意，kubernetes v1.5以后不再提供bin文件，所以你如果下载1.5以后的版本需要另外下载bin文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz</span><br><span class="line">tar zxf kubernetes.tar.gz</span><br><span class="line">cd kubernetes/server</span><br><span class="line">tar zxf kubernetes-server-linux-amd64.tar.gz</span><br><span class="line">cd kubernetes/server/bin</span><br><span class="line">mkdir -p ~/kubernetes-master/log</span><br><span class="line">cp kube-apiserver kube-controller-manager kubectl kube-dns kube-scheduler ~/kubernetes-master/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 将bin添加到path中</span><br><span class="line">echo "export PATH=~/kubernetes-master:\$PATH" &gt;&gt; ~/.bash_profile</span><br><span class="line"></span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
-<h3 id="init配置文件"><a href="#init配置文件" class="headerlink" title="init配置文件"></a>init配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; init.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">KUBE_MASTER=10.10.0.1</span><br><span class="line"></span><br><span class="line"># Change to root auth</span><br><span class="line">sudo chown root.root kube-dns</span><br><span class="line">sudo chmod u+s kube-dns</span><br><span class="line">EOF</span><br><span class="line">chmod a+x init.sh</span><br><span class="line">./init.sh</span><br></pre></td></tr></table></figure>
-<p>kube-dns需要使用root权限</p>
-<h3 id="api启动配置文件"><a href="#api启动配置文件" class="headerlink" title="api启动配置文件"></a>api启动配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_api.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line"># start the main server of k8s master</span><br><span class="line">sudo ./kube-apiserver \</span><br><span class="line">    --bind-address=0.0.0.0 \</span><br><span class="line">    --insecure-bind-address=0.0.0.0 \</span><br><span class="line">    --insecure-port=8080 \</span><br><span class="line">    --etcd_servers=http://10.10.0.1:2379 \</span><br><span class="line">    --allow-privileged=true \</span><br><span class="line">    --service-cluster-ip-range=182.1.0.0/16 \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-api.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_api.sh</span><br></pre></td></tr></table></figure>
-<h3 id="controller-manager配置文件"><a href="#controller-manager配置文件" class="headerlink" title="controller-manager配置文件"></a>controller-manager配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_cm.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">./kube-controller-manager \</span><br><span class="line">    --master=&quot;http://127.0.0.1:8080&quot; \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-cm.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_cm.sh</span><br></pre></td></tr></table></figure>
-<h3 id="dns配置文件"><a href="#dns配置文件" class="headerlink" title="dns配置文件"></a>dns配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_dns.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">KUBE_DOMAIN=&quot;cluster.local&quot;</span><br><span class="line"></span><br><span class="line">sudo ./kube-dns \</span><br><span class="line">    --domain=$&#123;KUBE_DOMAIN&#125; \</span><br><span class="line">    --kube-master-url=&quot;http://127.0.0.1:8080&quot; \</span><br><span class="line">    --dns-port=53 \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-dns.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_dns.sh</span><br></pre></td></tr></table></figure>
-<h3 id="scheduler配置文件"><a href="#scheduler配置文件" class="headerlink" title="scheduler配置文件"></a>scheduler配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes-master</span><br><span class="line">cat &lt;&lt;EOF &gt; start_k8s_scd.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">./kube-scheduler \</span><br><span class="line">    --master=&quot;http://127.0.0.1:8080&quot; \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-scd.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x start_k8s_scd.sh</span><br></pre></td></tr></table></figure>
-<h3 id="start-master"><a href="#start-master" class="headerlink" title="start master"></a>start master</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd ~/etcd</span><br><span class="line">./start_etcd.sh</span><br><span class="line"></span><br><span class="line">cd ~/kubernetes-master</span><br><span class="line">./start_k8s_api.sh</span><br><span class="line">./start_k8s_dns.sh</span><br><span class="line">./start_k8s_cm.sh</span><br><span class="line">./start_k8s_scd.sh</span><br></pre></td></tr></table></figure>
-<h1 id="on-minions"><a href="#on-minions" class="headerlink" title="on minions"></a>on minions</h1><p>minion需要部署所有机器上<br>master上也需要部署minion</p>
-<h2 id="flannel"><a href="#flannel" class="headerlink" title="flannel"></a>flannel</h2><h3 id="Download-amp-amp-Install-flannel"><a href="#Download-amp-amp-Install-flannel" class="headerlink" title="Download &amp;&amp; Install flannel"></a>Download &amp;&amp; Install flannel</h3><p><a href="https://github.com/coreos/flannel/releases/download/v0.6.1/flannel-v0.6.1-linux-amd64.tar.gz" target="_blank" rel="noopener">flannel v0.6.1</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget https://github.com/coreos/flannel/releases/download/v0.6.1/flannel-v0.6.1-linux-amd64.tar.gz</span><br><span class="line">tar -zxf flannel-v0.6.1-linux-amd64.tar.gz</span><br><span class="line">mkdir flannel</span><br><span class="line">mv flannel-v0.6.1-linux-amd64.tar.gz flannel</span><br><span class="line">cd ~/flannel/</span><br><span class="line">tar -zxf flannel-v0.6.1-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="启动配置脚本-1"><a href="#启动配置脚本-1" class="headerlink" title="启动配置脚本"></a>启动配置脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">cd ~/flannel</span><br><span class="line">cat &lt;&lt;EOF &gt; flanneld-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">ETCD_PREFIX=/flannel/network</span><br><span class="line"></span><br><span class="line"># delete docker0. it will recreate in docker starting</span><br><span class="line">rc=0</span><br><span class="line">ip link show docker0 &gt;/dev/null 2&gt;&amp;1 || rc=&quot;$?&quot;</span><br><span class="line">if [[ &quot;$rc&quot; -eq &quot;0&quot; ]]; then</span><br><span class="line">  sudo ip link set dev docker0 down</span><br><span class="line">  sudo ip link delete docker0</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">sudo ./flanneld \</span><br><span class="line">    --ip-masq \</span><br><span class="line">    --subnet-file=&quot;run/subnet.env&quot; \</span><br><span class="line">    --etcd-endpoints=http://10.10.0.1:2379 \</span><br><span class="line">    --etcd-prefix=$ETCD_PREFIX &gt; flanneld.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x flanneld-start.sh</span><br></pre></td></tr></table></figure>
-<h2 id="kubernetes"><a href="#kubernetes" class="headerlink" title="kubernetes"></a>kubernetes</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/kubernetes/kubernetes/releases/download/v1.4.6/kubernetes.tar.gz</span><br><span class="line">tar zxf kubernetes.tar.gz</span><br><span class="line">cd kubernetes/server</span><br><span class="line">tar zxf kubernetes-server-linux-amd64.tar.gz</span><br><span class="line">cd kubernetes/server/bin</span><br><span class="line">mkdir -p ~/kubernetes/log</span><br><span class="line">mkdir -p ~/kubernetes/cert</span><br><span class="line">mv kubelet kube-proxy ~/kubernetes/</span><br></pre></td></tr></table></figure>
-<h3 id="kubeconfig配置文件"><a href="#kubeconfig配置文件" class="headerlink" title="kubeconfig配置文件"></a>kubeconfig配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /home/k8s/kubernetes/kubeconfig</span><br><span class="line">apiVersion: v1</span><br><span class="line">clusters:</span><br><span class="line">- cluster:</span><br><span class="line">    insecure-skip-tls-verify: true</span><br><span class="line">    server: https://10.10.0.1:8080</span><br><span class="line">  name: k8s-cluster</span><br><span class="line">contexts:</span><br><span class="line">- context:</span><br><span class="line">    cluster: k8s-cluster</span><br><span class="line">    namespace: default</span><br><span class="line">  name: dft</span><br><span class="line">- context:</span><br><span class="line">    cluster: k8s-cluster</span><br><span class="line">    namespace: kube-system</span><br><span class="line">  name: sys</span><br><span class="line">current-context: dft</span><br><span class="line">kind: Config</span><br><span class="line">preferences: &#123;&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-<h3 id="kubelet配置文件"><a href="#kubelet配置文件" class="headerlink" title="kubelet配置文件"></a>kubelet配置文件</h3><p>NODE_IP分别指定两台minion机器，分别是10.10.0.2和10.10.0.3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes</span><br><span class="line">cat &lt;&lt;EOF &gt; k8s-let-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">KUBE_MASTER=10.10.0.1</span><br><span class="line">NODE_IP=10.10.0.1</span><br><span class="line">CLUSTER_DOMAIN=cluster.local</span><br><span class="line"></span><br><span class="line">sudo ./kubelet \</span><br><span class="line">    --address=0.0.0.0 \</span><br><span class="line">    --port=10250 \</span><br><span class="line">    --hostname_override=$NODE_IP \</span><br><span class="line">    --require-kubeconfig=true \</span><br><span class="line">    --kubeconfig=&quot;/home/k8s/kubernetes/kubeconfig&quot; \</span><br><span class="line">    --cni-bin-dir=cni/bin \</span><br><span class="line">    --cni-conf-dir=cni/net.d \</span><br><span class="line">    --logtostderr=false \</span><br><span class="line">    --allow-privileged=true \</span><br><span class="line">    --pod-infra-container-image=registry.access.redhat.com/rhel7/pod-infrastructure:latest \</span><br><span class="line">    --cluster-dns=$KUBE_MASTER \</span><br><span class="line">    --cluster-domain=$CLUSTER_DOMAIN \</span><br><span class="line">    --pod-manifest-path=&quot;manifests&quot; \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-let.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x k8s-let-start.sh</span><br></pre></td></tr></table></figure>
-<h3 id="kube-proxy配置文件"><a href="#kube-proxy配置文件" class="headerlink" title="kube-proxy配置文件"></a>kube-proxy配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes</span><br><span class="line">cat &lt;&lt;EOF &gt; k8s-proxy-start.sh</span><br><span class="line">#! /bin/sh</span><br><span class="line"></span><br><span class="line">NODE_IP=10.10.0.1</span><br><span class="line"></span><br><span class="line">sudo ./kube-proxy \</span><br><span class="line">    --kubeconfig=&quot;/home/k8s/kubernetes/kubeconfig&quot; \</span><br><span class="line">    --hostname_override=$NODE_IP \</span><br><span class="line">    --proxy-mode=iptables \</span><br><span class="line">    --log-dir=&quot;log&quot; \</span><br><span class="line">1&gt; k8s-proxy.log 2&gt;&amp;1</span><br><span class="line">EOF</span><br><span class="line">chmod a+x k8s-proxy-start.sh</span><br></pre></td></tr></table></figure>
-<h2 id="Init-amp-Start-minion"><a href="#Init-amp-Start-minion" class="headerlink" title="Init &amp; Start minion"></a>Init &amp; Start minion</h2><h3 id="配置flannel和docker0"><a href="#配置flannel和docker0" class="headerlink" title="配置flannel和docker0"></a>配置flannel和docker0</h3><p>启动flannel</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/flannel</span><br><span class="line">./start_flanneld.sh</span><br></pre></td></tr></table></figure>
-<p>如果是第一次启动需要进行docker的ip配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ./mk-docker-opts.sh -f ./run/subnet.env -d ./run/docker.env</span><br><span class="line">cat ./run/docker.env | grep -i DOCKER_OPTS</span><br></pre></td></tr></table></figure>
-<p>记录下上面命令输出的内容，内容大概如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--bip=172.17.95.1/24 --mtu=1472</span><br></pre></td></tr></table></figure>
-<p>编辑docker-network，并修改DOCKER_NETWORK_OPTIONS参数，填入上面输出的内容</p>
-<p>类似与下面的结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/sysconfig/docker-network</span><br><span class="line">DOCKER_NETWORK_OPTIONS=&quot; --bip=172.17.95.1/24 --mtu=1472&quot;</span><br></pre></td></tr></table></figure>
-<p>上述步骤是用于配置docker0中可分配的网段，如果使用yum install flannel在启动时会自动配置</p>
-<p>重新启动docker</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<p>通过ip a确定docker0和flannel0是在同一个网段</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip a</span><br></pre></td></tr></table></figure>
-<h3 id="start-kubelet"><a href="#start-kubelet" class="headerlink" title="start kubelet"></a>start kubelet</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~/kubernetes</span><br><span class="line">./start_k8s_let.sh</span><br><span class="line">./start_k8s_proxy.sh</span><br></pre></td></tr></table></figure>
-<p>相同的步骤配置10.10.0.2和10.10.0.3<br>配置完成后三个节点都会加入到集群中</p>
-<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>登录到10.10.0.1上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get no</span><br></pre></td></tr></table></figure>
-<p>检查上个节点是否已配置完成</p>
-<p>Done</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/01/18/deploy-kubernetes/" data-id="cji1u48u000032tsb0k880g86" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-thin-pool" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/01/18/docker-thin-pool/" class="article-date">
-  <time datetime="2017-01-17T16:00:00.000Z" itemprop="datePublished">2017-01-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/18/docker-thin-pool/">Docker Thin pool</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Docker默认使用文件系统来存储image和container信息，container在运行的时候经常会访问文件系统，这会导致文件系统的性能影响到container的运行。Docker官方推荐一个更适合用于生产环境的thin pool方案。</p>
-<p>详细介绍可以查看docker.com中的<a href="https://docs.docker.com/engine/userguide/storagedriver/device-mapper-driver/" target="_blank" rel="noopener">device-mapper-driver</a></p>
-<p>下面是thin pool的配置</p>
-<h2 id="停止docker"><a href="#停止docker" class="headerlink" title="停止docker"></a>停止docker</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop docker</span><br></pre></td></tr></table></figure>
-<h2 id="删除原有docker配置文件"><a href="#删除原有docker配置文件" class="headerlink" title="删除原有docker配置文件"></a>删除原有docker配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /var/lib/docker</span><br></pre></td></tr></table></figure>
-<h2 id="创建用于docker的vg"><a href="#创建用于docker的vg" class="headerlink" title="创建用于docker的vg"></a>创建用于docker的vg</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/vdb</span><br><span class="line">vgcreate docker /dev/vdb</span><br></pre></td></tr></table></figure>
-<h2 id="修改docker-storage-setup"><a href="#修改docker-storage-setup" class="headerlink" title="修改docker-storage-setup"></a>修改docker-storage-setup</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt; EOF &gt; /etc/sysconfig/docker-storage-setup</span><br><span class="line">STORAGE_DRIVER=devicemapper</span><br><span class="line">VG=docker</span><br><span class="line">EXTRA_DOCKER_STORAGE_OPTIONS=&quot; --storage-opt dm.use_deferred_removal=true&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-<h2 id="更新docker-storage配置"><a href="#更新docker-storage配置" class="headerlink" title="更新docker-storage配置"></a>更新docker-storage配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-storage-setup</span><br></pre></td></tr></table></figure>
-<h2 id="重启docker"><a href="#重启docker" class="headerlink" title="重启docker"></a>重启docker</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
-<p>配置完成后，使用lvs你可以看到有一个docker-pool的lv</p>
-<p>Done</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/01/18/docker-thin-pool/" data-id="cji1u48u300052tsb73xcaosx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/arch/">arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conntrack/">conntrack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harbor/">harbor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heapster/">heapster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/registry/">registry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollout/">rollout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/arch/" style="font-size: 10px;">arch</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/conntrack/" style="font-size: 10px;">conntrack</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/harbor/" style="font-size: 10px;">harbor</a> <a href="/tags/heapster/" style="font-size: 10px;">heapster</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/registry/" style="font-size: 10px;">registry</a> <a href="/tags/rollout/" style="font-size: 10px;">rollout</a> <a href="/tags/traefik/" style="font-size: 10px;">traefik</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
-          </li>
-        
-          <li>
-            <a href="/2017/05/16/tuning_conntrack/">Tuning The Linux Connection Tracking System</a>
-          </li>
-        
-          <li>
-            <a href="/2017/04/19/harbor-deploy/">Harbor Deploy</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/09/markdown-sample/">Markdown sample</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
-          </li>
-        
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://hellwen.github.io/">Home</a> </li>
+        <li><a href="/tags/"> Tags </a></li>
       </ul>
-    </div>
-  </div>
+    </nav>
 
-  
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
 </aside>
-        
-      </div>
-      <footer id="footer">
+
+    <main class="content container">
+    <div class="posts">
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
+  </h1>
+  <time datetime="2018-06-05T00:00:00Z" class="post-date">Tue, Jun 5, 2018</time>
+  修改swap partition/file size image_size的容量用于控制休眠的时候内存dump到swap的最大大小，设置成0不受大小限制 sudo tee /sys/power/image_size &lt;&lt;&lt; 0 image_si
   
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Hellwen wu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
+  <div class="read-more-link">
+    <a href="/2018/06/05/archlinux-hibernate/">Read More…</a>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/05/16/tuning-the-linux-connection-tracking-system/">Tuning The Linux Connection Tracking System</a>
+  </h1>
+  <time datetime="2017-05-16T00:00:00Z" class="post-date">Tue, May 16, 2017</time>
+  我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+  <div class="read-more-link">
+    <a href="/2017/05/16/tuning-the-linux-connection-tracking-system/">Read More…</a>
+  </div>
   
-</nav>
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/04/19/harbor-deploy/">Harbor Deploy</a>
+  </h1>
+  <time datetime="2017-04-19T00:00:00Z" class="post-date">Wed, Apr 19, 2017</time>
+  Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要
+  
+  <div class="read-more-link">
+    <a href="/2017/04/19/harbor-deploy/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/03/09/markdown-sample/">Markdown sample</a>
+  </h1>
+  <time datetime="2017-03-09T00:00:00Z" class="post-date">Thu, Mar 9, 2017</time>
+  简介 测试下使用markdown 无序列表 第一 第二 有序列表 我们 他们 你们 链接 简书 插入图片 引用 引用他人的文字 测试2 斜体和粗体 *一盏灯*， 一片昏黄；一
+  
+  <div class="read-more-link">
+    <a href="/2017/03/09/markdown-sample/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
+  </h1>
+  <time datetime="2017-03-08T00:00:00Z" class="post-date">Wed, Mar 8, 2017</time>
+  “灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就
+  
+  <div class="read-more-link">
+    <a href="/2017/03/08/kuberntes-rollout-update/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/03/03/deploy-traefik-on-kubernetes/">Deploy Traefik on Kubernetes</a>
+  </h1>
+  <time datetime="2017-03-03T00:00:00Z" class="post-date">Fri, Mar 3, 2017</time>
+  Kubernetes Ingress kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: internet | ------------ [ Services ] 如果增加Ingress: internet |
+  
+  <div class="read-more-link">
+    <a href="/2017/03/03/deploy-traefik-on-kubernetes/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/02/22/docker-move-the-/var/lib/docker-directory/">Docker, move the /var/lib/docker directory</a>
+  </h1>
+  <time datetime="2017-02-22T00:00:00Z" class="post-date">Wed, Feb 22, 2017</time>
+  docker 默认的数据存储目录为：/var/lib/docker，主要的文件是/var/lib/docker/devicemapper/devicem
+  
+  <div class="read-more-link">
+    <a href="/2017/02/22/docker-move-the-/var/lib/docker-directory/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/">kuberntes heapster cannot write to influxdb</a>
+  </h1>
+  <time datetime="2017-02-06T00:00:00Z" class="post-date">Mon, Feb 6, 2017</time>
+  kubernetes 1.5 heapster 1.2 influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 infl
+  
+  <div class="read-more-link">
+    <a href="/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/01/18/deploy-kubernetes-by-manual-on-centos-7/">Deploy kubernetes by manual on centos 7</a>
+  </h1>
+  <time datetime="2017-01-18T00:00:00Z" class="post-date">Wed, Jan 18, 2017</time>
+  环境信息 |ip|role|hostname| |&ndash;|&mdash;-|&mdash;&mdash;&ndash;| |10.10.0.1|master&amp;minion|k8s-master-1| |10.10.0.2|minion|k8s-node-1| |10.10.0.3|minion|k8s-node-2| on all machine Note: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修改hostname 用户
+  
+  <div class="read-more-link">
+    <a href="/2017/01/18/deploy-kubernetes-by-manual-on-centos-7/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/01/18/deploy-private-blog-using-github-and-hexo/">Deploy private blog using Github and Hexo</a>
+  </h1>
+  <time datetime="2017-01-18T00:00:00Z" class="post-date">Wed, Jan 18, 2017</time>
+  Install nodejs Download and Install nodejs 先找个地方，用于存放你的node程序 一般会使用固定的目录，如：/data/daen-bin mkdir -p /data/dean-bin cd /data/dean-bin 下载并解压程序文件到dean
+  
+  <div class="read-more-link">
+    <a href="/2017/01/18/deploy-private-blog-using-github-and-hexo/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/01/18/docker-thin-pool/">Docker Thin pool</a>
+  </h1>
+  <time datetime="2017-01-18T00:00:00Z" class="post-date">Wed, Jan 18, 2017</time>
+  Docker默认使用文件系统来存储image和container信息，container在运行的时候经常会访问文件系统，这会导致文件系统的性
+  
+  <div class="read-more-link">
+    <a href="/2017/01/18/docker-thin-pool/">Read More…</a>
+  </div>
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://hellwen.github.io/2017/01/18/%E4%BD%BF%E7%94%A8docker%E5%91%BD%E4%BB%A4%E6%97%B6%E9%9C%80%E8%A6%81sudo%E9%97%AE%E9%A2%98/">使用docker命令时需要sudo问题</a>
+  </h1>
+  <time datetime="2017-01-18T00:00:00Z" class="post-date">Wed, Jan 18, 2017</time>
+  默认安装完docker后，在使用如docker ps等命令的时候要么使用root帐号，要么需要sudo docker ps。这是因为docker在设计的时候
+  
+  <div class="read-more-link">
+    <a href="/2017/01/18/%E4%BD%BF%E7%94%A8docker%E5%91%BD%E4%BB%A4%E6%97%B6%E9%9C%80%E8%A6%81sudo%E9%97%AE%E9%A2%98/">Read More…</a>
+  </div>
+  
+</article>
+</div>
+    </main>
+
     
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
-  </div>
-</body>
+  </body>
 </html>

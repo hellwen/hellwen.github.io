@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>registry on Hellwen</title>
+    <link>https://hellwen.github.io/tags/registry/</link>
+    <description>Recent content in registry on Hellwen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 19 Apr 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hellwen.github.io/tags/registry/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Harbor Deploy</title>
+      <link>https://hellwen.github.io/2017/04/19/harbor-deploy/</link>
+      <pubDate>Wed, 19 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/2017/04/19/harbor-deploy/</guid>
+      <description>Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要</description>
+    </item>
+    
+  </channel>
+</rss>

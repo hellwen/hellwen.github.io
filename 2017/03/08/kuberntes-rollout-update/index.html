@@ -1,312 +1,485 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
 <head>
-  <meta charset="utf-8">
-  
+  <link href="//gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.55.2" />
 
   
-  <title>kuberntes rollout update | Hellwen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="“灰度”发布这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就慢慢出现了“灰度”发布这种业务零中断的发布方式。 所谓的“灰度”发布是指为了让老版本更新成新版本，以及为了更充分测试老版本会让部署在生产环境的应用处于老版本和新版本共存，并逐渐过度到新版本的一种发布方式。 其实应用很容易支持“灰度”发布，因为它是无状态的。但">
-<meta name="keywords" content="kubernetes,rollout">
-<meta property="og:type" content="article">
-<meta property="og:title" content="kuberntes rollout update">
-<meta property="og:url" content="https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/index.html">
-<meta property="og:site_name" content="Hellwen">
-<meta property="og:description" content="“灰度”发布这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就慢慢出现了“灰度”发布这种业务零中断的发布方式。 所谓的“灰度”发布是指为了让老版本更新成新版本，以及为了更充分测试老版本会让部署在生产环境的应用处于老版本和新版本共存，并逐渐过度到新版本的一种发布方式。 其实应用很容易支持“灰度”发布，因为它是无状态的。但">
-<meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2018-06-05T15:07:18.002Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="kuberntes rollout update">
-<meta name="twitter:description" content="“灰度”发布这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就慢慢出现了“灰度”发布这种业务零中断的发布方式。 所谓的“灰度”发布是指为了让老版本更新成新版本，以及为了更充分测试老版本会让部署在生产环境的应用处于老版本和新版本共存，并逐渐过度到新版本的一种发布方式。 其实应用很容易支持“灰度”发布，因为它是无状态的。但">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>kuberntes rollout update &middot; Hellwen</title>
+
   
-    <link rel="alternate" href="/atom.xml" title="Hellwen" type="application/atom+xml">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
   
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
   
-    <link rel="icon" href="/favicon.png">
+  <link href="" rel="alternate" type="application/rss+xml" title="Hellwen" />
+
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hellwen</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">Go on...</a>
-        </h2>
-      
+  <body class="theme-base-09 ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://hellwen.github.io/"><h1>Hellwen</h1></a>
+      <p class="lead">
+       This a private blog 
+      </p>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://hellwen.github.io"></form>
-      </div>
-    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://hellwen.github.io/">Home</a> </li>
+        <li><a href="/tags/"> Tags </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
   </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-kuberntes-rollout-update" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/03/08/kuberntes-rollout-update/" class="article-date">
-  <time datetime="2017-03-07T16:00:00.000Z" itemprop="datePublished">2017-03-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      kuberntes rollout update
-    </h1>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>kuberntes rollout update</h1>
+  <time datetime=2017-03-08T00:00:00Z class="post-date">Wed, Mar 8, 2017</time>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="“灰度”发布"><a href="#“灰度”发布" class="headerlink" title="“灰度”发布"></a>“灰度”发布</h1><p>这次聊聊“灰度”发布（也叫“滚动”发布）</p>
+<h1 id="灰度-发布">“灰度”发布</h1>
+
+<p>这次聊聊“灰度”发布（也叫“滚动”发布）</p>
+
 <p>因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就慢慢出现了“灰度”发布这种业务零中断的发布方式。</p>
+
 <p>所谓的“灰度”发布是指为了让老版本更新成新版本，以及为了更充分测试老版本会让部署在生产环境的应用处于老版本和新版本共存，并逐渐过度到新版本的一种发布方式。</p>
+
 <p>其实应用很容易支持“灰度”发布，因为它是无状态的。但是如果应用依赖了数据库那么它就可能变成“有状态”。这里的可能是指当需要变更数据库的时候它是有状态，如果不需要变更数据库它依然是无状态。</p>
-<p>所以为了让应用可以支持“灰度”发布，就应该考虑好数据库的依赖问题，主要有两个方面：</p>
-<ol>
-<li>在对事务要求不高的应用上使用非关系数据库，如，mongo，hbase等这类弱模式的数据库。这样在进行应用变更时可以动态变更数据库的表结构（或者说无需变更表结构）</li>
-<li>在设计关系数据库时需要考虑好扩容问题，应避免因表结构变动影响到新老应用的兼容问题</li>
-</ol>
-<p>在容器之前一般有两种办法进行“灰度发布”：</p>
-<ol>
-<li>最早采用手工一台一台应用进行发布</li>
-<li>采用部署工具，比如salt或者ansible等进行自动发布</li>
-</ol>
-<p>不管采用哪种方式，其原理都是一样的：</p>
-<ol>
-<li>部署一台新的应用</li>
-<li>验证新应用是否正常</li>
-<li>正常后停掉一台老应用</li>
-<li>继续1-3步骤，直到所有应用升级完成</li>
-</ol>
+
+<p>所以为了让应用可以支持“灰度”发布，就应该考虑好数据库的依赖问题，主要有两个方面：
+1. 在对事务要求不高的应用上使用非关系数据库，如，mongo，hbase等这类弱模式的数据库。这样在进行应用变更时可以动态变更数据库的表结构（或者说无需变更表结构）
+2. 在设计关系数据库时需要考虑好扩容问题，应避免因表结构变动影响到新老应用的兼容问题</p>
+
+<p>在容器之前一般有两种办法进行“灰度发布”：
+1. 最早采用手工一台一台应用进行发布
+2. 采用部署工具，比如salt或者ansible等进行自动发布</p>
+
+<p>不管采用哪种方式，其原理都是一样的：
+1. 部署一台新的应用
+2. 验证新应用是否正常
+3. 正常后停掉一台老应用
+4. 继续1-3步骤，直到所有应用升级完成</p>
+
 <p>我们目前大部分应用采用的是kubernetes进行的容器化部署，kubernetes本身有一个“滚动”发布的功能用于进行“灰度”发布。下面我们来测试下kuberentes的“滚动”发布是如果玩的。</p>
-<h1 id="基础测试程序"><a href="#基础测试程序" class="headerlink" title="基础测试程序"></a>基础测试程序</h1><p>这里准备了一个叫做testpage的简单应用，这个应用提供一个rest的访问接口返回自身ip和版本，如：I am: 172.1.62.11, the version is: 0.5</p>
-<p>Dockerfile:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM python:2.7-alpine</span><br><span class="line"></span><br><span class="line">ADD testpage.py /testpage.py</span><br><span class="line"></span><br><span class="line">CMD ["python", "/testpage.py"]</span><br><span class="line"></span><br><span class="line">EXPOSE 8080</span><br></pre></td></tr></table></figure></p>
-<p>testpage.py:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> fcntl</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ip_address</span><span class="params">(ifname)</span>:</span></span><br><span class="line">    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">    <span class="keyword">return</span> socket.inet_ntoa(fcntl.ioctl(</span><br><span class="line">        s.fileno(),</span><br><span class="line">        <span class="number">0x8915</span>,  <span class="comment"># SIOCGIFADDR</span></span><br><span class="line">        struct.pack(<span class="string">'256s'</span>, ifname[:<span class="number">15</span>])</span><br><span class="line">    )[<span class="number">20</span>:<span class="number">24</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------------------------------------------------------------</span></span><br><span class="line"><span class="keyword">import</span> BaseHTTPServer</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RequestHandler</span><span class="params">(BaseHTTPServer.BaseHTTPRequestHandler)</span>:</span></span><br><span class="line"></span><br><span class="line">    Page = <span class="string">'I am: %s, the version is: %s\n'</span> % (get_ip_address(<span class="string">'eth0'</span>), os.environ.get(<span class="string">'VERSION'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">do_GET</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.send_response(<span class="number">200</span>)</span><br><span class="line">        self.send_header(<span class="string">"Content-Type"</span>, <span class="string">"text/html"</span>)</span><br><span class="line">        self.send_header(<span class="string">"Content-Length"</span>, str(len(self.Page)))</span><br><span class="line">        self.end_headers()</span><br><span class="line">        self.wfile.write(self.Page)</span><br><span class="line"></span><br><span class="line"><span class="comment">#----------------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    serverAddress = (<span class="string">''</span>, <span class="number">8080</span>)</span><br><span class="line">    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)</span><br><span class="line">    server.serve_forever()</span><br></pre></td></tr></table></figure></p>
+
+<h1 id="基础测试程序">基础测试程序</h1>
+
+<p>这里准备了一个叫做testpage的简单应用，这个应用提供一个rest的访问接口返回自身ip和版本，如：I am: 172.1.62.11, the version is: 0.5</p>
+
+<p>Dockerfile:</p>
+
+<pre><code class="language-shell">FROM python:2.7-alpine
+
+ADD testpage.py /testpage.py
+
+CMD [&quot;python&quot;, &quot;/testpage.py&quot;]
+
+EXPOSE 8080
+</code></pre>
+
+<p>testpage.py:</p>
+
+<pre><code class="language-python">#-*- coding:utf-8 -*-
+
+#----------------------------------------------------------------------
+import socket
+import fcntl
+import struct
+
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
+#----------------------------------------------------------------------
+import BaseHTTPServer
+import os
+
+
+class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+
+    Page = 'I am: %s, the version is: %s\n' % (get_ip_address('eth0'), os.environ.get('VERSION'))
+
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header(&quot;Content-Type&quot;, &quot;text/html&quot;)
+        self.send_header(&quot;Content-Length&quot;, str(len(self.Page)))
+        self.end_headers()
+        self.wfile.write(self.Page)
+
+#----------------------------------------------------------------------
+
+if __name__ == '__main__':
+    serverAddress = ('', 8080)
+    server = BaseHTTPServer.HTTPServer(serverAddress, RequestHandler)
+    server.serve_forever()
+</code></pre>
+
 <p>python脚本启动一个web服务，接受一个VERSION的操作系统环境变量，然后将自身的ip和version返回</p>
+
 <p>build好上述镜像，取名testpage:[version]</p>
-<h1 id="kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes-io脑补下）"><a href="#kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes-io脑补下）" class="headerlink" title="kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）"></a>kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）</h1><p>service是为了让集群外的测试脚本可以访问到容器，不是必须</p>
-<p>service.yaml<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">NodePort</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="attr">  - port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">    nodePort:</span> <span class="number">21000</span></span><br><span class="line"><span class="attr">  selector:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br></pre></td></tr></table></figure></p>
-<p>deployment.yaml<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">extensions/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">  namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">  labels:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line"><span class="attr">  replicas:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">  revisionHistoryLimit:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">  strategy:</span></span><br><span class="line"><span class="attr">    type:</span> <span class="string">RollingUpdate</span></span><br><span class="line"><span class="attr">    rollingUpdate:</span></span><br><span class="line"><span class="attr">      maxSurge:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">      maxUnavailable:</span> <span class="number">0</span></span><br><span class="line"><span class="attr">  template:</span></span><br><span class="line"><span class="attr">    metadata:</span></span><br><span class="line"><span class="attr">      labels:</span></span><br><span class="line"><span class="attr">        type:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">    spec:</span></span><br><span class="line"><span class="attr">      containers:</span></span><br><span class="line"><span class="attr">      - name:</span> <span class="string">testpage</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">dean/testpage:0.5</span></span><br><span class="line"><span class="attr">        imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line"><span class="attr">        resources:</span></span><br><span class="line"><span class="attr">          limits:</span></span><br><span class="line"><span class="attr">            cpu:</span> <span class="number">10</span><span class="string">m</span></span><br><span class="line"><span class="attr">            memory:</span> <span class="number">20</span><span class="string">Mi</span></span><br><span class="line"><span class="attr">        env:</span></span><br><span class="line"><span class="attr">        - name:</span> <span class="string">VERSION</span></span><br><span class="line"><span class="attr">          value:</span> <span class="string">"0.5"</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="attr">        - containerPort:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">        readinessProbe:</span></span><br><span class="line"><span class="attr">          tcpSocket:</span></span><br><span class="line"><span class="attr">            port:</span> <span class="number">8080</span></span><br><span class="line"><span class="attr">        livenessProbe:</span></span><br><span class="line"><span class="attr">          tcpSocket:</span></span><br><span class="line"><span class="attr">            port:</span> <span class="number">8080</span></span><br></pre></td></tr></table></figure></p>
-<p>deployment.yaml几个需要注意：</p>
-<ol>
-<li>revisionHistoryLimit用于限制保留多少份历史版本，因为“滚动”发布每次发布都会最为一个版本来进行管理，默认所有历史版本都会保留，也提供你进行回退等操作</li>
-<li>strategy这里制定了“滚动”发布的策略，maxSurge是最大的变动pod数量（这里主要是只新增pod个数）maxUnavailable指定允许最大的无效pod数量，这个值等于0的意义是我们在“滚动”发布的过程中必须保证有replicas个的pod在提供服务</li>
-<li>livenessProbe和readinessProbe，这两个参数用于指定如何验证pod的“存活”和“可使用”。“滚动”发布主要使用readinessProbe进行验证。当“滚动”发布过程中一个新pod创建，那么kubernetes需要检查readinessProbe为ok（这里是验证端口8080是否可访问）才会删除老的pod</li>
-</ol>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="部署testpage"><a href="#部署testpage" class="headerlink" title="部署testpage"></a>部署testpage</h2><p>部署testpage<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl create -f service.yaml</span><br><span class="line">$ kubectl create -f deployment.yaml</span><br><span class="line">$ kubectl get po -o wide -l type=testpage</span><br><span class="line">NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Running   0          4m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running   0          4m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running   0          4m        172.1.14.7    192.168.72.128</span><br></pre></td></tr></table></figure></p>
-<h2 id="测试脚本"><a href="#测试脚本" class="headerlink" title="测试脚本"></a>测试脚本</h2><p>这个脚本每一秒访问一次testpage服务，返回访问到的pod的ip和version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; curl http://192.168.72.2:21000; sleep 1; done</span><br></pre></td></tr></table></figure></p>
-<p>监控testpage的pod变化情况<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done</span><br></pre></td></tr></table></figure></p>
-<p>监控testpage的deployment“滚动”发布状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; kubectl rollout status deployment testpage; sleep 1; done</span><br></pre></td></tr></table></figure></p>
-<h2 id="开始测试"><a href="#开始测试" class="headerlink" title="开始测试"></a>开始测试</h2><p>我们模拟的testpage当前版本是0.8，这时我们需要将其升级到0.9</p>
+
+<h1 id="kubernetes的部署脚本-如果你不会写k8s的yaml需要自己去kubernetes-io脑补下">kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）</h1>
+
+<p>service是为了让集群外的测试脚本可以访问到容器，不是必须</p>
+
+<p>service.yaml</p>
+
+<pre><code class="language-yaml">kind: Service
+apiVersion: v1
+metadata:
+  name: testpage
+  namespace: default
+  labels:
+    type: testpage
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 21000
+  selector:
+    type: testpage
+</code></pre>
+
+<p>deployment.yaml</p>
+
+<pre><code class="language-yaml">apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: testpage
+  namespace: default
+  labels:
+    type: testpage
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        type: testpage
+    spec:
+      containers:
+      - name: testpage
+        image: dean/testpage:0.5
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 10m
+            memory: 20Mi
+        env:
+        - name: VERSION
+          value: &quot;0.5&quot;
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+</code></pre>
+
+<p>deployment.yaml几个需要注意：
+1. revisionHistoryLimit用于限制保留多少份历史版本，因为“滚动”发布每次发布都会最为一个版本来进行管理，默认所有历史版本都会保留，也提供你进行回退等操作
+2. strategy这里制定了“滚动”发布的策略，maxSurge是最大的变动pod数量（这里主要是只新增pod个数）maxUnavailable指定允许最大的无效pod数量，这个值等于0的意义是我们在“滚动”发布的过程中必须保证有replicas个的pod在提供服务
+3. livenessProbe和readinessProbe，这两个参数用于指定如何验证pod的“存活”和“可使用”。“滚动”发布主要使用readinessProbe进行验证。当“滚动”发布过程中一个新pod创建，那么kubernetes需要检查readinessProbe为ok（这里是验证端口8080是否可访问）才会删除老的pod</p>
+
+<h1 id="测试">测试</h1>
+
+<h2 id="部署testpage">部署testpage</h2>
+
+<p>部署testpage</p>
+
+<pre><code>$ kubectl create -f service.yaml
+$ kubectl create -f deployment.yaml
+$ kubectl get po -o wide -l type=testpage
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Running   0          4m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running   0          4m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running   0          4m        172.1.14.7    192.168.72.128
+</code></pre>
+
+<h2 id="测试脚本">测试脚本</h2>
+
+<p>这个脚本每一秒访问一次testpage服务，返回访问到的pod的ip和version</p>
+
+<pre><code>while true; do date; curl http://192.168.72.2:21000; sleep 1; done
+</code></pre>
+
+<p>监控testpage的pod变化情况</p>
+
+<pre><code>while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done
+</code></pre>
+
+<p>监控testpage的deployment“滚动”发布状态</p>
+
+<pre><code>while true; do date; kubectl rollout status deployment testpage; sleep 1; done
+</code></pre>
+
+<h2 id="开始测试">开始测试</h2>
+
+<p>我们模拟的testpage当前版本是0.8，这时我们需要将其升级到0.9</p>
+
 <ol>
 <li>根据上述dockerfile大家可以直接build出0.9的镜像: dean/testpage:0.9</li>
-<li><p>修改deployment.yaml（将镜像版本和VERSION变量修改成0.9）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: extensions/v1beta1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: testpage</span><br><span class="line">  namespace: default</span><br><span class="line">  labels:</span><br><span class="line">    type: testpage</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  revisionHistoryLimit: 3</span><br><span class="line">  strategy:</span><br><span class="line">    type: RollingUpdate</span><br><span class="line">    rollingUpdate:</span><br><span class="line">      maxSurge: 1</span><br><span class="line">      maxUnavailable: 0</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        type: testpage</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: testpage</span><br><span class="line">        image: dean/testpage:0.9</span><br><span class="line">        imagePullPolicy: Always</span><br><span class="line">        resources:</span><br><span class="line">          limits:</span><br><span class="line">            cpu: 10m</span><br><span class="line">            memory: 20Mi</span><br><span class="line">        env:</span><br><span class="line">        - name: VERSION</span><br><span class="line">          value: &quot;0.9&quot;</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080</span><br><span class="line">        readinessProbe:</span><br><span class="line">          tcpSocket:</span><br><span class="line">            port: 8080</span><br><span class="line">        livenessProbe:</span><br><span class="line">          tcpSocket:</span><br><span class="line">            port: 8080</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行测试脚本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; curl http://192.168.72.2:21000; sleep 1; done</span><br></pre></td></tr></table></figure>
-</li>
+<li>修改deployment.yaml（将镜像版本和VERSION变量修改成0.9）
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+name: testpage
+namespace: default
+labels:
+type: testpage
+spec:
+replicas: 3
+revisionHistoryLimit: 3
+strategy:
+type: RollingUpdate
+rollingUpdate:
+  maxSurge: 1
+  maxUnavailable: 0
+template:
+metadata:
+  labels:
+    type: testpage
+spec:
+  containers:
+
+<ul>
+<li>name: testpage
+image: dean/testpage:0.9
+imagePullPolicy: Always
+resources:
+  limits:
+    cpu: 10m
+    memory: 20Mi
+env:
+
+<ul>
+<li>name: VERSION
+value: &ldquo;0.9&rdquo;
+ports:</li>
+<li>containerPort: 8080
+readinessProbe:
+tcpSocket:
+port: 8080
+livenessProbe:
+tcpSocket:
+port: 8080
+```</li>
+</ul></li>
+</ul></li>
+<li>执行测试脚本：
+<code>
+while true; do date; curl http://192.168.72.2:21000; sleep 1; done
+</code>
+该脚本持续返回：
+<code>
+Thu Mar  9 10:39:09 CST 2017
+I am: 172.1.14.7, the version is: 0.8
+Thu Mar  9 10:39:10 CST 2017
+I am: 172.1.14.7, the version is: 0.8
+Thu Mar  9 10:39:11 CST 2017
+I am: 172.1.14.7, the version is: 0.8
+Thu Mar  9 10:39:12 CST 2017
+I am: 172.1.60.5, the version is: 0.8
+Thu Mar  9 10:39:13 CST 2017
+I am: 172.1.62.10, the version is: 0.8
+</code></li>
 </ol>
-<p>该脚本持续返回：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:39:09 CST 2017</span><br><span class="line">I am: 172.1.14.7, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:10 CST 2017</span><br><span class="line">I am: 172.1.14.7, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:11 CST 2017</span><br><span class="line">I am: 172.1.14.7, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:12 CST 2017</span><br><span class="line">I am: 172.1.60.5, the version is: 0.8</span><br><span class="line">Thu Mar  9 10:39:13 CST 2017</span><br><span class="line">I am: 172.1.62.10, the version is: 0.8</span><br></pre></td></tr></table></figure></p>
+
 <p>从上面的输出我们可以看到总共有三个pod对应的ip地址</p>
+
 <p>这里会返回三个ip，对应的三个pod，版本是0.5</p>
-<ol start="4">
-<li><p>执行两个监控脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done</span><br><span class="line">while true; do date; kubectl rollout status deployment testpage; sleep 1; done</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>开始“滚动”发布</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f deployment.yaml</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>观察测试脚本和监控脚本的变化（因为都是动态的就不录制视频了）：</p>
-</li>
+
+<ol>
+<li>执行两个监控脚本
+<code>
+while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done
+while true; do date; kubectl rollout status deployment testpage; sleep 1; done
+</code></li>
+<li>开始“滚动”发布
+<code>
+kubectl apply -f deployment.yaml
+</code></li>
+<li>观察测试脚本和监控脚本的变化（因为都是动态的就不录制视频了）：</li>
 </ol>
-<p>rollout status结果如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:42:24 CST 2017</span><br><span class="line">deployment &quot;testpage&quot; successfully rolled out</span><br><span class="line">Thu Mar  9 10:42:25 CST 2017</span><br><span class="line">Waiting for deployment spec update to be observed...</span><br><span class="line">Waiting for rollout to finish: 1 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 1 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 1 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 2 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 2 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 2 out of 3 new replicas have been updated...</span><br><span class="line">Waiting for rollout to finish: 1 old replicas are pending termination...</span><br><span class="line">Waiting for rollout to finish: 1 old replicas are pending termination...</span><br><span class="line">deployment &quot;testpage&quot; successfully rolled out</span><br></pre></td></tr></table></figure></p>
+
+<p>rollout status结果如下</p>
+
+<pre><code>Thu Mar  9 10:42:24 CST 2017
+deployment &quot;testpage&quot; successfully rolled out
+Thu Mar  9 10:42:25 CST 2017
+Waiting for deployment spec update to be observed...
+Waiting for rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 1 old replicas are pending termination...
+Waiting for rollout to finish: 1 old replicas are pending termination...
+deployment &quot;testpage&quot; successfully rolled out
+</code></pre>
+
 <p>上述过程可以看到kuberentes的pod是一个一个更新的。直到最后老pod被清理掉。升级完成</p>
+
 <p>kubectl get po输出, 这里可以直观看出整个过程，下列的输出我是截取了关键的变化点。</p>
+
 <p>我在几个关键点后面写上（标注N）用于进行过程解释</p>
-<p>标注1，因为配置文件中strategy的配置，不运行kuberentes进行同位替换，所有kuberentes创建了一个新pod<br>标注2，新pod创建成功，但是因为readinessProbe的配置kubernetes需要检测到8080端口的可访问才算是READY状态，所以状态READY为0/1（这里数字的原因是一个pod中可以有多个容器）<br>标注3，新pod创建成功，并且READY处于1/1（说明一个pod中的容器全部ready）这是该新pod会被添加到service中接受访问，我们结合testpage的访问数据可以看到在43:09时新pod被访问到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:43:09 CST 2017</span><br><span class="line">I am: 172.1.65.4, the version is: 0.9</span><br></pre></td></tr></table></figure></p>
-<p>标注4，包括新pod因为有3个pod可以提供服务，所有这是kubernetes下令中止一个老pod<br>标注5，因老pod已被中止（这里是异步的），kuberentes下令开始再创建一个新pod用于进行下一个老pod的替换<br>循环这个过程直到所有老pod替换完成，升级结束</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">Thu Mar  9 10:42:39 CST 2017</span><br><span class="line">NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Running             0          7m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   0/1       ContainerCreating   0          14s       &lt;none&gt;        192.168.72.190   (标注1)</span><br><span class="line">Thu Mar  9 10:42:40 CST 2017</span><br><span class="line">NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Running   0          7m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running   0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running   0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   0/1       Running   0          15s       172.1.65.4    192.168.72.190    (标注2)</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:06 CST 2017</span><br><span class="line">NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Terminating         0          7m        172.1.62.10   192.168.72.233   (标注4)</span><br><span class="line">testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running             0          41s       172.1.65.4    192.168.72.190   (标注3)</span><br><span class="line">testpage-515849216-1sf6b   0/1       ContainerCreating   0          1s        &lt;none&gt;        192.168.72.233   (标注5)</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:18 CST 2017</span><br><span class="line">NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-fm0m1   1/1       Terminating   0          7m        172.1.62.10   192.168.72.233</span><br><span class="line">testpage-230767614-glvbz   1/1       Running       0          7m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running       0          7m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running       0          53s       172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   0/1       Running       0          13s       172.1.62.11   192.168.72.233</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:36 CST 2017</span><br><span class="line">NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-glvbz   1/1       Terminating         0          8m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running             0          8m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running             0          1m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running             0          31s       172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   0/1       ContainerCreating   0          0s        &lt;none&gt;        192.168.72.2</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:43:49 CST 2017</span><br><span class="line">NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-glvbz   1/1       Terminating   0          8m        172.1.60.5    192.168.72.2</span><br><span class="line">testpage-230767614-hpx9s   1/1       Running       0          8m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running       0          44s       172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   0/1       Running       0          13s       172.1.60.11   192.168.72.2</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:44:07 CST 2017</span><br><span class="line">NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-230767614-hpx9s   1/1       Terminating   0          8m        172.1.14.7    192.168.72.128</span><br><span class="line">testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running       0          1m        172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   1/1       Running       0          31s       172.1.60.11   192.168.72.2</span><br><span class="line">...</span><br><span class="line">Thu Mar  9 10:47:46 CST 2017</span><br><span class="line">NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE</span><br><span class="line">testpage-515849216-059b0   1/1       Running   0          5m        172.1.65.4    192.168.72.190</span><br><span class="line">testpage-515849216-1sf6b   1/1       Running   0          4m        172.1.62.11   192.168.72.233</span><br><span class="line">testpage-515849216-5jfb5   1/1       Running   0          4m        172.1.60.11   192.168.72.2</span><br></pre></td></tr></table></figure>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+
+<p>标注1，因为配置文件中strategy的配置，不运行kuberentes进行同位替换，所有kuberentes创建了一个新pod
+标注2，新pod创建成功，但是因为readinessProbe的配置kubernetes需要检测到8080端口的可访问才算是READY状态，所以状态READY为0/1（这里数字的原因是一个pod中可以有多个容器）
+标注3，新pod创建成功，并且READY处于1/1（说明一个pod中的容器全部ready）这是该新pod会被添加到service中接受访问，我们结合testpage的访问数据可以看到在43:09时新pod被访问到</p>
+
+<pre><code>Thu Mar  9 10:43:09 CST 2017
+I am: 172.1.65.4, the version is: 0.9
+</code></pre>
+
+<p>标注4，包括新pod因为有3个pod可以提供服务，所有这是kubernetes下令中止一个老pod
+标注5，因老pod已被中止（这里是异步的），kuberentes下令开始再创建一个新pod用于进行下一个老pod的替换
+循环这个过程直到所有老pod替换完成，升级结束</p>
+
+<pre><code>Thu Mar  9 10:42:39 CST 2017
+NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Running             0          7m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   0/1       ContainerCreating   0          14s       &lt;none&gt;        192.168.72.190   (标注1)
+Thu Mar  9 10:42:40 CST 2017
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Running   0          7m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running   0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running   0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   0/1       Running   0          15s       172.1.65.4    192.168.72.190    (标注2)
+...
+Thu Mar  9 10:43:06 CST 2017
+NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Terminating         0          7m        172.1.62.10   192.168.72.233   (标注4)
+testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running             0          41s       172.1.65.4    192.168.72.190   (标注3)
+testpage-515849216-1sf6b   0/1       ContainerCreating   0          1s        &lt;none&gt;        192.168.72.233   (标注5)
+...
+Thu Mar  9 10:43:18 CST 2017
+NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Terminating   0          7m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running       0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running       0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running       0          53s       172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   0/1       Running       0          13s       172.1.62.11   192.168.72.233
+...
+Thu Mar  9 10:43:36 CST 2017
+NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE
+testpage-230767614-glvbz   1/1       Terminating         0          8m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running             0          8m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running             0          1m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running             0          31s       172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   0/1       ContainerCreating   0          0s        &lt;none&gt;        192.168.72.2
+...
+Thu Mar  9 10:43:49 CST 2017
+NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE
+testpage-230767614-glvbz   1/1       Terminating   0          8m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running       0          8m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running       0          44s       172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   0/1       Running       0          13s       172.1.60.11   192.168.72.2
+...
+Thu Mar  9 10:44:07 CST 2017
+NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE
+testpage-230767614-hpx9s   1/1       Terminating   0          8m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running       0          1m        172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   1/1       Running       0          31s       172.1.60.11   192.168.72.2
+...
+Thu Mar  9 10:47:46 CST 2017
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE
+testpage-515849216-059b0   1/1       Running   0          5m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running   0          4m        172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   1/1       Running   0          4m        172.1.60.11   192.168.72.2
+</code></pre>
+
+<h1 id="总结">总结</h1>
+
+<ol>
 <li>策略配置让kubernetes必须先创建一个新pod去替换老pod（而不是删除老pod再创建新pod，这个策略可自行配置）</li>
 <li>每次仅替换一个pod，并进行业务的无缝切换</li>
 <li>整个过程readinessProbe非常重要，确定着业务是否会被中断（必须确保readinessProbe的验证是对业务的准确验证，因为测试这里仅进行端口验证）</li>
 </ol>
-<h1 id="kubernetes支持其他rollout操作"><a href="#kubernetes支持其他rollout操作" class="headerlink" title="kubernetes支持其他rollout操作"></a>kubernetes支持其他rollout操作</h1><p>Read the deployment history</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout history deployment testpage</span><br><span class="line">kubectl rollout history deployment testpage --revision 42</span><br></pre></td></tr></table></figure>
+
+<h1 id="kubernetes支持其他rollout操作">kubernetes支持其他rollout操作</h1>
+
+<p>Read the deployment history</p>
+
+<pre><code>kubectl rollout history deployment testpage
+kubectl rollout history deployment testpage --revision 42
+</code></pre>
+
 <p>Rollback to the previous deployed version</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout undo deployment testpage</span><br><span class="line">kubectl rollout undo deployment testpage --to-revision 21</span><br></pre></td></tr></table></figure>
+
+<pre><code>kubectl rollout undo deployment testpage
+kubectl rollout undo deployment testpage --to-revision 21
+</code></pre>
+
 <p>Pause and Resume</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout pause deployment testpage</span><br><span class="line">kubectl rollout resume deployment testpage</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/" data-id="cji1u48ub000d2tsbo2cd9kx2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rollout/">rollout</a></li></ul>
+<pre><code>kubectl rollout pause deployment testpage
+kubectl rollout resume deployment testpage
+</code></pre>
 
-    </footer>
-  </div>
-  
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
     
-<nav id="article-nav">
-  
-    <a href="/2017/03/09/markdown-sample/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Markdown sample
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2017/03/03/deploy-traefik/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Ingress Controller with Traefik on Kubernetes</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
     
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/arch/">arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/conntrack/">conntrack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/github/">github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/harbor/">harbor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/heapster/">heapster</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/registry/">registry</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rollout/">rollout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/traefik/">traefik</a></li></ul>
-    </div>
-  </div>
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "devcows" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
 
-
-  
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/arch/" style="font-size: 10px;">arch</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/conntrack/" style="font-size: 10px;">conntrack</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/github/" style="font-size: 10px;">github</a> <a href="/tags/harbor/" style="font-size: 10px;">harbor</a> <a href="/tags/heapster/" style="font-size: 10px;">heapster</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/registry/" style="font-size: 10px;">registry</a> <a href="/tags/rollout/" style="font-size: 10px;">rollout</a> <a href="/tags/traefik/" style="font-size: 10px;">traefik</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2018/06/05/archlinux-hibernate/">Archlinux Hibernate</a>
-          </li>
-        
-          <li>
-            <a href="/2017/05/16/tuning_conntrack/">Tuning The Linux Connection Tracking System</a>
-          </li>
-        
-          <li>
-            <a href="/2017/04/19/harbor-deploy/">Harbor Deploy</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/09/markdown-sample/">Markdown sample</a>
-          </li>
-        
-          <li>
-            <a href="/2017/03/08/kuberntes-rollout-update/">kuberntes rollout update</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2018 Hellwen wu<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
-  </div>
-</body>
+  </body>
 </html>

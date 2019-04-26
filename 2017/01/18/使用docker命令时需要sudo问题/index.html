@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="//gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.55.2" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>使用docker命令时需要sudo问题 &middot; Hellwen</title>
+
+  
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://hellwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="" rel="alternate" type="application/rss+xml" title="Hellwen" />
+
+  
+</head>
+
+  <body class="theme-base-09 ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://hellwen.github.io/"><h1>Hellwen</h1></a>
+      <p class="lead">
+       This a private blog 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://hellwen.github.io/">Home</a> </li>
+        <li><a href="/tags/"> Tags </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>使用docker命令时需要sudo问题</h1>
+  <time datetime=2017-01-18T00:00:00Z class="post-date">Wed, Jan 18, 2017</time>
+  <p>默认安装完docker后，在使用如docker ps等命令的时候要么使用root帐号，要么需要sudo docker ps。这是因为docker在设计的时候并未考虑安全问题，所以docker理论上需要在root环境下才能运行。</p>
+
+<p>这里介绍一个使用非root用户执行docker命令不需要sudo的方法，该方法是利用docker这个用户组来进行配置：</p>
+
+<p>创建docker用户组</p>
+
+<pre><code>sudo groupadd docker
+</code></pre>
+
+<p>把当前用户添加到docker组中</p>
+
+<pre><code>sudo usermod -aG docker $(whoami)
+</code></pre>
+
+<p>重启docker</p>
+
+<pre><code>sudo systemctl restart docker
+</code></pre>
+
+<p>重新登录即可</p>
+
+<pre><code>docker ps
+</code></pre>
+
+<p>Done</p>
+
+</div>
+
+<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "devcows" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </main>
+
+    
+  </body>
+</html>

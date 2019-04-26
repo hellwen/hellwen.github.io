@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>traefik on Hellwen</title>
+    <link>https://hellwen.github.io/tags/traefik/</link>
+    <description>Recent content in traefik on Hellwen</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 03 Mar 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hellwen.github.io/tags/traefik/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Deploy Traefik on Kubernetes</title>
+      <link>https://hellwen.github.io/2017/03/03/deploy-traefik-on-kubernetes/</link>
+      <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/2017/03/03/deploy-traefik-on-kubernetes/</guid>
+      <description>Kubernetes Ingress kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: internet | ------------ [ Services ] 如果增加Ingress: internet |</description>
+    </item>
+    
+  </channel>
+</rss>
