@@ -1,121 +1,133 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hellwen</title>
+    <title>Hellwen - A private blog</title>
     <link>https://hellwen.github.io/</link>
-    <description>Recent content on Hellwen</description>
+    <description>Recent content on Hellwen - A private blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
+    <copyright>hellwen</copyright>
     <lastBuildDate>Tue, 05 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hellwen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>About</title>
+      <link>https://hellwen.github.io/about/</link>
+      <pubDate>Sun, 20 Aug 2017 21:38:52 +0800</pubDate>
+      
+      <guid>https://hellwen.github.io/about/</guid>
+      <description>Hugo is a static site engine written in Go.
+It makes use of a variety of open source projects including:
+ Cobra Viper J Walter Weatherman Cast  Learn more and contribute on GitHub.</description>
+    </item>
+    
+    <item>
       <title>Archlinux Hibernate</title>
-      <link>https://hellwen.github.io/2018/06/05/archlinux-hibernate/</link>
+      <link>https://hellwen.github.io/post/archlinux-hibernate/</link>
       <pubDate>Tue, 05 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2018/06/05/archlinux-hibernate/</guid>
-      <description>修改swap partition/file size image_size的容量用于控制休眠的时候内存dump到swap的最大大小，设置成0不受大小限制 sudo tee /sys/power/image_size &amp;lt;&amp;lt;&amp;lt; 0 image_si</description>
+      <guid>https://hellwen.github.io/post/archlinux-hibernate/</guid>
+      <description>修改swap partition/file size image_size的容量用于控制休眠的时候内存dump到swap的最大大小，设置成0不受大小限制 1 sudo tee /sys/power/image_size &amp;lt;&amp;lt;&amp;lt; 0 image_s</description>
     </item>
     
     <item>
       <title>Tuning The Linux Connection Tracking System</title>
-      <link>https://hellwen.github.io/2017/05/16/tuning-the-linux-connection-tracking-system/</link>
+      <link>https://hellwen.github.io/post/tuning_conntrack/</link>
       <pubDate>Tue, 16 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/05/16/tuning-the-linux-connection-tracking-system/</guid>
+      <guid>https://hellwen.github.io/post/tuning_conntrack/</guid>
       <description>我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT</description>
     </item>
     
     <item>
       <title>Harbor Deploy</title>
-      <link>https://hellwen.github.io/2017/04/19/harbor-deploy/</link>
+      <link>https://hellwen.github.io/post/harbor-deploy/</link>
       <pubDate>Wed, 19 Apr 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/04/19/harbor-deploy/</guid>
+      <guid>https://hellwen.github.io/post/harbor-deploy/</guid>
       <description>Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要</description>
     </item>
     
     <item>
       <title>Markdown sample</title>
-      <link>https://hellwen.github.io/2017/03/09/markdown-sample/</link>
+      <link>https://hellwen.github.io/post/markdown-sample/</link>
       <pubDate>Thu, 09 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/03/09/markdown-sample/</guid>
+      <guid>https://hellwen.github.io/post/markdown-sample/</guid>
       <description>简介 测试下使用markdown 无序列表 第一 第二 有序列表 我们 他们 你们 链接 简书 插入图片 引用 引用他人的文字 测试2 斜体和粗体 *一盏灯*， 一片昏黄；一</description>
     </item>
     
     <item>
       <title>kuberntes rollout update</title>
-      <link>https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/</link>
+      <link>https://hellwen.github.io/post/kuberntes-rollout-update/</link>
       <pubDate>Wed, 08 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/</guid>
+      <guid>https://hellwen.github.io/post/kuberntes-rollout-update/</guid>
       <description>“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就</description>
     </item>
     
     <item>
       <title>Deploy Traefik on Kubernetes</title>
-      <link>https://hellwen.github.io/2017/03/03/deploy-traefik-on-kubernetes/</link>
+      <link>https://hellwen.github.io/post/deploy-traefik/</link>
       <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/03/03/deploy-traefik-on-kubernetes/</guid>
-      <description>Kubernetes Ingress kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: internet | ------------ [ Services ] 如果增加Ingress: internet |</description>
+      <guid>https://hellwen.github.io/post/deploy-traefik/</guid>
+      <description>Kubernetes Ingress kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: 1 2 3 4 internet | ------------ [ Services ] 如果增加Ingres</description>
     </item>
     
     <item>
       <title>Docker, move the /var/lib/docker directory</title>
-      <link>https://hellwen.github.io/2017/02/22/docker-move-the-/var/lib/docker-directory/</link>
+      <link>https://hellwen.github.io/post/docker-var-lib-docker-directory-move/</link>
       <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/02/22/docker-move-the-/var/lib/docker-directory/</guid>
+      <guid>https://hellwen.github.io/post/docker-var-lib-docker-directory-move/</guid>
       <description>docker 默认的数据存储目录为：/var/lib/docker，主要的文件是/var/lib/docker/devicemapper/devicem</description>
     </item>
     
     <item>
       <title>kuberntes heapster cannot write to influxdb</title>
-      <link>https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/</link>
+      <link>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</link>
       <pubDate>Mon, 06 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/</guid>
+      <guid>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</guid>
       <description>kubernetes 1.5 heapster 1.2 influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 infl</description>
     </item>
     
     <item>
       <title>Deploy kubernetes by manual on centos 7</title>
-      <link>https://hellwen.github.io/2017/01/18/deploy-kubernetes-by-manual-on-centos-7/</link>
+      <link>https://hellwen.github.io/post/deploy-kubernetes/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/01/18/deploy-kubernetes-by-manual-on-centos-7/</guid>
+      <guid>https://hellwen.github.io/post/deploy-kubernetes/</guid>
       <description>环境信息 |ip|role|hostname| |&amp;ndash;|&amp;mdash;-|&amp;mdash;&amp;mdash;&amp;ndash;| |10.10.0.1|master&amp;amp;minion|k8s-master-1| |10.10.0.2|minion|k8s-node-1| |10.10.0.3|minion|k8s-node-2| on all machine Note: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修改hostname 用户</description>
     </item>
     
     <item>
       <title>Deploy private blog using Github and Hexo</title>
-      <link>https://hellwen.github.io/2017/01/18/deploy-private-blog-using-github-and-hexo/</link>
+      <link>https://hellwen.github.io/post/deploy-blog-by-github-hexo/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/01/18/deploy-private-blog-using-github-and-hexo/</guid>
-      <description>Install nodejs Download and Install nodejs 先找个地方，用于存放你的node程序 一般会使用固定的目录，如：/data/daen-bin mkdir -p /data/dean-bin cd /data/dean-bin 下载并解压程序文件到dean</description>
+      <guid>https://hellwen.github.io/post/deploy-blog-by-github-hexo/</guid>
+      <description>Install nodejs Download and Install nodejs 先找个地方，用于存放你的node程序 一般会使用固定的目录，如：/data/daen-bin 1 2 mkdir -p /data/dean-bin cd /data/dean-bin 下载并解压程序文件到de</description>
     </item>
     
     <item>
       <title>Docker Thin pool</title>
-      <link>https://hellwen.github.io/2017/01/18/docker-thin-pool/</link>
+      <link>https://hellwen.github.io/post/docker-thin-pool/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/01/18/docker-thin-pool/</guid>
+      <guid>https://hellwen.github.io/post/docker-thin-pool/</guid>
       <description>Docker默认使用文件系统来存储image和container信息，container在运行的时候经常会访问文件系统，这会导致文件系统的性</description>
     </item>
     
     <item>
       <title>使用docker命令时需要sudo问题</title>
-      <link>https://hellwen.github.io/2017/01/18/%E4%BD%BF%E7%94%A8docker%E5%91%BD%E4%BB%A4%E6%97%B6%E9%9C%80%E8%A6%81sudo%E9%97%AE%E9%A2%98/</link>
+      <link>https://hellwen.github.io/post/execute-docker-without-sudo/</link>
       <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/01/18/%E4%BD%BF%E7%94%A8docker%E5%91%BD%E4%BB%A4%E6%97%B6%E9%9C%80%E8%A6%81sudo%E9%97%AE%E9%A2%98/</guid>
+      <guid>https://hellwen.github.io/post/execute-docker-without-sudo/</guid>
       <description>默认安装完docker后，在使用如docker ps等命令的时候要么使用root帐号，要么需要sudo docker ps。这是因为docker在设计的时候</description>
     </item>
     

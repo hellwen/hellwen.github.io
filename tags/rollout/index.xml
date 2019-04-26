@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>rollout on Hellwen</title>
+    <title>rollout on Hellwen - A private blog</title>
     <link>https://hellwen.github.io/tags/rollout/</link>
-    <description>Recent content in rollout on Hellwen</description>
+    <description>Recent content in rollout on Hellwen - A private blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
+    <copyright>hellwen</copyright>
     <lastBuildDate>Wed, 08 Mar 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hellwen.github.io/tags/rollout/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>kuberntes rollout update</title>
-      <link>https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/</link>
+      <link>https://hellwen.github.io/post/kuberntes-rollout-update/</link>
       <pubDate>Wed, 08 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/</guid>
+      <guid>https://hellwen.github.io/post/kuberntes-rollout-update/</guid>
       <description>“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就</description>
     </item>
     

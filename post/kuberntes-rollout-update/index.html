@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>kuberntes rollout update - Hellwen - A private blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="hellwen" /><meta name="description" content="“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.2 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://hellwen.github.io/post/kuberntes-rollout-update/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="kuberntes rollout update" />
+<meta property="og:description" content="“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hellwen.github.io/post/kuberntes-rollout-update/" />
+<meta property="article:published_time" content="2017-03-08T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-03-08T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="kuberntes rollout update">
+<meta itemprop="description" content="“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就">
+
+
+<meta itemprop="datePublished" content="2017-03-08T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-03-08T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="3450">
+
+
+
+<meta itemprop="keywords" content="kubernetes,rollout," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="kuberntes rollout update"/>
+<meta name="twitter:description" content="“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Hellwen</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Hellwen</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">kuberntes rollout update</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-03-08 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#灰度-发布">“灰度”发布</a></li>
+<li><a href="#基础测试程序">基础测试程序</a></li>
+<li><a href="#kubernetes的部署脚本-如果你不会写k8s的yaml需要自己去kubernetes-io脑补下">kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）</a></li>
+<li><a href="#测试">测试</a>
+<ul>
+<li><a href="#部署testpage">部署testpage</a></li>
+<li><a href="#测试脚本">测试脚本</a></li>
+<li><a href="#开始测试">开始测试</a></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+<li><a href="#kubernetes支持其他rollout操作">kubernetes支持其他rollout操作</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="灰度-发布">“灰度”发布</h1>
+
+<p>这次聊聊“灰度”发布（也叫“滚动”发布）</p>
+
+<p>因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就慢慢出现了“灰度”发布这种业务零中断的发布方式。</p>
+
+<p>所谓的“灰度”发布是指为了让老版本更新成新版本，以及为了更充分测试老版本会让部署在生产环境的应用处于老版本和新版本共存，并逐渐过度到新版本的一种发布方式。</p>
+
+<p>其实应用很容易支持“灰度”发布，因为它是无状态的。但是如果应用依赖了数据库那么它就可能变成“有状态”。这里的可能是指当需要变更数据库的时候它是有状态，如果不需要变更数据库它依然是无状态。</p>
+
+<p>所以为了让应用可以支持“灰度”发布，就应该考虑好数据库的依赖问题，主要有两个方面：
+1. 在对事务要求不高的应用上使用非关系数据库，如，mongo，hbase等这类弱模式的数据库。这样在进行应用变更时可以动态变更数据库的表结构（或者说无需变更表结构）
+2. 在设计关系数据库时需要考虑好扩容问题，应避免因表结构变动影响到新老应用的兼容问题</p>
+
+<p>在容器之前一般有两种办法进行“灰度发布”：
+1. 最早采用手工一台一台应用进行发布
+2. 采用部署工具，比如salt或者ansible等进行自动发布</p>
+
+<p>不管采用哪种方式，其原理都是一样的：
+1. 部署一台新的应用
+2. 验证新应用是否正常
+3. 正常后停掉一台老应用
+4. 继续1-3步骤，直到所有应用升级完成</p>
+
+<p>我们目前大部分应用采用的是kubernetes进行的容器化部署，kubernetes本身有一个“滚动”发布的功能用于进行“灰度”发布。下面我们来测试下kuberentes的“滚动”发布是如果玩的。</p>
+
+<h1 id="基础测试程序">基础测试程序</h1>
+
+<p>这里准备了一个叫做testpage的简单应用，这个应用提供一个rest的访问接口返回自身ip和版本，如：I am: 172.1.62.11, the version is: 0.5</p>
+
+<p>Dockerfile:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">FROM python:2.7-alpine
+
+ADD testpage.py /testpage.py
+
+CMD <span class="o">[</span><span class="s2">&#34;python&#34;</span>, <span class="s2">&#34;/testpage.py&#34;</span><span class="o">]</span>
+
+EXPOSE <span class="m">8080</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>testpage.py:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#-*- coding:utf-8 -*-</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">fcntl</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+
+<span class="k">def</span> <span class="nf">get_ip_address</span><span class="p">(</span><span class="n">ifname</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">fcntl</span><span class="o">.</span><span class="n">ioctl</span><span class="p">(</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span>
+        <span class="mh">0x8915</span><span class="p">,</span>  <span class="c1"># SIOCGIFADDR</span>
+        <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;256s&#39;</span><span class="p">,</span> <span class="n">ifname</span><span class="p">[:</span><span class="mi">15</span><span class="p">])</span>
+    <span class="p">)[</span><span class="mi">20</span><span class="p">:</span><span class="mi">24</span><span class="p">])</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+<span class="kn">import</span> <span class="nn">BaseHTTPServer</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="k">class</span> <span class="nc">RequestHandler</span><span class="p">(</span><span class="n">BaseHTTPServer</span><span class="o">.</span><span class="n">BaseHTTPRequestHandler</span><span class="p">):</span>
+
+    <span class="n">Page</span> <span class="o">=</span> <span class="s1">&#39;I am: </span><span class="si">%s</span><span class="s1">, the version is: </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">get_ip_address</span><span class="p">(</span><span class="s1">&#39;eth0&#39;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;VERSION&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">do_GET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_response</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&#34;Content-Type&#34;</span><span class="p">,</span> <span class="s2">&#34;text/html&#34;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_header</span><span class="p">(</span><span class="s2">&#34;Content-Length&#34;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Page</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_headers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Page</span><span class="p">)</span>
+
+<span class="c1">#----------------------------------------------------------------------</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">serverAddress</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">)</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">BaseHTTPServer</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">serverAddress</span><span class="p">,</span> <span class="n">RequestHandler</span><span class="p">)</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>python脚本启动一个web服务，接受一个VERSION的操作系统环境变量，然后将自身的ip和version返回</p>
+
+<p>build好上述镜像，取名testpage:[version]</p>
+
+<h1 id="kubernetes的部署脚本-如果你不会写k8s的yaml需要自己去kubernetes-io脑补下">kubernetes的部署脚本（如果你不会写k8s的yaml需要自己去kubernetes.io脑补下）</h1>
+
+<p>service是为了让集群外的测试脚本可以访问到容器，不是必须</p>
+
+<p>service.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">kind<span class="p">:</span><span class="w"> </span>Service<span class="w">
+</span><span class="w"></span>apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>testpage<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>type<span class="p">:</span><span class="w"> </span>testpage<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>type<span class="p">:</span><span class="w"> </span>NodePort<span class="w">
+</span><span class="w">  </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>port<span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span><span class="w">    </span>nodePort<span class="p">:</span><span class="w"> </span><span class="m">21000</span><span class="w">
+</span><span class="w">  </span>selector<span class="p">:</span><span class="w">
+</span><span class="w">    </span>type<span class="p">:</span><span class="w"> </span>testpage</code></pre></td></tr></table>
+</div>
+</div>
+<p>deployment.yaml</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>extensions/v1beta1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Deployment<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>testpage<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>type<span class="p">:</span><span class="w"> </span>testpage<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span><span class="w">  </span>revisionHistoryLimit<span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span><span class="w">  </span>strategy<span class="p">:</span><span class="w">
+</span><span class="w">    </span>type<span class="p">:</span><span class="w"> </span>RollingUpdate<span class="w">
+</span><span class="w">    </span>rollingUpdate<span class="p">:</span><span class="w">
+</span><span class="w">      </span>maxSurge<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span>maxUnavailable<span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="w">  </span>template<span class="p">:</span><span class="w">
+</span><span class="w">    </span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">      </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">        </span>type<span class="p">:</span><span class="w"> </span>testpage<span class="w">
+</span><span class="w">    </span>spec<span class="p">:</span><span class="w">
+</span><span class="w">      </span>containers<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>testpage<span class="w">
+</span><span class="w">        </span>image<span class="p">:</span><span class="w"> </span>dean/testpage<span class="p">:</span><span class="m">0.5</span><span class="w">
+</span><span class="w">        </span>imagePullPolicy<span class="p">:</span><span class="w"> </span>Always<span class="w">
+</span><span class="w">        </span>resources<span class="p">:</span><span class="w">
+</span><span class="w">          </span>limits<span class="p">:</span><span class="w">
+</span><span class="w">            </span>cpu<span class="p">:</span><span class="w"> </span>10m<span class="w">
+</span><span class="w">            </span>memory<span class="p">:</span><span class="w"> </span>20Mi<span class="w">
+</span><span class="w">        </span>env<span class="p">:</span><span class="w">
+</span><span class="w">        </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>VERSION<span class="w">
+</span><span class="w">          </span>value<span class="p">:</span><span class="w"> </span><span class="s2">&#34;0.5&#34;</span><span class="w">
+</span><span class="w">        </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">        </span>-<span class="w"> </span>containerPort<span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span><span class="w">        </span>readinessProbe<span class="p">:</span><span class="w">
+</span><span class="w">          </span>tcpSocket<span class="p">:</span><span class="w">
+</span><span class="w">            </span>port<span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span><span class="w">        </span>livenessProbe<span class="p">:</span><span class="w">
+</span><span class="w">          </span>tcpSocket<span class="p">:</span><span class="w">
+</span><span class="w">            </span>port<span class="p">:</span><span class="w"> </span><span class="m">8080</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>deployment.yaml几个需要注意：
+1. revisionHistoryLimit用于限制保留多少份历史版本，因为“滚动”发布每次发布都会最为一个版本来进行管理，默认所有历史版本都会保留，也提供你进行回退等操作
+2. strategy这里制定了“滚动”发布的策略，maxSurge是最大的变动pod数量（这里主要是只新增pod个数）maxUnavailable指定允许最大的无效pod数量，这个值等于0的意义是我们在“滚动”发布的过程中必须保证有replicas个的pod在提供服务
+3. livenessProbe和readinessProbe，这两个参数用于指定如何验证pod的“存活”和“可使用”。“滚动”发布主要使用readinessProbe进行验证。当“滚动”发布过程中一个新pod创建，那么kubernetes需要检查readinessProbe为ok（这里是验证端口8080是否可访问）才会删除老的pod</p>
+
+<h1 id="测试">测试</h1>
+
+<h2 id="部署testpage">部署testpage</h2>
+
+<p>部署testpage</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ kubectl create -f service.yaml
+$ kubectl create -f deployment.yaml
+$ kubectl get po -o wide -l type=testpage
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Running   0          4m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running   0          4m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running   0          4m        172.1.14.7    192.168.72.128</pre></td></tr></table>
+</div>
+</div>
+<h2 id="测试脚本">测试脚本</h2>
+
+<p>这个脚本每一秒访问一次testpage服务，返回访问到的pod的ip和version</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">while true; do date; curl http://192.168.72.2:21000; sleep 1; done</pre></td></tr></table>
+</div>
+</div>
+<p>监控testpage的pod变化情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done</pre></td></tr></table>
+</div>
+</div>
+<p>监控testpage的deployment“滚动”发布状态</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">while true; do date; kubectl rollout status deployment testpage; sleep 1; done</pre></td></tr></table>
+</div>
+</div>
+<h2 id="开始测试">开始测试</h2>
+
+<p>我们模拟的testpage当前版本是0.8，这时我们需要将其升级到0.9</p>
+
+<ol>
+<li>根据上述dockerfile大家可以直接build出0.9的镜像: dean/testpage:0.9</li>
+<li>修改deployment.yaml（将镜像版本和VERSION变量修改成0.9）
+```
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+name: testpage
+namespace: default
+labels:
+type: testpage
+spec:
+replicas: 3
+revisionHistoryLimit: 3
+strategy:
+type: RollingUpdate
+rollingUpdate:
+  maxSurge: 1
+  maxUnavailable: 0
+template:
+metadata:
+  labels:
+    type: testpage
+spec:
+  containers:
+
+<ul>
+<li>name: testpage
+image: dean/testpage:0.9
+imagePullPolicy: Always
+resources:
+  limits:
+    cpu: 10m
+    memory: 20Mi
+env:
+
+<ul>
+<li>name: VERSION
+value: &ldquo;0.9&rdquo;
+ports:</li>
+<li>containerPort: 8080
+readinessProbe:
+tcpSocket:
+port: 8080
+livenessProbe:
+tcpSocket:
+port: 8080
+```</li>
+</ul></li>
+</ul></li>
+<li>执行测试脚本：
+<code>
+while true; do date; curl http://192.168.72.2:21000; sleep 1; done
+</code>
+该脚本持续返回：
+<code>
+Thu Mar  9 10:39:09 CST 2017
+I am: 172.1.14.7, the version is: 0.8
+Thu Mar  9 10:39:10 CST 2017
+I am: 172.1.14.7, the version is: 0.8
+Thu Mar  9 10:39:11 CST 2017
+I am: 172.1.14.7, the version is: 0.8
+Thu Mar  9 10:39:12 CST 2017
+I am: 172.1.60.5, the version is: 0.8
+Thu Mar  9 10:39:13 CST 2017
+I am: 172.1.62.10, the version is: 0.8
+</code></li>
+</ol>
+
+<p>从上面的输出我们可以看到总共有三个pod对应的ip地址</p>
+
+<p>这里会返回三个ip，对应的三个pod，版本是0.5</p>
+
+<ol>
+<li>执行两个监控脚本
+<code>
+while true; do date; kubectl get po -l type=testpage -o wide; sleep 1; done
+while true; do date; kubectl rollout status deployment testpage; sleep 1; done
+</code></li>
+<li>开始“滚动”发布
+<code>
+kubectl apply -f deployment.yaml
+</code></li>
+<li>观察测试脚本和监控脚本的变化（因为都是动态的就不录制视频了）：</li>
+</ol>
+
+<p>rollout status结果如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">Thu Mar  9 10:42:24 CST 2017
+deployment &#34;testpage&#34; successfully rolled out
+Thu Mar  9 10:42:25 CST 2017
+Waiting for deployment spec update to be observed...
+Waiting for rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 1 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 2 out of 3 new replicas have been updated...
+Waiting for rollout to finish: 1 old replicas are pending termination...
+Waiting for rollout to finish: 1 old replicas are pending termination...
+deployment &#34;testpage&#34; successfully rolled out</pre></td></tr></table>
+</div>
+</div>
+<p>上述过程可以看到kuberentes的pod是一个一个更新的。直到最后老pod被清理掉。升级完成</p>
+
+<p>kubectl get po输出, 这里可以直观看出整个过程，下列的输出我是截取了关键的变化点。</p>
+
+<p>我在几个关键点后面写上（标注N）用于进行过程解释</p>
+
+<p>标注1，因为配置文件中strategy的配置，不运行kuberentes进行同位替换，所有kuberentes创建了一个新pod
+标注2，新pod创建成功，但是因为readinessProbe的配置kubernetes需要检测到8080端口的可访问才算是READY状态，所以状态READY为0/1（这里数字的原因是一个pod中可以有多个容器）
+标注3，新pod创建成功，并且READY处于1/1（说明一个pod中的容器全部ready）这是该新pod会被添加到service中接受访问，我们结合testpage的访问数据可以看到在43:09时新pod被访问到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">Thu Mar  9 10:43:09 CST 2017
+I am: 172.1.65.4, the version is: 0.9</pre></td></tr></table>
+</div>
+</div>
+<p>标注4，包括新pod因为有3个pod可以提供服务，所有这是kubernetes下令中止一个老pod
+标注5，因老pod已被中止（这里是异步的），kuberentes下令开始再创建一个新pod用于进行下一个老pod的替换
+循环这个过程直到所有老pod替换完成，升级结束</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">Thu Mar  9 10:42:39 CST 2017
+NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Running             0          7m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   0/1       ContainerCreating   0          14s       &lt;none&gt;        192.168.72.190   (标注1)
+Thu Mar  9 10:42:40 CST 2017
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Running   0          7m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running   0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running   0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   0/1       Running   0          15s       172.1.65.4    192.168.72.190    (标注2)
+...
+Thu Mar  9 10:43:06 CST 2017
+NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Terminating         0          7m        172.1.62.10   192.168.72.233   (标注4)
+testpage-230767614-glvbz   1/1       Running             0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running             0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running             0          41s       172.1.65.4    192.168.72.190   (标注3)
+testpage-515849216-1sf6b   0/1       ContainerCreating   0          1s        &lt;none&gt;        192.168.72.233   (标注5)
+...
+Thu Mar  9 10:43:18 CST 2017
+NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE
+testpage-230767614-fm0m1   1/1       Terminating   0          7m        172.1.62.10   192.168.72.233
+testpage-230767614-glvbz   1/1       Running       0          7m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running       0          7m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running       0          53s       172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   0/1       Running       0          13s       172.1.62.11   192.168.72.233
+...
+Thu Mar  9 10:43:36 CST 2017
+NAME                       READY     STATUS              RESTARTS   AGE       IP            NODE
+testpage-230767614-glvbz   1/1       Terminating         0          8m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running             0          8m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running             0          1m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running             0          31s       172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   0/1       ContainerCreating   0          0s        &lt;none&gt;        192.168.72.2
+...
+Thu Mar  9 10:43:49 CST 2017
+NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE
+testpage-230767614-glvbz   1/1       Terminating   0          8m        172.1.60.5    192.168.72.2
+testpage-230767614-hpx9s   1/1       Running       0          8m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running       0          44s       172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   0/1       Running       0          13s       172.1.60.11   192.168.72.2
+...
+Thu Mar  9 10:44:07 CST 2017
+NAME                       READY     STATUS        RESTARTS   AGE       IP            NODE
+testpage-230767614-hpx9s   1/1       Terminating   0          8m        172.1.14.7    192.168.72.128
+testpage-515849216-059b0   1/1       Running       0          1m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running       0          1m        172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   1/1       Running       0          31s       172.1.60.11   192.168.72.2
+...
+Thu Mar  9 10:47:46 CST 2017
+NAME                       READY     STATUS    RESTARTS   AGE       IP            NODE
+testpage-515849216-059b0   1/1       Running   0          5m        172.1.65.4    192.168.72.190
+testpage-515849216-1sf6b   1/1       Running   0          4m        172.1.62.11   192.168.72.233
+testpage-515849216-5jfb5   1/1       Running   0          4m        172.1.60.11   192.168.72.2</pre></td></tr></table>
+</div>
+</div>
+<h1 id="总结">总结</h1>
+
+<ol>
+<li>策略配置让kubernetes必须先创建一个新pod去替换老pod（而不是删除老pod再创建新pod，这个策略可自行配置）</li>
+<li>每次仅替换一个pod，并进行业务的无缝切换</li>
+<li>整个过程readinessProbe非常重要，确定着业务是否会被中断（必须确保readinessProbe的验证是对业务的准确验证，因为测试这里仅进行端口验证）</li>
+</ol>
+
+<h1 id="kubernetes支持其他rollout操作">kubernetes支持其他rollout操作</h1>
+
+<p>Read the deployment history</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">kubectl rollout history deployment testpage
+kubectl rollout history deployment testpage --revision 42</pre></td></tr></table>
+</div>
+</div>
+<p>Rollback to the previous deployed version</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">kubectl rollout undo deployment testpage
+kubectl rollout undo deployment testpage --to-revision 21</pre></td></tr></table>
+</div>
+</div>
+<p>Pause and Resume</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">kubectl rollout pause deployment testpage
+kubectl rollout resume deployment testpage</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">hellwen</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-03-08
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          <a href="/tags/rollout/">rollout</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/markdown-sample/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Markdown sample</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/deploy-traefik/">
+            <span class="next-text nav-default">Deploy Traefik on Kubernetes</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:hellwen.wu@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/hellwen" class="iconfont icon-github" title="github"></a>
+  <a href="https://hellwen.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">hellwen</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

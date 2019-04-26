@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>hibernate on Hellwen</title>
+    <title>hibernate on Hellwen - A private blog</title>
     <link>https://hellwen.github.io/tags/hibernate/</link>
-    <description>Recent content in hibernate on Hellwen</description>
+    <description>Recent content in hibernate on Hellwen - A private blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
+    <copyright>hellwen</copyright>
     <lastBuildDate>Tue, 05 Jun 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hellwen.github.io/tags/hibernate/index.xml" rel="self" type="application/rss+xml" />
@@ -13,11 +14,11 @@
     
     <item>
       <title>Archlinux Hibernate</title>
-      <link>https://hellwen.github.io/2018/06/05/archlinux-hibernate/</link>
+      <link>https://hellwen.github.io/post/archlinux-hibernate/</link>
       <pubDate>Tue, 05 Jun 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2018/06/05/archlinux-hibernate/</guid>
-      <description>修改swap partition/file size image_size的容量用于控制休眠的时候内存dump到swap的最大大小，设置成0不受大小限制 sudo tee /sys/power/image_size &amp;lt;&amp;lt;&amp;lt; 0 image_si</description>
+      <guid>https://hellwen.github.io/post/archlinux-hibernate/</guid>
+      <description>修改swap partition/file size image_size的容量用于控制休眠的时候内存dump到swap的最大大小，设置成0不受大小限制 1 sudo tee /sys/power/image_size &amp;lt;&amp;lt;&amp;lt; 0 image_s</description>
     </item>
     
   </channel>

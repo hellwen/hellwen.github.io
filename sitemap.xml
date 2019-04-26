@@ -1,10 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml-stylesheet type="text/xsl" href="https://hellwen.github.io/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://hellwen.github.io/2018/06/05/archlinux-hibernate/</loc>
+    <loc>https://hellwen.github.io/about/</loc>
+    <lastmod>2017-08-28T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hellwen.github.io/post/archlinux-hibernate/</loc>
     <lastmod>2018-06-05T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://hellwen.github.io/categories/</loc>
+    <lastmod>2018-06-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -32,6 +46,12 @@
   </url>
   
   <url>
+    <loc>https://hellwen.github.io/categories/archlinux/</loc>
+    <lastmod>2018-06-05T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://hellwen.github.io/tags/hibernate/</loc>
     <lastmod>2018-06-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
@@ -44,8 +64,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/05/16/tuning-the-linux-connection-tracking-system/</loc>
+    <loc>https://hellwen.github.io/post/tuning_conntrack/</loc>
     <lastmod>2017-05-16T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -67,8 +89,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/04/19/harbor-deploy/</loc>
+    <loc>https://hellwen.github.io/post/harbor-deploy/</loc>
     <lastmod>2017-04-19T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -84,8 +108,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/03/09/markdown-sample/</loc>
+    <loc>https://hellwen.github.io/post/markdown-sample/</loc>
     <lastmod>2017-03-09T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -95,8 +121,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/03/08/kuberntes-rollout-update/</loc>
+    <loc>https://hellwen.github.io/post/kuberntes-rollout-update/</loc>
     <lastmod>2017-03-08T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -106,8 +134,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/03/03/deploy-traefik-on-kubernetes/</loc>
+    <loc>https://hellwen.github.io/post/deploy-traefik/</loc>
     <lastmod>2017-03-03T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -117,8 +147,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/02/22/docker-move-the-/var/lib/docker-directory/</loc>
+    <loc>https://hellwen.github.io/post/docker-var-lib-docker-directory-move/</loc>
     <lastmod>2017-02-22T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -134,23 +166,31 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/02/06/kuberntes-heapster-cannot-write-to-influxdb/</loc>
+    <loc>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</loc>
     <lastmod>2017-02-06T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/01/18/deploy-kubernetes-by-manual-on-centos-7/</loc>
+    <loc>https://hellwen.github.io/post/deploy-kubernetes/</loc>
     <lastmod>2017-01-18T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/01/18/deploy-private-blog-using-github-and-hexo/</loc>
+    <loc>https://hellwen.github.io/post/deploy-blog-by-github-hexo/</loc>
     <lastmod>2017-01-18T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/01/18/docker-thin-pool/</loc>
+    <loc>https://hellwen.github.io/post/docker-thin-pool/</loc>
     <lastmod>2017-01-18T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -172,13 +212,10 @@
   </url>
   
   <url>
-    <loc>https://hellwen.github.io/2017/01/18/%E4%BD%BF%E7%94%A8docker%E5%91%BD%E4%BB%A4%E6%97%B6%E9%9C%80%E8%A6%81sudo%E9%97%AE%E9%A2%98/</loc>
+    <loc>https://hellwen.github.io/post/execute-docker-without-sudo/</loc>
     <lastmod>2017-01-18T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://hellwen.github.io/categories/</loc>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
 </urlset>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>conntrack on Hellwen</title>
+    <title>conntrack on Hellwen - A private blog</title>
     <link>https://hellwen.github.io/tags/conntrack/</link>
-    <description>Recent content in conntrack on Hellwen</description>
+    <description>Recent content in conntrack on Hellwen - A private blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
+    <copyright>hellwen</copyright>
     <lastBuildDate>Tue, 16 May 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://hellwen.github.io/tags/conntrack/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +14,10 @@
     
     <item>
       <title>Tuning The Linux Connection Tracking System</title>
-      <link>https://hellwen.github.io/2017/05/16/tuning-the-linux-connection-tracking-system/</link>
+      <link>https://hellwen.github.io/post/tuning_conntrack/</link>
       <pubDate>Tue, 16 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://hellwen.github.io/2017/05/16/tuning-the-linux-connection-tracking-system/</guid>
+      <guid>https://hellwen.github.io/post/tuning_conntrack/</guid>
       <description>我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT</description>
     </item>
     
