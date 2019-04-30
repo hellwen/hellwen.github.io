@@ -1,2 +1,0 @@
-User-agent: *
-Sitemap: https://hellwen.github.io/sitemap.xml
