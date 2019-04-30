@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kubernetes on Hellwen - A private blog</title>
+    <link>https://hellwen.github.io/tags/kubernetes/</link>
+    <description>Recent content in kubernetes on Hellwen - A private blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>hellwen</copyright>
+    <lastBuildDate>Mon, 14 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hellwen.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>自动部署阿里云Kubernetes</title>
+      <link>https://hellwen.github.io/post/deploy-aliyun-k8s-with-coderun/</link>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/deploy-aliyun-k8s-with-coderun/</guid>
+      <description>今天给大家介绍下如何将应用自动部署到阿里云Kubernetes(托管版) 我们使用三种开发语言，分别是：js, python, golang．三种语言的部署有</description>
+    </item>
+    
+    <item>
+      <title>Tuning The Linux Connection Tracking System</title>
+      <link>https://hellwen.github.io/post/tuning-conntrack/</link>
+      <pubDate>Tue, 16 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/tuning-conntrack/</guid>
+      <description>我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT</description>
+    </item>
+    
+    <item>
+      <title>Harbor Deploy</title>
+      <link>https://hellwen.github.io/post/harbor-deploy/</link>
+      <pubDate>Wed, 19 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/harbor-deploy/</guid>
+      <description>Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要</description>
+    </item>
+    
+    <item>
+      <title>kuberntes rollout update</title>
+      <link>https://hellwen.github.io/post/kuberntes-rollout-update/</link>
+      <pubDate>Wed, 08 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/kuberntes-rollout-update/</guid>
+      <description>“灰度”发布 这次聊聊“灰度”发布（也叫“滚动”发布） 因为互联网或者说网络的发展速度太快导致竞争力很大，各家公司为了保证为用户提供更好的体验就</description>
+    </item>
+    
+    <item>
+      <title>Deploy Traefik on Kubernetes</title>
+      <link>https://hellwen.github.io/post/deploy-traefik/</link>
+      <pubDate>Fri, 03 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/deploy-traefik/</guid>
+      <description>Kubernetes Ingress kubernetes典型的访问是通过网络直接访问Service，由Service分发到pod上: 1 2 3 4 internet | ------------ [ Services ] 如果增加Ingres</description>
+    </item>
+    
+    <item>
+      <title>kuberntes heapster cannot write to influxdb</title>
+      <link>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</link>
+      <pubDate>Mon, 06 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</guid>
+      <description>kubernetes 1.5 heapster 1.2 influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 infl</description>
+    </item>
+    
+    <item>
+      <title>Deploy kubernetes by manual on centos 7</title>
+      <link>https://hellwen.github.io/post/deploy-kubernetes/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/deploy-kubernetes/</guid>
+      <description>环境信息 |ip|role|hostname| |&amp;ndash;|&amp;mdash;-|&amp;mdash;&amp;mdash;&amp;ndash;| |10.10.0.1|master&amp;amp;minion|k8s-master-1| |10.10.0.2|minion|k8s-node-1| |10.10.0.3|minion|k8s-node-2| on all machine Note: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修改hostname 用户</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>heapster on Hellwen - A private blog</title>
+    <link>https://hellwen.github.io/tags/heapster/</link>
+    <description>Recent content in heapster on Hellwen - A private blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>hellwen</copyright>
+    <lastBuildDate>Mon, 06 Feb 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hellwen.github.io/tags/heapster/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>kuberntes heapster cannot write to influxdb</title>
+      <link>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</link>
+      <pubDate>Mon, 06 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/kuberntes-heapster-cannot-write-to-influxdb/</guid>
+      <description>kubernetes 1.5 heapster 1.2 influxdb 1.2 heapster启动后自动在influxdb中创建了k8s的数据库，但是没有任何数据写入 heapster未见任何错误日志 infl</description>
+    </item>
+    
+  </channel>
+</rss>

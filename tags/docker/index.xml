@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Hellwen - A private blog</title>
+    <link>https://hellwen.github.io/tags/docker/</link>
+    <description>Recent content in docker on Hellwen - A private blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>hellwen</copyright>
+    <lastBuildDate>Wed, 22 Feb 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://hellwen.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker, move the /var/lib/docker directory</title>
+      <link>https://hellwen.github.io/post/docker-var-lib-docker-directory-move/</link>
+      <pubDate>Wed, 22 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/docker-var-lib-docker-directory-move/</guid>
+      <description>docker 默认的数据存储目录为：/var/lib/docker，主要的文件是/var/lib/docker/devicemapper/devicem</description>
+    </item>
+    
+    <item>
+      <title>Deploy kubernetes by manual on centos 7</title>
+      <link>https://hellwen.github.io/post/deploy-kubernetes/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/deploy-kubernetes/</guid>
+      <description>环境信息 |ip|role|hostname| |&amp;ndash;|&amp;mdash;-|&amp;mdash;&amp;mdash;&amp;ndash;| |10.10.0.1|master&amp;amp;minion|k8s-master-1| |10.10.0.2|minion|k8s-node-1| |10.10.0.3|minion|k8s-node-2| on all machine Note: 部署的时候最好关闭selinux，否则像 nfs会挂载失败(nfs用于使用pv，不是必须的) 修改hostname 用户</description>
+    </item>
+    
+    <item>
+      <title>Docker Thin pool</title>
+      <link>https://hellwen.github.io/post/docker-thin-pool/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/docker-thin-pool/</guid>
+      <description>Docker默认使用文件系统来存储image和container信息，container在运行的时候经常会访问文件系统，这会导致文件系统的性</description>
+    </item>
+    
+    <item>
+      <title>使用docker命令时需要sudo问题</title>
+      <link>https://hellwen.github.io/post/execute-docker-without-sudo/</link>
+      <pubDate>Wed, 18 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://hellwen.github.io/post/execute-docker-without-sudo/</guid>
+      <description>默认安装完docker后，在使用如docker ps等命令的时候要么使用root帐号，要么需要sudo docker ps。这是因为docker在设计的时候</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Harbor Deploy - Hellwen - A private blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="hellwen" /><meta name="description" content="Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.2 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://hellwen.github.io/post/harbor-deploy/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Harbor Deploy" />
+<meta property="og:description" content="Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hellwen.github.io/post/harbor-deploy/" />
+<meta property="article:published_time" content="2017-04-19T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-04-19T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Harbor Deploy">
+<meta itemprop="description" content="Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要">
+
+
+<meta itemprop="datePublished" content="2017-04-19T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-04-19T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2214">
+
+
+
+<meta itemprop="keywords" content="kubernetes,harbor,registry," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Harbor Deploy"/>
+<meta name="twitter:description" content="Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能： 1.权限管理 2.同步功能 这篇文章主要"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Hellwen</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Hellwen</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Harbor Deploy</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-04-19 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#环境">环境</a></li>
+<li><a href="#安装docker和docker-compose">安装docker和docker-compose</a></li>
+<li><a href="#配置harbor">配置harbor</a>
+<ul>
+<li><a href="#配置ssl">配置ssl</a></li>
+<li><a href="#修改配置文件-harbor-cfg">修改配置文件：harbor.cfg</a></li>
+<li><a href="#install">Install</a></li>
+</ul></li>
+<li><a href="#harbor-基本维护操作">harbor 基本维护操作</a></li>
+<li><a href="#docker-使用">docker 使用</a></li>
+<li><a href="#kubernetes连接harbor">kubernetes连接harbor</a></li>
+<li><a href="#总结">总结</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>Harbor 是企业级的docker registry版本，实际上它主要对docker registry封装了两个功能：
+1.权限管理
+2.同步功能</p>
+
+<p>这篇文章主要介绍下harbor的部署，另外也会结合Kubernetes介绍如何在访问需要帐号的docker registry</p>
+
+<h1 id="环境">环境</h1>
+
+<p>Centos 7
+Harbor v1.1.0
+Kubernetes 1.5</p>
+
+<h1 id="安装docker和docker-compose">安装docker和docker-compose</h1>
+
+<p>harbor 官方文档使用docker-compose进行部署，当然现在也增加了部署在kubernetes上，这里选择使用docker-compose进行部署，以后有机会再研究下Kuberentes部署方式</p>
+
+<p>安装docker</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">yum install docker -y
+
+systemctl enable docker
+systemctl start docker</pre></td></tr></table>
+</div>
+</div>
+<p>安装docker-compose</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">yum install python-pip -y
+pip install docker-compose</pre></td></tr></table>
+</div>
+</div>
+<h1 id="配置harbor">配置harbor</h1>
+
+<p>直接在Harbor的github上下载online安装文件：<a href="https://github.com/vmware/harbor/releases">https://github.com/vmware/harbor/releases</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">wget https://github.com/vmware/harbor/releases/download/v1.1.0/harbor-online-installer-v1.1.0.tgz
+tar -zxf harbor-online-installer-v1.1.0.tgz</pre></td></tr></table>
+</div>
+</div>
+<h2 id="配置ssl">配置ssl</h2>
+
+<p><code>/data</code>用于harbor的数据存储，最好挂载在存储上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">mkdir -p /data/cert/</pre></td></tr></table>
+</div>
+</div>
+<p>生成ssl keys
+这里需要注意的是生成key过程中的Common Name填入你要使用的域名，如:reg.local.com</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd /data/cert/
+$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout ca.key -x509 -days 365 -out ca.crt
+Generating a 4096 bit RSA private key
+...........................................................................................................................................................................................................................................................................................................................................................................................++
+..++
+writing new private key to &#39;ca.key&#39;
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &#39;.&#39;, the field will be left blank.
+-----
+Country Name (2 letter code) [XX]:
+State or Province Name (full name) []:
+Locality Name (eg, city) [Default City]:
+Organization Name (eg, company) [Default Company Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (eg, your name or your server&#39;s hostname) []:reg.local.com
+Email Address []:
+
+$ openssl req -newkey rsa:4096 -nodes -sha256 -keyout server.key -out server.csr
+Generating a 4096 bit RSA private key
+..........................................................................................................................................................................++
+...................................................................................++
+writing new private key to &#39;server.key&#39;
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter &#39;.&#39;, the field will be left blank.
+-----
+Country Name (2 letter code) [XX]:
+State or Province Name (full name) []:
+Locality Name (eg, city) [Default City]:
+Organization Name (eg, company) [Default Company Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (eg, your name or your server&#39;s hostname) []:reg.local.com
+Email Address []:
+
+Please enter the following &#39;extra&#39; attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+ 
+$ openssl x509 -req -days 365 -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt
+Signature ok
+subject=/C=XX/L=Default City/O=Default Company Ltd/CN=reg.local.com
+Getting CA Private Key</pre></td></tr></table>
+</div>
+</div>
+<p>这里不详细介绍这几个key的原理了，大家可以自行baidu，ssl key还是建议大家去研究下，毕竟很多产品部署都会用到</p>
+
+<h2 id="修改配置文件-harbor-cfg">修改配置文件：harbor.cfg</h2>
+
+<ul>
+<li>hostname 如果是域名访问则设置成域名，否则使用IP，本文使用：reg.local.com</li>
+<li>db_password MySQL的数据库密码</li>
+<li>harbor_admin_password Harbor默认的管理员admin的密码</li>
+</ul>
+
+<p>其他参数可以不修改，但需要注意默认的ssl key配置的路径和文件名和我们生成的是一样的，如果不一样需要修改对应的配置</p>
+
+<h2 id="install">Install</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">./install.sh</pre></td></tr></table>
+</div>
+</div>
+<p>这里会执行一堆检查，然后启动docker-compose来拉去harbor使用的几个docker，执行时间主要依赖你的网络拉去镜像的速度。</p>
+
+<p>如果这一步没有报错harbor就部署完成了。</p>
+
+<p>查看harbor启动情况</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># docker ps
+CONTAINER ID        IMAGE                              COMMAND                  CREATED             STATUS              PORTS                                                              NAMES
+15452d1c314e        vmware/nginx:1.11.5-patched        &#34;nginx -g &#39;daemon off&#34;   20 hours ago        Up 20 hours         0.0.0.0:80-&gt;80/tcp, 0.0.0.0:443-&gt;443/tcp, 0.0.0.0:4443-&gt;4443/tcp   nginx
+252065f73780        vmware/harbor-jobservice:v1.1.0    &#34;/harbor/harbor_jobse&#34;   20 hours ago        Up 20 hours                                                                            harbor-jobservice
+281a82e4373c        vmware/harbor-ui:v1.1.0            &#34;/harbor/harbor_ui&#34;      20 hours ago        Up 20 hours                                                                            harbor-ui
+644245ba9fbf        vmware/harbor-adminserver:v1.1.0   &#34;/harbor/harbor_admin&#34;   21 hours ago        Up 20 hours                                                                            harbor-adminserver
+02900a2759b6        vmware/harbor-db:v1.1.0            &#34;docker-entrypoint.sh&#34;   21 hours ago        Up 20 hours         3306/tcp                                                           harbor-db
+814b2c0df893        vmware/registry:photon-2.6.0       &#34;/entrypoint.sh serve&#34;   21 hours ago        Up 20 hours         5000/tcp                                                           registry
+ee32489ccee9        vmware/harbor-log:v1.1.0           &#34;/bin/sh -c &#39;crond &amp;&amp;&#34;   21 hours ago        Up 20 hours         127.0.0.1:1514-&gt;514/tcp                                            harbor-log</pre></td></tr></table>
+</div>
+</div>
+<p>接下来将域名reg.local.com配置指向Harbor部署的机器，就可以通过浏览器访问：<a href="https://reg.local.com">https://reg.local.com</a>
+帐号为admin, 密码在harbor.cfg的harbor_admin_password配置的：Harbor12345</p>
+
+<h1 id="harbor-基本维护操作">harbor 基本维护操作</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cd ~/harbor
+docker-compose down
+docker-compose start</pre></td></tr></table>
+</div>
+</div>
+<h1 id="docker-使用">docker 使用</h1>
+
+<p>docker 要连接harbor需要两个条件
+1. ca证书
+2. 帐号密码</p>
+
+<p>ca证书就是我们刚才生成的文件ca.crt证书，该证书需要放置在要访问harbor的机器的<code>/etc/docker/certs.d</code>目录</p>
+
+<p>创建证书目录，证书目录使用域名作为目录名称</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">mkdir -p /etc/docker/certs.d/reg.local.com</pre></td></tr></table>
+</div>
+</div>
+<p>将ca.crt放置在上述目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">mv ca.crt /etc/docker/certs.d/reg.local.com</pre></td></tr></table>
+</div>
+</div>
+<p>登录harbor</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ docker login reg.local.com
+Username (test): test
+Password: 
+WARNING: login credentials saved in /home/docker/.docker/config.json
+Login Succeeded</pre></td></tr></table>
+</div>
+</div>
+<p>登录的帐号可以是admin，也可以是其他你通过web上创建的帐号</p>
+
+<p>注意上面的WARNING，它告诉我们auth key放置在文件<code>/home/docker/.docker/config.json</code>中（我发现在archlinux如果你用非root帐号执行，这个key也是会放到<code>/home/root/.docker/config.json</code>中）</p>
+
+<p>这个auth key在结合其他产品的时候会用到，如kubernetes、drone等</p>
+
+<p>push镜像</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ docker tag busybox reg.local.com/test/busybox
+$ docker push reg.local.com/test/busybox
+The push refers to a repository [reg.local.com/test/busybox]
+c0de73ac9968: Layer already exists 
+latest: digest: sha256:92b7c19467bf868e52949d7e5404e309486ba9ee7eb4b88b882747ee1522d3cd size: 505</pre></td></tr></table>
+</div>
+</div>
+<h1 id="kubernetes连接harbor">kubernetes连接harbor</h1>
+
+<p>需要几个东西
+1. docker 的 auth key
+2. ca.crt证书
+3. 帐号的secret</p>
+
+<p>获取k8s所有node的ip</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ nodes=$(kubectl get nodes -o jsonpath=&#39;{range.items[*].status.addresses[?(@.type==&#34;InternalIP&#34;)]}{.address} {end}&#39;)
+$ echo $nodes
+192.168.1.1 192.168.1.2 192.168.1.3</pre></td></tr></table>
+</div>
+</div>
+<p>使用<code>docker login reg.local.com</code>生成auth key</p>
+
+<p>这里默认为<code>~/.docker/config.json</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ cat ~/.docker/config.json
+{
+        &#34;auths&#34;: {
+                &#34;reg.local.com&#34;: {
+                        &#34;auth&#34;: &#34;dGVzdDpEWFEefMTIzNDU=&#34;,
+                        &#34;email&#34;: &#34;test@local.com&#34;
+                }
+        }
+}</pre></td></tr></table>
+</div>
+</div>
+<p>复制auth key到所有节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ for n in $nodes; do ssh root@$n mkdir -p /root/.docker; scp ~/.docker/config.json root@$n:/root/.docker/config.json; done</pre></td></tr></table>
+</div>
+</div>
+<p>复制ca.crt到所有节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">$ cert_path=&#34;/etc/docker/certs.d/reg.local.com&#34;
+for n in $nodes; do ssh root@$n mkdir -p $cert_path; scp $cert_path/ca.crt root@$n:$cert_path/ca.crt; done</pre></td></tr></table>
+</div>
+</div>
+<p>创建帐号secret</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">kubectl create secret docker-registry myregistrykey --docker-server=reg.local.com --docker-username=test --docker-password=Test12345 --docker-email=test@local.com</pre></td></tr></table>
+</div>
+</div>
+<p>pod配置中增加<code>imagePullSecrets</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+  - image: reg.local.com/test/busybox
+    imagePullPolicy: IfNotPresent
+    name: busybox
+    command:
+      - sleep
+      - &#34;3600&#34;
+  restartPolicy: Always
+  imagePullSecrets:
+    - name: myregistrykey</pre></td></tr></table>
+</div>
+</div>
+<h1 id="总结">总结</h1>
+
+<p>到这里docker和kubernetes都可以访问harbor</p>
+
+<p>下次有机会介绍下几个内容：
+- harbor的ha方案，基于它自己提供的复制功能
+- harbor部署在kubernetes上</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">hellwen</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-04-19
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          <a href="/tags/harbor/">harbor</a>
+          <a href="/tags/registry/">registry</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/tuning-conntrack/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Tuning The Linux Connection Tracking System</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/markdown-sample/">
+            <span class="next-text nav-default">Markdown sample</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:hellwen.wu@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/hellwen" class="iconfont icon-github" title="github"></a>
+  <a href="https://hellwen.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">hellwen</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

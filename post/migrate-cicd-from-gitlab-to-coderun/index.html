@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CICD从Gitlab迁移到Coderun - Hellwen - A private blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="hellwen" /><meta name="description" content="背景 我们是一个10人小团队，因为本人之前接触过Docker和Drone，所有项目开发阶段开始的时候就确定使用CICD和Docker的方式进行" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.2 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://hellwen.github.io/post/migrate-cicd-from-gitlab-to-coderun/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CICD从Gitlab迁移到Coderun" />
+<meta property="og:description" content="背景 我们是一个10人小团队，因为本人之前接触过Docker和Drone，所有项目开发阶段开始的时候就确定使用CICD和Docker的方式进行" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hellwen.github.io/post/migrate-cicd-from-gitlab-to-coderun/" />
+<meta property="article:published_time" content="2018-11-27T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-11-27T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="CICD从Gitlab迁移到Coderun">
+<meta itemprop="description" content="背景 我们是一个10人小团队，因为本人之前接触过Docker和Drone，所有项目开发阶段开始的时候就确定使用CICD和Docker的方式进行">
+
+
+<meta itemprop="datePublished" content="2018-11-27T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-11-27T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2308">
+
+
+
+<meta itemprop="keywords" content="gitlab,coderun,cicd,迁移," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CICD从Gitlab迁移到Coderun"/>
+<meta name="twitter:description" content="背景 我们是一个10人小团队，因为本人之前接触过Docker和Drone，所有项目开发阶段开始的时候就确定使用CICD和Docker的方式进行"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Hellwen</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Hellwen</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CICD从Gitlab迁移到Coderun</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-11-27 </span>
+        <div class="post-category">
+            <a href="/categories/%E8%BF%81%E7%A7%BB/"> 迁移 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#背景">背景</a></li>
+<li><a href="#gitlab-https-gitlab-com"><a href="https://gitlab.com">Gitlab</a></a></li>
+<li><a href="#coderun-https-coderun-top-gitee-https-gitee-com"><a href="https://coderun.top">CodeRun</a> + <a href="https://gitee.com">Gitee</a></a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h2 id="背景">背景</h2>
+
+<p>我们是一个10人小团队，因为本人之前接触过Docker和Drone，所有项目开发阶段开始的时候就确定使用CICD和Docker的方式进行开发与部署。前期为了方便我们直接使用<a href="https://gitlab.com">Gitlab.com</a>（不是私有部署）进行代码仓库的存储于Gitlab CI进行构建，然后通过Gitlab Runner部署到阿里云的开发服务器上。</p>
+
+<p>没有自己部署Gitlab的原因是不想去管理Gitlab，比如保证Gitlab的可用，数据安全等，对于我们这样的小团队减少自己部署产品可以节省不少时间和精力，而且<a href="https://gitlab.com">Gitlab.com</a>也基本是免费的。</p>
+
+<p>前期因为产品开发阶段所以我们只考虑了直接在服务器上通过Gitlab Runner部署开发环境和测试环境。但近期在准备产品的上线，我们需要将镜像推送到阿里云的Kubernetes（我们是使用托管版）上进行部署。在准备使用Gitlab CI部署时发现阿里云K8s（托管版）不支持token连接。
+后来与阿里云相关工作人员联系后告知可以通过service和endpoint间接通过token访问k8s api。这种方式kubectl可以使用，但是配置到Gitlab.com上依然无效。</p>
+
+<p>评估后我们得出两种方案：</p>
+
+<ol>
+<li>使用自定义的镜像（Gitlab CI支持使用任意镜像进行扩展）封装kubectl进行部署，这样的方式需要将kubeconfig配置到变量中，并使用脚本生成kubeconfig文件。然后再执行service和deployment文件进行部署。（Drone上的K8s插件不太靠谱，最好不要使用)</li>
+<li>寻找其他的CICD平台（其实想寻找其他平台的还有一个重要的原因是Gitlab.com在17点-03点这段时间速度特变，我们团队又经常要加班，所以晚上很痛苦。猜测应该和美国人上班时间有关系）。也有看了下CodePipeline，但是纯GUI一步配置的方式真心不方便，没有效率，所以放弃。</li>
+</ol>
+
+<p>后来找到了一个CICD的SaaS平台：<a href="https://coderun.top">CodeRun</a></p>
+
+<p>经过一段时间的研究和试用后我们目前所有的CICD都迁移到了<a href="https://coderun.top">CodeRun</a>上（代码仓库也顺便迁移到<a href="https://gitee.com">Gitee</a>上)</p>
+
+<p>下面我们来具体介绍下两个平台和我们的迁移过程</p>
+
+<h2 id="gitlab-https-gitlab-com"><a href="https://gitlab.com">Gitlab</a></h2>
+
+<p>Gitlab（包括私有部署）应该是国内使用量最大的代码仓库，Gitlab因为发展不断加入新功能，最亮眼的应该就是CICD和Kubernetes的支持了。
+所以理论上一套Gitlab就可以搞定你的代码仓库和CICD还是很方便的。</p>
+
+<p>Gitlab的代码仓库功能就不讨论了。对于Gitlab CI这个新功能就比较有意思。大家都知道国内使用最多的CICD应该是Jenkins（应该是全球最多的）。我觉得其中最重要的一个原因是Jenkins是一个比较老的产品，在新的CICD方式没有出来的时候他就已经有非常大了的用户了。
+但Jenkins有几个比较明显的缺点：</p>
+
+<ol>
+<li>需要自行部署</li>
+<li>插件和配置还是有一定学习难度</li>
+<li>配置相对来说比较复杂</li>
+<li>Jenkins一般都需要专人进行维护</li>
+</ol>
+
+<p>所以后来出现了一些仅通过一个Yaml文件就可以配置整个Pipeline的产品，最有名的应该是<a href="https://drone.io">Drone</a>。Drone因为部署方便，配置简单，同时还是开源产品所以得到了大量的用户。目前Drone也支持SaaS模式。但对于中国很悲剧的是他服务器也在国外，性能是个问题。
+Gitlab CI是另一个支持一个Yaml文件配置的CI产品，他和Drone模式非常类似，基于 Docker 镜像作为 Stage 来执行。使用镜像作为Stage的好处就是你可以自定义镜像来进行扩展需求。比如前面提到的自行扩展对K8s的支持。</p>
+
+<p>Gitlab Yaml配置样子如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">image<span class="p">:</span><span class="w"> </span>docker<span class="p">:</span>latest<span class="w">
+</span><span class="w">
+</span><span class="w"></span>stages<span class="p">:</span><span class="w">
+</span><span class="w"></span>-<span class="w"> </span>build<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>deploy<span class="w">
+</span><span class="w">
+</span><span class="w"></span>variables<span class="p">:</span><span class="w">
+</span><span class="w">  </span>APP_NAME<span class="p">:</span><span class="w"> </span>api<span class="w">
+</span><span class="w">  </span>REGISTRY_IMAGE<span class="p">:</span><span class="w"> </span><span class="s2">&#34;${DOUWA_REGISTRY_URL}/image/${APP_NAME}&#34;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>before_script<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>docker<span class="w"> </span>login<span class="w"> </span>-u<span class="w"> </span>$REGISTRY_USER<span class="w"> </span>-p<span class="w"> </span>$REGISTRY_PASSWORD<span class="w"> </span>$REGISTRY_URL<span class="w">
+</span><span class="w">
+</span><span class="w"></span>build<span class="p">:</span><span class="w">
+</span><span class="w">  </span>stage<span class="p">:</span><span class="w"> </span>build<span class="w">
+</span><span class="w">  </span>retry<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w">  </span>tags<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>dev<span class="w">
+</span><span class="w">  </span>script<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>$REGISTRY_IMAGE<span class="p">:</span>${CI_COMMIT_REF_NAME}<span class="w"> </span>.<span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>docker<span class="w"> </span>push<span class="w"> </span>$REGISTRY_IMAGE<span class="p">:</span>${CI_COMMIT_REF_NAME}<span class="w">
+</span><span class="w">
+</span><span class="w"></span>deploy-dev<span class="p">:</span><span class="w">
+</span><span class="w">  </span>stage<span class="p">:</span><span class="w"> </span>deploy<span class="w">
+</span><span class="w">  </span>tags<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>dev<span class="w">
+</span><span class="w">  </span>script<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>docker<span class="w"> </span>stack<span class="w"> </span>deploy<span class="w"> </span>${APP_NAME}_${CI_COMMIT_REF_NAME}<span class="w"> </span>-c<span class="w"> </span>deploy/${CI_COMMIT_REF_NAME}/docker-compose.yml<span class="w"> </span>--with-registry-auth<span class="w">
+</span><span class="w">  </span>environment<span class="p">:</span><span class="w">
+</span><span class="w">    </span>name<span class="p">:</span><span class="w"> </span>develop<span class="w">
+</span><span class="w">  </span>only<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>dev</code></pre></td></tr></table>
+</div>
+</div>
+<p>yaml这个配置应该挺好懂的。这里再简单介绍下：</p>
+
+<ol>
+<li>image: 定义了所有下面的步骤默认使用docker镜像</li>
+<li>variables: 定义了方便后续使用的变量</li>
+<li>两个步骤:
+
+<ul>
+<li>build: 构建镜像</li>
+<li>deploy-dev: 部署开发环境，其中<code>only</code>限制了只有<code>dev</code>分支才执行</li>
+<li>stages部分进行了说明</li>
+</ul></li>
+</ol>
+
+<p>因为gitlab没有整合资源，所有docker的操作和部署都是需要自己写脚本完成。当然这对于高级用户肯定是没有难度的，但对于新手就需要一定学习。</p>
+
+<h2 id="coderun-https-coderun-top-gitee-https-gitee-com"><a href="https://coderun.top">CodeRun</a> + <a href="https://gitee.com">Gitee</a></h2>
+
+<p>迁移到<a href="https://gitee.com">Gitee</a>，国内一般叫<code>码云</code>主要的原因就是<a href="https://gitlab.com">Gitlab.com</a>太慢了。另外<code>码云</code>的项目管理功能也是相当强大的。</p>
+
+<p>那么<a href="https://coderun.top">CodeRun</a>应该是一个比较新的产品，好像也没什么知名度。但试用了下感觉还不错，而且国内好像也没有类似的独立平台，我的意思是整合CICD的独立平台，不是我对云平台提供的CICD产品有偏见，而是他们更多以附加产品存在，在易用性并不会太下功夫，而整合方面基本都会排除其他产品。</p>
+
+<p>我个人认为<a href="https://coderun.top">CodeRun</a>的优点有：</p>
+
+<ol>
+<li>整合常见的Git平台：Github、Bitbucket、Gitee、Coding、Gitlab（私有部署好像也能支持）</li>
+<li>有独立的镜像仓库，当然也可以配置第三方镜像仓库</li>
+<li>可以配置token或者证书验证的Kubernetes（阿里云Kubernetes默认使用证书的验证方式）</li>
+<li>有独立的Helm仓库</li>
+<li>同样是Yaml配置，有一个简单的GUI</li>
+<li>Yaml的易用性比Gitlab要好</li>
+</ol>
+
+<p>下面是之前Gitlab那个项目的CodeRun版本：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">steps<span class="p">:</span><span class="w">
+</span><span class="w">  </span>build<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/docker<span class="w">
+</span><span class="w">    </span>repo_name<span class="p">:</span><span class="w"> </span>${APP_NAME}<span class="w">
+</span><span class="w">    </span>registry_name<span class="p">:</span><span class="w"> </span>coderun<span class="w">
+</span><span class="w">    </span>dockerfile<span class="p">:</span><span class="w"> </span>Dockerfile<span class="w">
+</span><span class="w">    </span>context<span class="p">:</span><span class="w"> </span>.<span class="w">
+</span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>${CI_COMMIT_BRANCH}<span class="w">
+</span><span class="w">
+</span><span class="w">  </span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/kube<span class="w">
+</span><span class="w">    </span>cluster_name<span class="p">:</span><span class="w"> </span>myk8s<span class="w">
+</span><span class="w">    </span>template<span class="p">:</span><span class="w"> </span>deploy/deployment.yml<span class="w">
+</span><span class="w">    </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
+</span><span class="w">    </span>when<span class="p">:</span><span class="w">
+</span><span class="w">      </span>branch<span class="p">:</span><span class="w"> </span>dev</code></pre></td></tr></table>
+</div>
+</div>
+<p>简单说明下：</p>
+
+<ul>
+<li>build: 使用<code>crun/docker</code>步骤，代码仓库中的Dockerfile构建镜像，并上传到<code>CodeRun</code>提供的镜像仓库</li>
+<li>deploy: 使用<code>crun/kube</code>步骤，和代码仓库中的<code>deploy/deployment.yml</code>配置直接将镜像部署到在<code>CodeRun</code>上配置好的<code>myk8s</code>的Kubernetes集群上</li>
+</ul>
+
+<p>和Gitlab的差异：</p>
+
+<ol>
+<li>没有任何脚本操作</li>
+<li>不需要定义一堆变量和参数</li>
+</ol>
+
+<p>Kubernetes集群<code>myK8s</code>的配置：</p>
+
+<p><img src="/img/blog/kubernetes_conf.png?classes=shadow" alt="" /></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">hellwen</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2018-11-27
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/gitlab/">gitlab</a>
+          <a href="/tags/coderun/">coderun</a>
+          <a href="/tags/cicd/">cicd</a>
+          <a href="/tags/%E8%BF%81%E7%A7%BB/">迁移</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/deploy-aliyun-k8s-with-coderun/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">自动部署阿里云Kubernetes</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/archlinux-hibernate/">
+            <span class="next-text nav-default">Archlinux Hibernate</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:hellwen.wu@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/hellwen" class="iconfont icon-github" title="github"></a>
+  <a href="https://hellwen.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">hellwen</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

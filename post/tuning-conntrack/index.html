@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Tuning The Linux Connection Tracking System - Hellwen - A private blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="hellwen" /><meta name="description" content="我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.2 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://hellwen.github.io/post/tuning-conntrack/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Tuning The Linux Connection Tracking System" />
+<meta property="og:description" content="我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hellwen.github.io/post/tuning-conntrack/" />
+<meta property="article:published_time" content="2017-05-16T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-05-16T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="Tuning The Linux Connection Tracking System">
+<meta itemprop="description" content="我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT">
+
+
+<meta itemprop="datePublished" content="2017-05-16T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-05-16T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="904">
+
+
+
+<meta itemprop="keywords" content="kubernetes,iptables,conntrack," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tuning The Linux Connection Tracking System"/>
+<meta name="twitter:description" content="我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackT"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Hellwen</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Hellwen</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Tuning The Linux Connection Tracking System</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-05-16 </span>
+        
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#the-connection-tracking-conntrack-modules">The Connection Tracking/Conntrack Modules</a></li>
+<li><a href="#验证">验证</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p>我们将大量的api部署在k8s上，有一次一个app后端的服务器进行了重启引起几十万的连接到api上重新验证，导致k8s的ConntrackTable满的告警，分析发现node-exporter(Prometheus node-exporter)监控的node_nf_conntrack_entries / node_nf_conntrack_entries_limit满。既然告警了就应该了解下这个告警是什么意思。</p>
+
+<p>下面是google到的内容，看看Conntract table做什么的：</p>
+
+<h1 id="the-connection-tracking-conntrack-modules">The Connection Tracking/Conntrack Modules</h1>
+
+<p>It is a tracking technique of the connections. It is used to know how the packets that pass through the system are related to their connections. The connection tracking does NOT manipulate the packets and It works independently of the NAT module. The conntrack entry looks like:</p>
+
+<p>udp 17 170 src=192.168.1.2 dst=192.168.1.5 sport=137 dport=1025 src=192.168.1.5 dst=192.168.1.2 sport=1025 dport=137 [ASSURED] use=1</p>
+
+<p>The conntrack entry is stored into two separate tuples (one for the original direction (red) and another for the reply direction (blue)). Tuples could belong to different linked lists/buckets in conntrack hash table. The connection tracking modules is responsible for creating and removing the tuples.</p>
+
+<p>Note: The tracking of the connections is ALSO used by iptables to do packet matching based on the connection state.</p>
+
+<h1 id="验证">验证</h1>
+
+<p>要查询Conntract table的内容可以通过/proc</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># cat /proc/net/nf_conntrack | head -5
+ipv4     2 tcp      6 86385 ESTABLISHED src=192.168.10.1 dst=192.168.10.1 sport=41230 dport=2379 src=192.168.10.1 dst=192.168.10.1 sport=2379 dport=41230 [ASSURED] mark=0 zone=0 use=2
+ipv4     2 tcp      6 86389 ESTABLISHED src=127.0.0.1 dst=127.0.0.1 sport=33294 dport=8080 src=127.0.0.1 dst=127.0.0.1 sport=8080 dport=33294 [ASSURED] mark=0 zone=0 use=2
+ipv4     2 tcp      6 86398 ESTABLISHED src=192.168.10.1 dst=192.168.10.1 sport=55688 dport=2379 src=192.168.10.1 dst=192.168.10.1 sport=2379 dport=55688 [ASSURED] mark=0 zone=0 use=2
+ipv4     2 tcp      6 86393 ESTABLISHED src=192.168.10.1 dst=192.168.10.1 sport=57118 dport=2379 src=192.168.10.1 dst=192.168.10.1 sport=2379 dport=57118 [ASSURED] mark=0 zone=0 use=2
+ipv4     2 tcp      6 86386 ESTABLISHED src=127.0.0.1 dst=127.0.0.1 sport=39722 dport=8080 src=127.0.0.1 dst=127.0.0.1 sport=8080 dport=39722 [ASSURED] mark=0 zone=0 use=2</pre></td></tr></table>
+</div>
+</div>
+<p>从上面的内容看出nf_conntrack记录的是ip和port的映射情况</p>
+
+<p>统计nf_conntrack_entries可以通过wc</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">cat /proc/net/nf_conntrack | wc -l</pre></td></tr></table>
+</div>
+</div>
+<p>因为k8s的proxy目前采用的是iptables，所以必然需要存放大量的nf_conntrack链接信息，如果k8s节点的通讯量太大就可能导致nf_conntrack表的信息满，所以这个参数应该是k8s中相对比较重要的一个监控指标</p>
+
+<p>查看nf_conntrack table的限制</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># sysctl -a|grep -i nf_conntrack_max
+net.netfilter.nf_conntrack_max = 262144
+net.nf_conntrack_max = 262144</pre></td></tr></table>
+</div>
+</div>
+<p>conntrack bucket</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># sysctl -a|grep -i nf_conntrack_buckets
+net.netfilter.nf_conntrack_buckets = 65536</pre></td></tr></table>
+</div>
+</div>
+<p>bucket size = 4 (<sup>262144</sup>&frasl;<sub>65536</sub>)</p>
+
+<p>修改max</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">echo &#34;net.netfilter.nf_conntrack_max = 131072&#34; &gt;&gt; /etc/sysctl.conf
+sysct -p</pre></td></tr></table>
+</div>
+</div>
+<p>其他配置参数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># sysctl -a|grep -i nf_conntrack
+net.netfilter.nf_conntrack_acct = 0
+net.netfilter.nf_conntrack_buckets = 65536
+net.netfilter.nf_conntrack_checksum = 1
+net.netfilter.nf_conntrack_count = 431
+net.netfilter.nf_conntrack_events = 1
+net.netfilter.nf_conntrack_events_retry_timeout = 15
+net.netfilter.nf_conntrack_expect_max = 1024
+net.netfilter.nf_conntrack_frag6_high_thresh = 4194304
+net.netfilter.nf_conntrack_frag6_low_thresh = 3145728
+net.netfilter.nf_conntrack_frag6_timeout = 60
+net.netfilter.nf_conntrack_generic_timeout = 600
+net.netfilter.nf_conntrack_helper = 1
+net.netfilter.nf_conntrack_icmp_timeout = 30
+net.netfilter.nf_conntrack_icmpv6_timeout = 30
+net.netfilter.nf_conntrack_log_invalid = 0
+net.netfilter.nf_conntrack_max = 262144
+net.netfilter.nf_conntrack_tcp_be_liberal = 0
+net.netfilter.nf_conntrack_tcp_loose = 1
+net.netfilter.nf_conntrack_tcp_max_retrans = 3
+net.netfilter.nf_conntrack_tcp_timeout_close = 10
+net.netfilter.nf_conntrack_tcp_timeout_close_wait = 3600
+net.netfilter.nf_conntrack_tcp_timeout_established = 86400
+net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 120
+net.netfilter.nf_conntrack_tcp_timeout_last_ack = 30
+net.netfilter.nf_conntrack_tcp_timeout_max_retrans = 300
+net.netfilter.nf_conntrack_tcp_timeout_syn_recv = 60
+net.netfilter.nf_conntrack_tcp_timeout_syn_sent = 120
+net.netfilter.nf_conntrack_tcp_timeout_time_wait = 120
+net.netfilter.nf_conntrack_tcp_timeout_unacknowledged = 300
+net.netfilter.nf_conntrack_timestamp = 0
+net.netfilter.nf_conntrack_udp_timeout = 30
+net.netfilter.nf_conntrack_udp_timeout_stream = 180
+net.nf_conntrack_max = 262144</pre></td></tr></table>
+</div>
+</div>
+<p>参考</p>
+
+<ul>
+<li><a href="https://voipmagazine.wordpress.com/tag/nf_conntrack/">https://voipmagazine.wordpress.com/tag/nf_conntrack/</a></li>
+<li><a href="https://voipmagazine.wordpress.com/tag/conntrack-entry/">https://voipmagazine.wordpress.com/tag/conntrack-entry/</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">hellwen</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2017-05-16
+        
+    </span>
+  </p>
+  
+  
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/kubernetes/">kubernetes</a>
+          <a href="/tags/iptables/">iptables</a>
+          <a href="/tags/conntrack/">conntrack</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/archlinux-hibernate/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Archlinux Hibernate</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/harbor-deploy/">
+            <span class="next-text nav-default">Harbor Deploy</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:hellwen.wu@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/hellwen" class="iconfont icon-github" title="github"></a>
+  <a href="https://hellwen.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">hellwen</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
