@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>自动部署阿里云Kubernetes - Hellwen - A private blog</title>
+  <title>快速部署应用到阿里云Kubernetes - Jinhean</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="hellwen" /><meta name="description" content="今天给大家介绍下如何将应用自动部署到阿里云Kubernetes(托管版) 我们使用三种开发语言，分别是：js, python, golang．三种语言的部署有" /><meta name="keywords" content="Hugo, theme, even" />
+<meta name="author" content="今何安" /><meta name="description" content="今天给大家介绍下如何快速部署应用到阿里云Kubernetes(托管版)，以下简称k8s k8s是个复杂的产品我相信大部分企业在应用的时候并不会" /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -38,27 +38,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="自动部署阿里云Kubernetes" />
-<meta property="og:description" content="今天给大家介绍下如何将应用自动部署到阿里云Kubernetes(托管版) 我们使用三种开发语言，分别是：js, python, golang．三种语言的部署有" />
+<meta property="og:title" content="快速部署应用到阿里云Kubernetes" />
+<meta property="og:description" content="今天给大家介绍下如何快速部署应用到阿里云Kubernetes(托管版)，以下简称k8s k8s是个复杂的产品我相信大部分企业在应用的时候并不会" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hellwen.github.io/post/deploy-aliyun-k8s-with-coderun/" />
-<meta property="article:published_time" content="2019-01-14T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-01-14T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2019-05-07T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-05-07T00:00:00&#43;00:00"/>
 
-<meta itemprop="name" content="自动部署阿里云Kubernetes">
-<meta itemprop="description" content="今天给大家介绍下如何将应用自动部署到阿里云Kubernetes(托管版) 我们使用三种开发语言，分别是：js, python, golang．三种语言的部署有">
-
-
-<meta itemprop="datePublished" content="2019-01-14T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-01-14T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2240">
+<meta itemprop="name" content="快速部署应用到阿里云Kubernetes">
+<meta itemprop="description" content="今天给大家介绍下如何快速部署应用到阿里云Kubernetes(托管版)，以下简称k8s k8s是个复杂的产品我相信大部分企业在应用的时候并不会">
 
 
+<meta itemprop="datePublished" content="2019-05-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-05-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="4116">
 
-<meta itemprop="keywords" content="gitlab,coderun,cicd,阿里云,aliyun,kubernetes,jenkins," />
+
+
+<meta itemprop="keywords" content="coderun,cicd,阿里云,aliyun,kubernetes," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="自动部署阿里云Kubernetes"/>
-<meta name="twitter:description" content="今天给大家介绍下如何将应用自动部署到阿里云Kubernetes(托管版) 我们使用三种开发语言，分别是：js, python, golang．三种语言的部署有"/>
+<meta name="twitter:title" content="快速部署应用到阿里云Kubernetes"/>
+<meta name="twitter:description" content="今天给大家介绍下如何快速部署应用到阿里云Kubernetes(托管版)，以下简称k8s k8s是个复杂的产品我相信大部分企业在应用的时候并不会"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -73,7 +73,7 @@
 <body>
   <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
-    <a href="/" class="logo">Hellwen</a>
+    <a href="/" class="logo">Jinhean</a>
   </div>
   <div class="mobile-navbar-icon">
     <span></span>
@@ -99,7 +99,7 @@
   <div class="container" id="mobile-panel">
     <header id="header" class="header">
         <div class="logo-wrapper">
-  <a href="/" class="logo">Hellwen</a>
+  <a href="/" class="logo">Jinhean</a>
 </div>
 
 <nav class="site-navbar">
@@ -125,12 +125,13 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">自动部署阿里云Kubernetes</h1>
+      <h1 class="post-title">快速部署应用到阿里云Kubernetes</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2019-01-14 </span>
+        <span class="post-time"> 2019-05-07 </span>
         <div class="post-category">
-            <a href="/categories/kubernetes/"> Kubernetes </a>
+            <a href="/categories/coderun/"> coderun </a>
+            <a href="/categories/kubernetes/"> kubernetes </a>
             </div>
         
       </div>
@@ -143,17 +144,27 @@
 <ul>
 <li>
 <ul>
-<li><a href="#配置kubernetes">配置Kubernetes</a>
+<li><a href="#阿里云kubernetes">阿里云Kubernetes</a>
 <ul>
 <li><a href="#获取kubeconfig">获取KubeConfig</a></li>
-<li><a href="#配置coderun的kubernetes集群">配置CodeRun的Kubernetes集群</a></li>
 </ul></li>
-<li><a href="#pipeline-可以参考-https-g-coderun-top-docs-quickstart-create-pipeline">Pipeline<a href="https://g.coderun.top/docs/#/quickstart/create_pipeline/">可以参考</a></a>
+<li><a href="#coderun">Coderun</a>
+<ul>
+<li><a href="#配置kubernetes集群">配置Kubernetes集群</a></li>
+</ul></li>
+<li><a href="#配置pipeline">配置Pipeline</a>
 <ul>
 <li><a href="#添加仓库">添加仓库</a></li>
 <li><a href="#yaml配置">yaml配置</a></li>
-<li><a href="#增加部署步骤">增加部署步骤</a></li>
+<li><a href="#kubernetes部署">Kubernetes部署</a>
+<ul>
+<li><a href="#配置镜像仓库">配置镜像仓库</a></li>
+<li><a href="#增加deploy">增加deploy</a></li>
+<li><a href="#部署效果">部署效果</a></li>
+<li><a href="#访问应用">访问应用</a></li>
 </ul></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -162,21 +173,21 @@
     <div class="post-content">
       
 
-<p>今天给大家介绍下如何将应用自动部署到阿里云Kubernetes(托管版)</p>
+<p>今天给大家介绍下如何快速部署应用到阿里云<code>Kubernetes</code>(托管版)，以下简称<code>k8s</code></p>
 
-<p>我们使用三种开发语言，分别是：js, python, golang．三种语言的部署有一些差别，但主要步骤都是一样的．我们今天先介绍下js(前端)的部署方式．</p>
-
-<p>核心的部署步骤如下：</p>
+<p><code>k8s</code>是个复杂的产品我相信大部分企业在应用的时候并不会关系太深层次的问题，所以我个人比较推荐的<code>k8s</code>使用方式是直接部署各大云平台的<code>托管版</code>(<code>Azure</code>云平台只提供了<code>托管版</code>)。<code>托管版</code>有如下优势：</p>
 
 <ol>
-<li>Git Clone</li>
-<li>编译与Build镜像</li>
-<li>部署到Kubernetes，通过Helm或者Deployment</li>
+<li>部署简单，因为云平台解决了<code>master</code>节点管理，所以我们只需一键部署<code>node</code>节点</li>
+<li>运维简单，因为只管理<code>node</code>节点，所以我们并不需要担心集群可靠性问题。并且云平台一般会在安装的<code>k8s</code>版本中嵌入云平台自己的网络和存储解决方案。网络方面可能体会不太明显，但至少我们可以直接在<code>k8s</code>中管理云磁盘<code>Disk</code></li>
+<li>成本低，大部分中小公司如果要运作<code>k8s</code>是需要招聘独立的运维人员的，如果使用<code>托管版</code>我相信一般的开发人员或者其他数据库人员是可以替代的，且因为运维简单并不需要花太多功夫</li>
 </ol>
 
-<h2 id="配置kubernetes">配置Kubernetes</h2>
+<p>所以今天的主题中<code>k8s</code>的<code>托管版</code>是<code>快</code>的其中一个因素，另一个因素就是<code>Coderun</code>，它是一个<code>CI/CD</code>平台，你可以将它与<code>jenkins</code>、<code>drone</code>、<code>CircleCI</code>、<code>Travis</code>或<code>Codefresh</code>等进行比较，他们是类似的平台，其实准确说<code>Coderun</code>和<code>Codefresh</code>是比较类似的，与其他平台的差异是集成了<code>镜像仓库</code>和<code>Helm Charts</code>，以及集成了一些相关的云平台资源，所以它是另一个<code>快</code>的因素。</p>
 
-<p>阿里云的Kuberntes支持三种模式：</p>
+<h2 id="阿里云kubernetes">阿里云Kubernetes</h2>
+
+<p>阿里云<code>k8s</code>部署这里不进行介绍，详见：<a href="https://www.aliyun.com/product/kubernetes?spm=5176.224200.cloudEssentials.11.70296ed6cqTskE">ACK</a></p>
 
 <ol>
 <li>自部署，阿里云仅提供一键部署但不提供管理和后续维护．要求用户水平较高</li>
@@ -184,55 +195,246 @@
 <li>serverless，终极模式，啥都不需要管理，只需要把镜像提交上去，并确定资源需求即可．不需要维护任何服务器．</li>
 </ol>
 
-<p>上面的三种模式我们选择了第2种，因为托管模式可以提供用户足够的自由度又不需要要求太高的管理水平．当然对于三种模式<a href="https://coderun.top">CodeRun</a>都是支持的．我们来看下具体如何配置集群．</p>
+<p>如上所述我比较推荐托管版</p>
 
 <h3 id="获取kubeconfig">获取KubeConfig</h3>
 
 <p>不管哪种集群创建后都可以在控制台获取到<code>KubeConfig</code>配置，在阿里云控制台点击某个集群后可以看到下图<code>KubeConfig</code>：</p>
 
-<p><img src="/img/blog/aliyun_kubeconfig.png?classes=shadow" alt="" /></p>
+<p><img src="/img/blog/aliyun_kubeconfig.png" alt="" /></p>
 
 <p>我们需要三个信息：</p>
 
 <ol>
 <li>集群地址，阿里云为每个Kubernetes集群都分配了一个外部地址(如果是自部署模式好像需要自己配置)</li>
-<li>证书，集群的访问证书</li>
-<li><code>Key</code>，证书对应的<code>Key</code>，相当与密钥</li>
+<li><code>client-certificate-data</code>，集群的访问证书</li>
+<li><code>client-key-data</code>，相当于证书的秘钥</li>
 </ol>
 
-<p>有了这三个信息我们就可以配置集群</p>
+<p>如果<code>k8s</code>开启了<code>RBAC</code>模式，那么我们需要创建<code>Service Account</code>和绑定<code>Role</code>然后参考<code>Token</code>模式配置：<a href="https://g.coderun.top/docs/#/config/integration/k8s_cluster?id=token%E6%A8%A1%E5%BC%8F">K8s Token</a></p>
 
-<h3 id="配置coderun的kubernetes集群">配置CodeRun的Kubernetes集群</h3>
+<h2 id="coderun">Coderun</h2>
 
-<p>在<code>CodeRun</code>控制台的<code>整合</code>-&gt;<code>Kubernetes</code>，点击右边的<code>添加</code>按钮选择<code>证书</code>模式，如图：</p>
+<p><code>Coderun</code>的地址是：<a href="https://g.coderun.top/">https://g.coderun.top/</a>，我们需要先进行注册，当前它的注册很方便，直接使用<code>Github</code>、<code>Gitlab</code>、<code>Gitee</code>或<code>Coding</code>账号都可以直接登录(注册并登录)，所以如果你的代码仓库是使用云平台那就非常方便了。</p>
 
-<p><img src="/img/blog/kubernetes_conf2.png?classes=shadow" alt="" /></p>
+<p>下面演示的例子: <a href="https://github.com/hellwen/coderun-demo">coderun-demo</a>，因为我是直接使用<code>Github</code>账号登录，所以默认会自动添加了<code>Github</code>的配置，如果你要构建的仓库不在你的当前账号下需要自己再配置<code>Git</code>账号，参考官方文档：<a href="https://g.coderun.top/docs/#/config/integration/git">Git配置</a></p>
+
+<h3 id="配置kubernetes集群">配置Kubernetes集群</h3>
+
+<p>在<code>Coderun</code>控制台的<code>整合</code>-&gt;<code>Kubernetes</code>，点击右边的<code>添加</code>按钮选择<code>证书</code>模式，如图：</p>
+
+<p><img src="/img/blog/kubernetes_conf2.png" alt="" /></p>
 
 <ul>
 <li>其中上图中的<code>名称</code>是你可以自行定义的名称，这个名称可以方便后续在<code>Pipeline</code>中使用，所以最好取一个好记的名称(这里使用<code>myk8s</code>)．</li>
+<li>证书：填写<code>KubeConfig</code>中的<code>client-certificate-data</code></li>
+<li>Key：填写<code>KubeConfig</code>中的<code>client-key-data</code></li>
 </ul>
 
-<h2 id="pipeline-可以参考-https-g-coderun-top-docs-quickstart-create-pipeline">Pipeline<a href="https://g.coderun.top/docs/#/quickstart/create_pipeline/">可以参考</a></h2>
+<p>完毕后保存，这里我们得到一个叫<code>myk8s</code>的集群，这个集群连接到我们在阿里云上的<code>k8s</code>集群，后续的所有部署只需要部署到<code>myk8s</code>即可。</p>
+
+<h2 id="配置pipeline">配置Pipeline</h2>
 
 <h3 id="添加仓库">添加仓库</h3>
 
-<p>在<code>CodeRun</code>控制台的<code>Repo|仓库</code>，点击<code>添加仓库</code>．在右侧选择代码仓库，(如果不是当前用户的<code>Git</code>仓库，参见<a href="https://g.coderun.top/docs/#/config/integration/git_add">添加Git配置</a>)，如下图：</p>
+<p>在<code>Coderun</code>控制台的<code>Repo|仓库</code>，点击<code>添加仓库</code>．在右侧选择代码仓库，(如果不是当前用户的<code>Git</code>仓库，参见<a href="https://g.coderun.top/docs/#/config/integration/git">Git配置</a>)，如下图：</p>
 
-<p><img src="/img/blog/add_repo1.png?classes=shadow" alt="" /></p>
+<p><img src="/img/blog/add_repo.png" alt="" /></p>
 
 <p>选择<code>Build</code>类型</p>
 
-<p><img src="/img/blog/add_repo2_type.png?classes=shadow" alt="" /></p>
+<p><img src="/img/blog/add_repo_type.png" alt="" /></p>
 
 <p>三种类型分别是：</p>
 
 <ol>
 <li><code>coderun.yml</code>，使用代码仓库中的<code>coderun.yml</code>文件进行构建</li>
 <li><code>Dockerfile</code>，使用代码仓库中的<code>Dockerfile</code>作为镜像的构建</li>
-<li>模板，和上述的<code>Dockerfile</code>类似，只是使用<code>CodeRun</code>内置的各语言<code>Dockerfile</code>模板</li>
+<li>模板，和上述的<code>Dockerfile</code>类似，只是使用<code>Coderun</code>内置的各语言<code>Dockerfile</code>模板</li>
 </ol>
 
-<p>我们这里选择使用<code>模板</code>创建，选择<code>node</code>语言．<code>Dockerfile</code>内容预览如下：</p>
+<p>因为我们在代码仓库中已经有<code>Dockerfile</code>，所以直接使用<code>Dockerfile</code>创建，我们可以看到添加好的仓库：</p>
+
+<p><img src="/img/blog/repo_list.png" alt="" /></p>
+
+<h3 id="yaml配置">yaml配置</h3>
+
+<p>点击添加好的仓库<code>hellwen/coderun-demo</code>，我们可以看到<code>Pipeline</code>页面，如图：</p>
+
+<p><img src="/img/blog/repo_pipeline_yml.png" alt="" /></p>
+
+<p><code>yaml</code>配置如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">steps<span class="p">:</span><span class="w">
+</span><span class="w">  </span>docker<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/docker<span class="w">
+</span><span class="w">    </span>registry_name<span class="p">:</span><span class="w"> </span>coderun<span class="w">
+</span><span class="w">    </span>repo_name<span class="p">:</span><span class="w"> </span>hellwen/coderun-demo<span class="w">
+</span><span class="w">    </span>dockerfile_content<span class="p">:</span><span class="w"> </span><span class="sd">|
+</span><span class="sd">      FROM node:8</span><span class="w">
+</span><span class="w">
+</span><span class="w">      </span>WORKDIR<span class="w"> </span>/www<span class="w">
+</span><span class="w">      </span>COPY<span class="w"> </span>index.html<span class="w"> </span>/www<span class="w">
+</span><span class="w">
+</span><span class="w">      </span>RUN<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>http-server<span class="w"> </span>-g<span class="w">
+</span><span class="w">
+</span><span class="w">      </span>EXPOSE<span class="w"> </span><span class="m">8080</span><span class="w">
+</span><span class="w">      </span>CMD<span class="w"> </span><span class="p">[</span><span class="s2">&#34;http-server&#34;</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="w">    </span>context<span class="p">:</span><span class="w"> </span>.<span class="w">
+</span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>latest</code></pre></td></tr></table>
+</div>
+</div>
+<p>默认<code>coderun</code>会将<code>dockerfile</code>解析出来，这样的好处是在<code>coderun</code>上可以随意修改<code>Pipeline</code>并重新部署，因为我们已经有<code>Dockerfile</code>所以更简洁的配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">steps<span class="p">:</span><span class="w">
+</span><span class="w">  </span>docker<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/docker<span class="w">
+</span><span class="w">    </span>registry_name<span class="p">:</span><span class="w"> </span>coderun<span class="w">
+</span><span class="w">    </span>repo_name<span class="p">:</span><span class="w"> </span>hellwen/coderun-demo<span class="w">
+</span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>latest</code></pre></td></tr></table>
+</div>
+</div>
+<p>上述配置会默认使用当前代码仓库下的<code>Dockerfile</code>文件，注意：如果是使用代码仓库中的文件是和<code>Build</code>的代码分支有关的哦。</p>
+
+<p>几个比较重要的配置：</p>
+
+<ul>
+<li>registry_name: 这个参数是指定代码仓库的配置，相关的配置在<code>整合</code>中，每个用户<code>coderun</code>会自动创建一个同名的镜像仓库，所以这里可以直接使用</li>
+<li>repo_name: 镜像名称，默认为代码仓库名称，可以执行修改但要注意不要和其他仓库镜像同名</li>
+</ul>
+
+<p>配置好我们就可以进行下测试了，选择<code>分支</code>页面，如图：</p>
+
+<p><img src="/img/blog/repo_branch.png" alt="" /></p>
+
+<p>点击<code>Build</code>后可以看到当前的<code>Build</code>进度，第一次<code>Build</code>一般会因为上传镜像所以稍微有点慢</p>
+
+<p><img src="/img/blog/repo_build_log.png" alt="" /></p>
+
+<p><code>Build</code>完成后如下右上角有绿色确定图标指示成功：</p>
+
+<p><img src="/img/blog/repo_build_log2.png" alt="" /></p>
+
+<p><code>Coderun</code>在<code>build docker</code>的时候会自动上传镜像到对应的仓库中， 所以如果观察日志会看到我们上传后的镜像地址是：<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，其中<code>hellwen/hellwen</code>并不是<code>Bug</code>第一个<code>hellwen</code>是<code>Coderun</code>账号，第二个<code>hellwen</code>是<code>Github</code>账号(我们添加的仓库的前缀)</p>
+
+<p>我们到<code>镜像</code>页面可以看到我们刚刚上传的镜像：</p>
+
+<p><img src="/img/blog/images.png" alt="" /></p>
+
+<h3 id="kubernetes部署">Kubernetes部署</h3>
+
+<p>前面步骤我们只是完成了<code>镜像</code>的构建，有了镜像后我们就可以进行部署。</p>
+
+<h4 id="配置镜像仓库">配置镜像仓库</h4>
+
+<p>如果要让<code>k8s</code>访问你的<code>Coderun</code>私有镜像仓库需要配置<code>Secret</code>，操作如下：</p>
+
+<p>创建<code>Coderun</code>的访问<code>Token</code>(<code>Coderun</code>以外必选通过<code>Token</code>才能访问)，<code>整合</code>-&gt;<code>Token</code>：</p>
+
+<p><img src="/img/blog/token.png" alt="" /></p>
+
+<p>点击<code>生成Token</code>，任何输入一个名称，点击<code>生成</code>，如下：</p>
+
+<p><img src="/img/blog/token_gen.png" alt="" /></p>
+
+<p>复制上图的<code>Token</code>备用：<code>bj8pikhk57kg00fn9vd0</code></p>
+
+<p>(要使用<code>kubectl</code>访问<code>k8s</code>集群请自行配置<code>KubeConfig</code>)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl create secret docker-registry coderun --docker-server<span class="o">=</span>r.crun.top --docker-username<span class="o">=</span>hellwen --docker-password<span class="o">=</span>bj8pikhk57kg00fn9vd0</code></pre></td></tr></table>
+</div>
+</div>
+<p>其中<code>docker-password</code>为上面生成的<code>Token</code>，<code>docker-username</code>需要修改成你自己的账号</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl get secrets coderun
+NAME      TYPE                             DATA   AGE
+coderun   kubernetes.io/dockerconfigjson   <span class="m">1</span>      1m</code></pre></td></tr></table>
+</div>
+</div>
+<h4 id="增加deploy">增加deploy</h4>
+
+<p>在原有配置上增加一个<code>step</code>: <code>deploy</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">steps<span class="p">:</span><span class="w">
+</span><span class="w">  </span>docker<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/docker<span class="w">
+</span><span class="w">    </span>registry_name<span class="p">:</span><span class="w"> </span>coderun<span class="w">
+</span><span class="w">    </span>repo_name<span class="p">:</span><span class="w"> </span>hellwen/coderun-demo<span class="w">
+</span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>latest<span class="w">
+</span><span class="w">
+</span><span class="w">  </span>deploy<span class="p">:</span><span class="w">
+</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/kube<span class="w">
+</span><span class="w">    </span>settings<span class="p">:</span><span class="w">
+</span><span class="w">      </span>cluster_name<span class="p">:</span><span class="w"> </span>myk8s<span class="w">
+</span><span class="w">      </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
+</span><span class="w">      </span>template<span class="p">:</span><span class="w"> </span>deployment.yml</code></pre></td></tr></table>
+</div>
+</div>
+<ul>
+<li>其中<code>crun/kube</code>是官方提供的插件，用于部署到<code>k8s</code>，它可以执行任何<code>k8s</code>对象</li>
+<li><code>cluster_name</code>这里指定的是前面步骤配置的<code>k8s</code>集群，我们命名为：<code>myk8s</code></li>
+<li><code>namespace</code>指定<code>k8s</code>集群的默认命名空间</li>
+<li><code>template</code>指定<code>k8s</code>能有效识别的<code>yaml</code>配置(可以包含：<code>service</code>和<code>deployment</code>等)</li>
+</ul>
+
+<p>其中<code>deployment.yml</code>如下(内容有点多，不好意思，如果你不了解<code>k8s</code>请自行学习)：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
@@ -265,294 +467,173 @@
 </span><span class="lnt">28
 </span><span class="lnt">29
 </span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml">FROM<span class="w"> </span>node<span class="p">:</span><span class="m">8.0</span>-alpine<span class="w"> </span>AS<span class="w"> </span>builder<span class="w">
-</span><span class="w">
-</span><span class="w"></span>WORKDIR<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>package.json<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Creating tar of productions dependencies</span><span class="w">
-</span><span class="w"></span>RUN<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>--production<span class="w"> </span><span class="cp">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>-rp<span class="w"> </span>./node_modules<span class="w"> </span>/tmp/node_modules<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Installing all dependencies</span><span class="w">
-</span><span class="w"></span>RUN<span class="w"> </span>npm<span class="w"> </span>install<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Copying application code</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>.<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Running tests</span><span class="w">
-</span><span class="w"></span>RUN<span class="w"> </span>npm<span class="w"> </span>test<span class="w">
-</span><span class="w">
-</span><span class="w"></span>FROM<span class="w"> </span>node<span class="w"> </span>AS<span class="w"> </span>runner<span class="w">
-</span><span class="w">
-</span><span class="w"></span>EXPOSE<span class="w"> </span><span class="m">3000</span><span class="w">
-</span><span class="w"></span>WORKDIR<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Adding production dependencies to image</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>--from=builder<span class="w"> </span>/tmp/node_modules<span class="w"> </span>/app/node_modules<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Copying application code</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>.<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span>CMD<span class="w"> </span>npm<span class="w"> </span>start</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>apps/v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Deployment<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">  </span>selector<span class="p">:</span><span class="w">
+</span><span class="w">    </span>matchLabels<span class="p">:</span><span class="w">
+</span><span class="w">      </span>app<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">  </span>template<span class="p">:</span><span class="w">
+</span><span class="w">    </span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">      </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">        </span>app<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">    </span>spec<span class="p">:</span><span class="w">
+</span><span class="w">      </span>containers<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">        </span>image<span class="p">:</span><span class="w"> </span>{{CR_IMAGE}}<span class="w">
+</span><span class="w">        </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">          </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>http<span class="w">
+</span><span class="w">            </span>containerPort<span class="p">:</span><span class="w"> </span><span class="m">8080</span><span class="w">
+</span><span class="w"></span>---<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Service<span class="w">
+</span><span class="w"></span>apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>selector<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">  </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>port<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">      </span>targetPort<span class="p">:</span><span class="w"> </span>http<span class="w">
+</span><span class="w">      </span>name<span class="p">:</span><span class="w"> </span>http<span class="w">
+</span><span class="w"></span>---<span class="w">
+</span><span class="w"></span>apiVersion<span class="p">:</span><span class="w"> </span>extensions/v1beta1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Ingress<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>rules<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>host<span class="p">:</span><span class="w">
+</span><span class="w">      </span>http<span class="p">:</span><span class="w">
+</span><span class="w">        </span>paths<span class="p">:</span><span class="w">
+</span><span class="w">          </span>-<span class="w"> </span>backend<span class="p">:</span><span class="w">
+</span><span class="w">              </span>serviceName<span class="p">:</span><span class="w"> </span>demo<span class="w">
+</span><span class="w">              </span>servicePort<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">            </span>path<span class="p">:</span><span class="w"> </span>/</code></pre></td></tr></table>
 </div>
 </div>
-<p>上述模板是采用<code>Dockerfile</code>的多阶段模式进行处理的，分成两大部分：</p>
+<p>重要参数：</p>
 
-<ol>
-<li>第一部分是安装依赖，然后进行<code>npm test</code></li>
-<li>第二部分是复制第一部分的<code>node_models</code>，并启动<code>npm start</code></li>
-</ol>
-
-<p>因为我们的代码中没有测试所以可以注释掉<code>npm test</code>这段，另外我们代码使用<code>vue-cli3</code>所以<code>npm start</code>修改成<code>npm run serve</code>，最后如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml">FROM<span class="w"> </span>node<span class="p">:</span><span class="m">8.0</span>-alpine<span class="w"> </span>AS<span class="w"> </span>builder<span class="w">
-</span><span class="w">
-</span><span class="w"></span>WORKDIR<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>package.json<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Creating tar of productions dependencies</span><span class="w">
-</span><span class="w"></span>RUN<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span><span class="cp">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>-rp<span class="w"> </span>./node_modules<span class="w"> </span>/tmp/node_modules<span class="w">
-</span><span class="w">
-</span><span class="w"></span>FROM<span class="w"> </span>node<span class="w"> </span>AS<span class="w"> </span>runner<span class="w">
-</span><span class="w">
-</span><span class="w"></span>EXPOSE<span class="w"> </span><span class="m">3000</span><span class="w">
-</span><span class="w"></span>WORKDIR<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Adding production dependencies to image</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>--from=builder<span class="w"> </span>/tmp/node_modules<span class="w"> </span>/app/node_modules<span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="c"># Copying application code</span><span class="w">
-</span><span class="w"></span>COPY<span class="w"> </span>.<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w"></span>CMD<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>serve</code></pre></td></tr></table>
-</div>
-</div>
-<p>点击<code>创建</code>后，我们可以看到添加好的仓库：</p>
-
-<p><img src="/img/blog/repo_list.png?classes=shadow" alt="" /></p>
-
-<h3 id="yaml配置">yaml配置</h3>
-
-<p>点击<code>coderuntop/startup</code>后我们可以看到<code>Pipeline</code>页面，如图：</p>
-
-<p><img src="/img/blog/repo_pipeline_yml.png?classes=shadow" alt="" /></p>
-
-<p>配置如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml">steps<span class="p">:</span><span class="w">
-</span><span class="w">  </span>docker<span class="p">:</span><span class="w">
-</span><span class="w">    </span>image<span class="p">:</span><span class="w"> </span>crun/docker<span class="w">
-</span><span class="w">    </span>registry_name<span class="p">:</span><span class="w"> </span>coderun<span class="w">
-</span><span class="w">    </span>repo_name<span class="p">:</span><span class="w"> </span>hellwen/startup<span class="w">
-</span><span class="w">    </span>dockerfile_content<span class="p">:</span><span class="w"> </span><span class="sd">|
-</span><span class="sd">      FROM node:8.0-alpine AS builder</span><span class="w">
-</span><span class="w">
-</span><span class="w">      </span>WORKDIR<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w">      </span>COPY<span class="w"> </span>package.json<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w">      </span><span class="c"># Creating tar of productions dependencies</span><span class="w">
-</span><span class="w">      </span>RUN<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span><span class="cp">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>-rp<span class="w"> </span>./node_modules<span class="w"> </span>/tmp/node_modules<span class="w">
-</span><span class="w">
-</span><span class="w">      </span>FROM<span class="w"> </span>node<span class="w"> </span>AS<span class="w"> </span>runner<span class="w">
-</span><span class="w">
-</span><span class="w">      </span>EXPOSE<span class="w"> </span><span class="m">8080</span><span class="w">
-</span><span class="w">      </span>WORKDIR<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w">      </span><span class="c"># Adding production dependencies to image</span><span class="w">
-</span><span class="w">      </span>COPY<span class="w"> </span>--from=builder<span class="w"> </span>/tmp/node_modules<span class="w"> </span>/app/node_modules<span class="w">
-</span><span class="w">
-</span><span class="w">      </span><span class="c"># Copying application code</span><span class="w">
-</span><span class="w">      </span>COPY<span class="w"> </span>.<span class="w"> </span>/app<span class="w">
-</span><span class="w">
-</span><span class="w">      </span>CMD<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>serve<span class="w">
-</span><span class="w">    </span>context<span class="p">:</span><span class="w"> </span>.<span class="w">
-</span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>latest</code></pre></td></tr></table>
-</div>
-</div>
-<p>其中，<code>repo_name</code>配置的名称需要进行修改，如上已经修改成：<code>coderuntop/startup</code>修改成<code>用户名/项目名</code>格式，其中用户名就是你当前用户的名称，可以通过控制台的右上角看到．</p>
-
-<p>更多yaml的配置，请参考帮助文档：<a href="https://g.coderun.top/docs/#/yaml/concepts">https://g.coderun.top/docs/#/yaml/concepts</a></p>
-
-<p>配置好我们就可以进行下测试了，选择仓库的分支，因为这个项目我把前端代码写在<code>node</code>分支中，所以这里直接点击<code>node</code>分支的<code>Build</code>按钮</p>
-
-<p><img src="/img/blog/repo_branch.png?classes=shadow" alt="" /></p>
-
-<p>点击后在<code>Build</code>页面可以看到正在跑的<code>Build</code>任务：</p>
-
-<p><img src="/img/blog/repo_build_running.png?classes=shadow" alt="" /></p>
-
-<p><code>Build</code>右边的绿色打勾图标说明这次<code>Build</code>成功，我们的<code>Dockerfile</code>是正常的．</p>
-
-<p>点击进入某个<code>Build</code>任务后可以看到对应的<code>Build</code>日志：</p>
-
-<p><img src="/img/blog/repo_build_log.png?classes=shadow" alt="" /></p>
-
-<h3 id="增加部署步骤">增加部署步骤</h3>
-
-<p>增加的部署配置如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-yaml" data-lang="yaml">deploy<span class="p">:</span><span class="w">
-</span><span class="w">  </span>image<span class="p">:</span><span class="w"> </span>crun/kube<span class="w">
-</span><span class="w">  </span>cluster_name<span class="p">:</span><span class="w"> </span>myk8s<span class="w">
-</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>default<span class="w">
-</span><span class="w">  </span>template_content<span class="p">:</span><span class="w"> </span><span class="sd">|
-</span><span class="sd">      apiVersion: apps/v1</span><span class="w">
-</span><span class="w">      </span>kind<span class="p">:</span><span class="w"> </span>Deployment<span class="w">
-</span><span class="w">      </span>metadata<span class="p">:</span><span class="w">
-</span><span class="w">        </span>name<span class="p">:</span><span class="w"> </span>startup-node<span class="w">
-</span><span class="w">      </span>spec<span class="p">:</span><span class="w">
-</span><span class="w">        </span>replicas<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span><span class="w">        </span>selector<span class="p">:</span><span class="w">
-</span><span class="w">          </span>matchLabels<span class="p">:</span><span class="w">
-</span><span class="w">            </span>app<span class="p">:</span><span class="w"> </span>startup-node<span class="w">
-</span><span class="w">        </span>template<span class="p">:</span><span class="w">
-</span><span class="w">          </span>metadata<span class="p">:</span><span class="w">
-</span><span class="w">            </span>labels<span class="p">:</span><span class="w">
-</span><span class="w">              </span>app<span class="p">:</span><span class="w"> </span>startup-node<span class="w">
-</span><span class="w">          </span>spec<span class="p">:</span><span class="w">
-</span><span class="w">            </span>containers<span class="p">:</span><span class="w">
-</span><span class="w">            </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>startup-node<span class="w">
-</span><span class="w">              </span>image<span class="p">:</span><span class="w"> </span>{{CR_IMAGE}}</code></pre></td></tr></table>
-</div>
-</div>
 <ul>
-<li>其中<code>crun/kube</code>是官方提供的<code>k8s</code>插件</li>
-<li><code>cluster_name</code>这里指定的是上面配置的<code>k8s</code>集群，我们命名为：<code>myk8s</code></li>
-<li><code>namespace</code>指定<code>k8s</code>集群的命名空间</li>
-<li><code>template_content</code>指定<code>k8s</code>能有效识别的<code>yaml</code>配置(可以包含：<code>service</code>和<code>deployment</code>等)</li>
 <li><code>image</code>中我们使用了一个变量<code>{{CR_IMAGE}}</code>这个变量会自动从<code>crun/docker</code>获取到<code>build</code>后的完整镜像地址</li>
+<li><code>Ingress</code>中的<code>host</code>配置为空是为了让集群的根目录可以访问到</li>
 </ul>
 
-<p>增加部署步骤后我们再<code>Build</code>一次，我们可以看到我们的部署增加了一个<code>Log</code>：</p>
+<p>其中<code>ingress</code>需要<code>nginx-ingress</code>控制器的支持，如果没有只是你没法访问到页面，但部署依然正常的。</p>
 
-<p><img src="/img/blog/repo_build_log2.png?classes=shadow" alt="" /></p>
+<p><code>helm</code>的安装这里不介绍了，自行<code>Google</code>，如果要安装<code>ingress</code>控制器可以使用下列命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ helm install stable/nginx-ingress --name nginx-ingress --namespace kube-system</code></pre></td></tr></table>
+</div>
+</div>
+<p>在执行一次<code>Build</code>，如下：</p>
 
-<p>部署后的<code>k8s</code>效果：</p>
+<p><img src="/img/blog/repo_build_log3.png" alt="" /></p>
+
+<p>上图的左边列表我们可以看到多了一个<code>deploy</code>，右边的日志显示我们部署了<code>Deployment</code>，<code>Service</code>和<code>Ingress</code></p>
+
+<h4 id="部署效果">部署效果</h4>
+
+<p>部署后的<code>k8s</code>状态(要使用<code>kubectl</code>访问<code>k8s</code>集群请自行配置<code>KubeConfig</code>)：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl get deployment startup-node
-NAME           DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-startup-node   <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>            <span class="m">1</span>           3h</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl get svc,deployment,ingress demo
+NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+service/demo   ClusterIP   <span class="m">172</span>.21.10.89   &lt;none&gt;        <span class="m">80</span>/TCP    14m
+
+NAME                         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deployment.extensions/demo   <span class="m">1</span>         <span class="m">1</span>         <span class="m">1</span>            <span class="m">1</span>           14m
+
+NAME                      HOSTS   ADDRESS         PORTS   AGE
+ingress.extensions/demo   *       <span class="m">47</span>.110.164.15   <span class="m">80</span>      9m</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
 </span><span class="lnt">2
-</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl get deployment startup-node -o<span class="o">=</span>custom-columns<span class="o">=</span>NAME:.metadata.name,IMAGE:.spec.template.spec.containers<span class="o">[</span><span class="m">0</span><span class="o">]</span>.image,STATUS:.status.availableReplicas
-NAME           IMAGE                               STATUS
-startup-node   r.crun.top/hellwen/startup:latest   <span class="m">1</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl get deployment demo -o go-template<span class="o">=</span><span class="s1">&#39;{{range .spec.template.spec.containers}}{{.image}}{{end}}&#39;</span>
+r.crun.top/hellwen/hellwen/coderun-demo:latest</code></pre></td></tr></table>
 </div>
 </div>
-<p>要使用<code>kubectl</code>命令连接阿里云需要把前面的<code>KubeConfig</code>配置到当前<code>Shell</code>的<code>.kube/config</code>文件中，至于如何配置可以参考<code>kubernetes.io</code>
-上面的结果我们可以看到<code>k8s</code>上的运行镜像被替换成<code>r.crun.top/hellwen/startup:latest</code>这样我们就省去了填写镜像地址的麻烦．</p>
+<p>上面的镜像地址我们可以看到使用<code>{{CR_IMAGE}}</code>会自动被替换成<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，也就是我们<code>crun/docker</code>后上传的地址，是不是特别方便了:)</p>
 
-<p>到这里我们的部署就完成了．比起自己搭建<code>Jenkins</code>是不是方便不少．</p>
+<h4 id="访问应用">访问应用</h4>
+
+<p>如果有<code>ingress</code>控制器，直接使用<code>ingress</code>的地址<code>47.110.164.15</code>进行访问：</p>
+
+<p><img src="/img/blog/demo_view_for_k8s.png" alt="" /></p>
+
+<p>下次你如果往代码仓库中提交代码，<code>Coderun</code>就会自动触发并自动部署，完全自动哦。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>到这里我们的部署就完成了．比起自己搭建<code>Jenkins</code>是不是方便不少</p>
+
+<p><code>Jenkins</code>应该是用得做广泛的<code>CI/CD</code>工具了，但是<code>Jenkins</code>并不诞生在<code>Docker</code>和<code>Kubernetes</code>的年代，所以难免有些设计比较落后。最明显的问题就是配置的雪花问题，现在的运维架构很讲究<a href="https://hellwen.github.io/post/infrastructure_as_code/">IaC</a>，从<code>Iac</code>的角度来讲雪花会带来后续大量运维和管理难点。</p>
+
+<p>目前新的<code>CI/CD</code>一般都采用一个一代码仓库统一进行管理的<code>yaml</code>文件方式来进行部署，这样就可以避免雪花问题。<code>Coderun</code>更是如此，相较于其他产品我觉得<code>Coderun</code>的好处有几点：</p>
+
+<ol>
+<li>国内的平台，速度和服务有保障</li>
+<li><code>yaml</code>解决雪花问题，支持嵌入式和文件方式配置</li>
+<li>整合常见的Git平台：<code>Github</code>、<code>Gitee</code>、<code>Coding</code>、<code>Gitlab</code>(其中<code>Gitee</code>和<code>Coding</code>国内有不少用户，国外产品不太会支持这两个代码仓库)</li>
+<li>自带<code>镜像</code>仓库和<code>Helm Charts</code>仓库，更方便维护和<code>yaml</code>的使用</li>
+<li>基于<code>docker</code>镜像作为<code>step</code>，用户可以自定义自己的镜像，进行无限扩容</li>
+</ol>
 
     </div>
 
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
-    <span class="item-content">hellwen</span>
+    <span class="item-content">今何安</span>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2019-01-14
+        2019-05-07
         
     </span>
   </p>
@@ -561,22 +642,16 @@ startup-node   r.crun.top/hellwen/startup:latest   <span class="m">1</span></cod
 </div>
 <footer class="post-footer">
       <div class="post-tags">
-          <a href="/tags/gitlab/">gitlab</a>
           <a href="/tags/coderun/">coderun</a>
           <a href="/tags/cicd/">cicd</a>
           <a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a>
           <a href="/tags/aliyun/">aliyun</a>
           <a href="/tags/kubernetes/">kubernetes</a>
-          <a href="/tags/jenkins/">jenkins</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/infrastructure_as_code/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">Infrastructure as code</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/migrate-cicd-from-gitlab-to-coderun/">
-            <span class="next-text nav-default">CICD从Gitlab迁移到Coderun</span>
+        
+        <a class="next" href="/post/infrastructure_as_code/">
+            <span class="next-text nav-default">Infrastructure as code</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>
