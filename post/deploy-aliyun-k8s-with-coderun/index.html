@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2019-05-07T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-05-07T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="4116">
+<meta itemprop="wordCount" content="4479">
 
 
 
@@ -155,11 +155,11 @@
 <li><a href="#配置pipeline">配置Pipeline</a>
 <ul>
 <li><a href="#添加仓库">添加仓库</a></li>
-<li><a href="#yaml配置">yaml配置</a></li>
+<li><a href="#pipeline-配置"><code>Pipeline</code>配置</a></li>
 <li><a href="#kubernetes部署">Kubernetes部署</a>
 <ul>
-<li><a href="#配置镜像仓库">配置镜像仓库</a></li>
-<li><a href="#增加deploy">增加deploy</a></li>
+<li><a href="#配置镜像仓库到-k8s">配置镜像仓库到<code>k8s</code></a></li>
+<li><a href="#pipeline-增加deploy"><code>Pipeline</code>增加deploy</a></li>
 <li><a href="#部署效果">部署效果</a></li>
 <li><a href="#访问应用">访问应用</a></li>
 </ul></li>
@@ -180,14 +180,15 @@
 <ol>
 <li>部署简单，因为云平台解决了<code>master</code>节点管理，所以我们只需一键部署<code>node</code>节点</li>
 <li>运维简单，因为只管理<code>node</code>节点，所以我们并不需要担心集群可靠性问题。并且云平台一般会在安装的<code>k8s</code>版本中嵌入云平台自己的网络和存储解决方案。网络方面可能体会不太明显，但至少我们可以直接在<code>k8s</code>中管理云磁盘<code>Disk</code></li>
-<li>成本低，大部分中小公司如果要运作<code>k8s</code>是需要招聘独立的运维人员的，如果使用<code>托管版</code>我相信一般的开发人员或者其他数据库人员是可以替代的，且因为运维简单并不需要花太多功夫</li>
+<li>成本低，大部分中小公司如果要运作<code>k8s</code>是需要招聘独立的运维人员的，如果使用<code>托管版</code>我相信一般的运维人员或开发人员是可以替代的，因为运维并不需要花太多功夫</li>
 </ol>
 
-<p>所以今天的主题中<code>k8s</code>的<code>托管版</code>是<code>快</code>的其中一个因素，另一个因素就是<code>Coderun</code>，它是一个<code>CI/CD</code>平台，你可以将它与<code>jenkins</code>、<code>drone</code>、<code>CircleCI</code>、<code>Travis</code>或<code>Codefresh</code>等进行比较，他们是类似的平台，其实准确说<code>Coderun</code>和<code>Codefresh</code>是比较类似的，与其他平台的差异是集成了<code>镜像仓库</code>和<code>Helm Charts</code>，以及集成了一些相关的云平台资源，所以它是另一个<code>快</code>的因素。</p>
+<p>所以今天的主题中<code>k8s</code>的<code>托管版</code>是我们强调<code>快</code>的其中一个因素。
+另一个因素就是<code>Coderun</code>，它是一个<code>CI/CD</code>平台，你可以将它与<code>Jenkins</code>、<code>drone</code>、<code>Travis</code>或<code>Codefresh</code>等进行比较，他们是类似的平台，其实准确说<code>Coderun</code>和<code>Codefresh</code>是比较类似的，与其他平台的差异是集成了<code>镜像仓库</code>和<code>Helm Charts</code>，以及集成了一些相关的云平台资源，所以它是另一个<code>快</code>的因素。</p>
 
 <h2 id="阿里云kubernetes">阿里云Kubernetes</h2>
 
-<p>阿里云<code>k8s</code>部署这里不进行介绍，详见：<a href="https://www.aliyun.com/product/kubernetes?spm=5176.224200.cloudEssentials.11.70296ed6cqTskE">ACK</a></p>
+<p>阿里云<code>k8s</code>部署这里不进行介绍，详见：<a href="https://www.aliyun.com/product/kubernetes?spm=5176.224200.cloudEssentials.11.70296ed6cqTskE">阿里云ACK</a></p>
 
 <ol>
 <li>自部署，阿里云仅提供一键部署但不提供管理和后续维护．要求用户水平较高</li>
@@ -206,32 +207,32 @@
 <p>我们需要三个信息：</p>
 
 <ol>
-<li>集群地址，阿里云为每个Kubernetes集群都分配了一个外部地址(如果是自部署模式好像需要自己配置)</li>
+<li><code>server</code>，集群地址，阿里云为每个Kubernetes集群都分配了一个外部地址(如果是自部署模式好像需要自己配置)</li>
 <li><code>client-certificate-data</code>，集群的访问证书</li>
 <li><code>client-key-data</code>，相当于证书的秘钥</li>
 </ol>
 
-<p>如果<code>k8s</code>开启了<code>RBAC</code>模式，那么我们需要创建<code>Service Account</code>和绑定<code>Role</code>然后参考<code>Token</code>模式配置：<a href="https://g.coderun.top/docs/#/config/integration/k8s_cluster?id=token%E6%A8%A1%E5%BC%8F">K8s Token</a></p>
+<p>如果你为<code>k8s</code>开启了<code>RBAC</code>模式，那么我们需要创建<code>Service Account</code>并绑定<code>Role</code>后参考<code>Token</code>模式配置：<a href="https://g.coderun.top/docs/#/config/integration/k8s_cluster?id=token%E6%A8%A1%E5%BC%8F">K8s Token</a></p>
 
 <h2 id="coderun">Coderun</h2>
 
-<p><code>Coderun</code>的地址是：<a href="https://g.coderun.top/">https://g.coderun.top/</a>，我们需要先进行注册，当前它的注册很方便，直接使用<code>Github</code>、<code>Gitlab</code>、<code>Gitee</code>或<code>Coding</code>账号都可以直接登录(注册并登录)，所以如果你的代码仓库是使用云平台那就非常方便了。</p>
+<p><code>Coderun</code>的地址是：<a href="https://g.coderun.top/">https://g.coderun.top/</a>，我们需要先进行注册，当然它的注册很方便，直接使用<code>Github</code>、<code>Gitlab</code>、<code>Gitee</code>或<code>Coding</code>账号都可以直接登录(注册并登录)，所以如果你的代码仓库是使用云平台那最好直接使用可以访问你代码仓库的账号进行登录，这样就可以直接使用相关的代码仓库。</p>
 
 <p>下面演示的例子: <a href="https://github.com/hellwen/coderun-demo">coderun-demo</a>，因为我是直接使用<code>Github</code>账号登录，所以默认会自动添加了<code>Github</code>的配置，如果你要构建的仓库不在你的当前账号下需要自己再配置<code>Git</code>账号，参考官方文档：<a href="https://g.coderun.top/docs/#/config/integration/git">Git配置</a></p>
 
 <h3 id="配置kubernetes集群">配置Kubernetes集群</h3>
 
-<p>在<code>Coderun</code>控制台的<code>整合</code>-&gt;<code>Kubernetes</code>，点击右边的<code>添加</code>按钮选择<code>证书</code>模式，如图：</p>
+<p>现在我们需要将<code>k8s</code>的集群连接配置到<code>Coderun</code>中，在控制台的<code>整合</code>-&gt;<code>Kubernetes</code>，点击右边的<code>添加</code>按钮选择<code>证书</code>模式(如果你使用<code>Token</code>请选择<code>Token</code>模式)，如图：</p>
 
 <p><img src="/img/blog/kubernetes_conf2.png" alt="" /></p>
 
 <ul>
 <li>其中上图中的<code>名称</code>是你可以自行定义的名称，这个名称可以方便后续在<code>Pipeline</code>中使用，所以最好取一个好记的名称(这里使用<code>myk8s</code>)．</li>
-<li>证书：填写<code>KubeConfig</code>中的<code>client-certificate-data</code></li>
-<li>Key：填写<code>KubeConfig</code>中的<code>client-key-data</code></li>
+<li>证书：填写<code>KubeConfig</code>中的<code>client-certificate-data</code>的内容</li>
+<li>Key：填写<code>KubeConfig</code>中的<code>client-key-data</code>的内容</li>
 </ul>
 
-<p>完毕后保存，这里我们得到一个叫<code>myk8s</code>的集群，这个集群连接到我们在阿里云上的<code>k8s</code>集群，后续的所有部署只需要部署到<code>myk8s</code>即可。</p>
+<p>完毕后保存，对于<code>Pipeline</code>就有一个可用的<code>myk8s</code>的集群，这个集群连接到我们在阿里云上的<code>k8s</code>集群，后续的所有部署只需要部署到<code>myk8s</code>即可。</p>
 
 <h2 id="配置pipeline">配置Pipeline</h2>
 
@@ -241,7 +242,7 @@
 
 <p><img src="/img/blog/add_repo.png" alt="" /></p>
 
-<p>选择<code>Build</code>类型</p>
+<p>点击下一步后，选择<code>Build</code>类型</p>
 
 <p><img src="/img/blog/add_repo_type.png" alt="" /></p>
 
@@ -257,13 +258,13 @@
 
 <p><img src="/img/blog/repo_list.png" alt="" /></p>
 
-<h3 id="yaml配置">yaml配置</h3>
+<h3 id="pipeline-配置"><code>Pipeline</code>配置</h3>
 
 <p>点击添加好的仓库<code>hellwen/coderun-demo</code>，我们可以看到<code>Pipeline</code>页面，如图：</p>
 
 <p><img src="/img/blog/repo_pipeline_yml.png" alt="" /></p>
 
-<p><code>yaml</code>配置如下：</p>
+<p><code>Pipeline</code>配置如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
@@ -306,7 +307,7 @@
 </span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>latest</code></pre></td></tr></table>
 </div>
 </div>
-<p>默认<code>coderun</code>会将<code>dockerfile</code>解析出来，这样的好处是在<code>coderun</code>上可以随意修改<code>Pipeline</code>并重新部署，因为我们已经有<code>Dockerfile</code>所以更简洁的配置：</p>
+<p>默认<code>coderun</code>会将<code>Dockerfile</code>解析出来，这样的好处是在<code>Coderun</code>上可以随意修改<code>Pipeline</code>并重新部署而无需重新提交代码仓库，因为我更想使用代码仓库中的<code>Dockerfile</code>所以更简洁的配置：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt">1
@@ -325,14 +326,21 @@
 </span><span class="w">    </span>tags<span class="p">:</span><span class="w"> </span>latest</code></pre></td></tr></table>
 </div>
 </div>
-<p>上述配置会默认使用当前代码仓库下的<code>Dockerfile</code>文件，注意：如果是使用代码仓库中的文件是和<code>Build</code>的代码分支有关的哦。</p>
+<p>上述配置会默认使用当前代码仓库下的<code>Dockerfile</code>文件，注意：如果是使用代码仓库中的文件是和<code>Build</code>的代码分支有关(使用对应分支下的<code>Dockerfile</code>)</p>
 
 <p>几个比较重要的配置：</p>
 
 <ul>
-<li>registry_name: 这个参数是指定代码仓库的配置，相关的配置在<code>整合</code>中，每个用户<code>coderun</code>会自动创建一个同名的镜像仓库，所以这里可以直接使用</li>
-<li>repo_name: 镜像名称，默认为代码仓库名称，可以执行修改但要注意不要和其他仓库镜像同名</li>
+<li><code>docker</code>: 这个关键字可以任意定义，用于给每个<code>step</code>取一个名称，后面会显示在<code>Build</code>日志中</li>
+<li><code>image</code>: 指定了用于<code>step</code>的基础镜像，这里默认使用官方的<code>docker</code>镜像处理<code>Dockerfile</code></li>
+<li><code>registry_name</code>: 这个参数是指定代码仓库的配置，相关的配置在<code>整合</code>中，每个用户<code>coderun</code>会自动创建一个同名的镜像仓库，所以这里可以直接使用</li>
+<li><code>repo_name</code>: 镜像名称，默认为代码仓库名称，可以执行修改但要注意不要和其他仓库镜像同名</li>
+<li><code>tags</code>: 指定<code>build</code>后镜像的<code>tag</code>分支名称</li>
 </ul>
+
+<p>详细的配置说明详见文档：<a href="https://g.coderun.top/docs/#/plugins/core?id=crundocker">crun/docker</a></p>
+
+<p>如果你想使用脚本自己构建<code>Dockerfile</code>，可以把<code>crun/docker</code>替换成<code>docker</code></p>
 
 <p>配置好我们就可以进行下测试了，选择<code>分支</code>页面，如图：</p>
 
@@ -346,7 +354,7 @@
 
 <p><img src="/img/blog/repo_build_log2.png" alt="" /></p>
 
-<p><code>Coderun</code>在<code>build docker</code>的时候会自动上传镜像到对应的仓库中， 所以如果观察日志会看到我们上传后的镜像地址是：<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，其中<code>hellwen/hellwen</code>并不是<code>Bug</code>第一个<code>hellwen</code>是<code>Coderun</code>账号，第二个<code>hellwen</code>是<code>Github</code>账号(我们添加的仓库的前缀)</p>
+<p><code>crun/docker</code>会自动上传镜像到对应的仓库中，所以观察日志可以看到上传后的镜像地址是：<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，其中<code>hellwen/hellwen</code>并不是<code>Bug</code>第一个<code>hellwen</code>是<code>Coderun</code>账号，第二个<code>hellwen</code>是<code>Github</code>账号(我们添加的仓库的前缀)</p>
 
 <p>我们到<code>镜像</code>页面可以看到我们刚刚上传的镜像：</p>
 
@@ -356,11 +364,11 @@
 
 <p>前面步骤我们只是完成了<code>镜像</code>的构建，有了镜像后我们就可以进行部署。</p>
 
-<h4 id="配置镜像仓库">配置镜像仓库</h4>
+<h4 id="配置镜像仓库到-k8s">配置镜像仓库到<code>k8s</code></h4>
 
 <p>如果要让<code>k8s</code>访问你的<code>Coderun</code>私有镜像仓库需要配置<code>Secret</code>，操作如下：</p>
 
-<p>创建<code>Coderun</code>的访问<code>Token</code>(<code>Coderun</code>以外必选通过<code>Token</code>才能访问)，<code>整合</code>-&gt;<code>Token</code>：</p>
+<p><code>Coderun</code>不支持账号密码，因此我们需要一个<code>Token</code>，可通过<code>整合</code>-&gt;<code>Token</code>获取：</p>
 
 <p><img src="/img/blog/token.png" alt="" /></p>
 
@@ -370,7 +378,7 @@
 
 <p>复制上图的<code>Token</code>备用：<code>bj8pikhk57kg00fn9vd0</code></p>
 
-<p>(要使用<code>kubectl</code>访问<code>k8s</code>集群请自行配置<code>KubeConfig</code>)</p>
+<p>(要使用<code>kubectl</code>访问<code>k8s</code>集群请自行配置<code>KubeConfig</code>，参考：阿里云上的进群<code>KubeConfig</code>页面)</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
@@ -379,7 +387,7 @@
 <pre class="chroma"><code class="language-shell" data-lang="shell">$ kubectl create secret docker-registry coderun --docker-server<span class="o">=</span>r.crun.top --docker-username<span class="o">=</span>hellwen --docker-password<span class="o">=</span>bj8pikhk57kg00fn9vd0</code></pre></td></tr></table>
 </div>
 </div>
-<p>其中<code>docker-password</code>为上面生成的<code>Token</code>，<code>docker-username</code>需要修改成你自己的账号</p>
+<p>其中<code>docker-password</code>为上面生成的<code>Token</code>，<code>docker-username</code>修改成你自己的账号</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
@@ -392,9 +400,9 @@ NAME      TYPE                             DATA   AGE
 coderun   kubernetes.io/dockerconfigjson   <span class="m">1</span>      1m</code></pre></td></tr></table>
 </div>
 </div>
-<h4 id="增加deploy">增加deploy</h4>
+<h4 id="pipeline-增加deploy"><code>Pipeline</code>增加deploy</h4>
 
-<p>在原有配置上增加一个<code>step</code>: <code>deploy</code></p>
+<p>在原有<code>Pipeline</code>配置上增加一个<code>step</code>: <code>deploy</code></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-yaml" data-lang="yaml"><span class="lnt"> 1
@@ -433,6 +441,8 @@ coderun   kubernetes.io/dockerconfigjson   <span class="m">1</span>      1m</cod
 <li><code>namespace</code>指定<code>k8s</code>集群的默认命名空间</li>
 <li><code>template</code>指定<code>k8s</code>能有效识别的<code>yaml</code>配置(可以包含：<code>service</code>和<code>deployment</code>等)</li>
 </ul>
+
+<p>详细的配置说明详见文档：<a href="https://g.coderun.top/docs/#/plugins/core?id=crunkube">crun/kube</a></p>
 
 <p>其中<code>deployment.yml</code>如下(内容有点多，不好意思，如果你不了解<code>k8s</code>请自行学习)：</p>
 <div class="highlight"><div class="chroma">
@@ -544,7 +554,7 @@ coderun   kubernetes.io/dockerconfigjson   <span class="m">1</span>      1m</cod
 <li><code>Ingress</code>中的<code>host</code>配置为空是为了让集群的根目录可以访问到</li>
 </ul>
 
-<p>其中<code>ingress</code>需要<code>nginx-ingress</code>控制器的支持，如果没有只是你没法访问到页面，但部署依然正常的。</p>
+<p>其中<code>ingress</code>需要<code>nginx-ingress</code>控制器的支持(如果没有安装你没法访问到部署后的页面，但部署依然正常的)。</p>
 
 <p><code>helm</code>的安装这里不介绍了，自行<code>Google</code>，如果要安装<code>ingress</code>控制器可以使用下列命令：</p>
 <div class="highlight"><div class="chroma">
@@ -597,7 +607,7 @@ ingress.extensions/demo   *       <span class="m">47</span>.110.164.15   <span c
 r.crun.top/hellwen/hellwen/coderun-demo:latest</code></pre></td></tr></table>
 </div>
 </div>
-<p>上面的镜像地址我们可以看到使用<code>{{CR_IMAGE}}</code>会自动被替换成<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，也就是我们<code>crun/docker</code>后上传的地址，是不是特别方便了:)</p>
+<p>上面的镜像地址我们可以看到使用<code>{{CR_IMAGE}}</code>会自动被替换成<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，也就是<code>crun/docker</code>上传的地址，是不是特别方便了:)</p>
 
 <h4 id="访问应用">访问应用</h4>
 
@@ -613,13 +623,13 @@ r.crun.top/hellwen/hellwen/coderun-demo:latest</code></pre></td></tr></table>
 
 <p><code>Jenkins</code>应该是用得做广泛的<code>CI/CD</code>工具了，但是<code>Jenkins</code>并不诞生在<code>Docker</code>和<code>Kubernetes</code>的年代，所以难免有些设计比较落后。最明显的问题就是配置的雪花问题，现在的运维架构很讲究<a href="https://hellwen.github.io/post/infrastructure_as_code/">IaC</a>，从<code>Iac</code>的角度来讲雪花会带来后续大量运维和管理难点。</p>
 
-<p>目前新的<code>CI/CD</code>一般都采用一个一代码仓库统一进行管理的<code>yaml</code>文件方式来进行部署，这样就可以避免雪花问题。<code>Coderun</code>更是如此，相较于其他产品我觉得<code>Coderun</code>的好处有几点：</p>
+<p>目前新的<code>CI/CD</code>一般都采用一个一代码仓库统一进行管理的<code>配置</code>文件方式来进行部署，这样就可以避免雪花问题。<code>Coderun</code>更是如此，相较于其他产品我觉得<code>Coderun</code>的好处有几点：</p>
 
 <ol>
 <li>国内的平台，速度和服务有保障</li>
-<li><code>yaml</code>解决雪花问题，支持嵌入式和文件方式配置</li>
+<li><code>coderun.yml</code>解决雪花问题，支持嵌入式和文件方式配置</li>
 <li>整合常见的Git平台：<code>Github</code>、<code>Gitee</code>、<code>Coding</code>、<code>Gitlab</code>(其中<code>Gitee</code>和<code>Coding</code>国内有不少用户，国外产品不太会支持这两个代码仓库)</li>
-<li>自带<code>镜像</code>仓库和<code>Helm Charts</code>仓库，更方便维护和<code>yaml</code>的使用</li>
+<li>自带<code>镜像</code>仓库和<code>Helm Charts</code>仓库，更方便维护和<code>Pipeline</code>的使用</li>
 <li>基于<code>docker</code>镜像作为<code>step</code>，用户可以自定义自己的镜像，进行无限扩容</li>
 </ol>
 
