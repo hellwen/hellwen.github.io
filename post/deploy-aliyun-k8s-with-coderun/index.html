@@ -202,7 +202,7 @@
 
 <p>不管哪种集群创建后都可以在控制台获取到<code>KubeConfig</code>配置，在阿里云控制台点击某个集群后可以看到下图<code>KubeConfig</code>：</p>
 
-<p><img src="/img/blog/aliyun_kubeconfig.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.vd98v1ry3sm.png" alt="" /></p>
 
 <p>我们需要三个信息：</p>
 
@@ -224,7 +224,7 @@
 
 <p>现在我们需要将<code>k8s</code>的集群连接配置到<code>Coderun</code>中，在控制台的<code>整合</code>-&gt;<code>Kubernetes</code>，点击右边的<code>添加</code>按钮选择<code>证书</code>模式(如果你使用<code>Token</code>请选择<code>Token</code>模式)，如图：</p>
 
-<p><img src="/img/blog/kubernetes_conf2.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.g2b1z3xy15p.png" alt="" /></p>
 
 <ul>
 <li>其中上图中的<code>名称</code>是你可以自行定义的名称，这个名称可以方便后续在<code>Pipeline</code>中使用，所以最好取一个好记的名称(这里使用<code>myk8s</code>)．</li>
@@ -240,11 +240,11 @@
 
 <p>在<code>Coderun</code>控制台的<code>Repo|仓库</code>，点击<code>添加仓库</code>．在右侧选择代码仓库，(如果不是当前用户的<code>Git</code>仓库，参见<a href="https://g.coderun.top/docs/#/config/integration/git">Git配置</a>)，如下图：</p>
 
-<p><img src="/img/blog/add_repo.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.l8onni5z74.png" alt="" /></p>
 
 <p>点击下一步后，选择<code>Build</code>类型</p>
 
-<p><img src="/img/blog/add_repo_type.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.93gz87mmi8.png" alt="" /></p>
 
 <p>三种类型分别是：</p>
 
@@ -256,13 +256,13 @@
 
 <p>因为我们在代码仓库中已经有<code>Dockerfile</code>，所以直接使用<code>Dockerfile</code>创建，我们可以看到添加好的仓库：</p>
 
-<p><img src="/img/blog/repo_list.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.oo9j6rxz75.png" alt="" /></p>
 
 <h3 id="pipeline-配置"><code>Pipeline</code>配置</h3>
 
 <p>点击添加好的仓库<code>hellwen/coderun-demo</code>，我们可以看到<code>Pipeline</code>页面，如图：</p>
 
-<p><img src="/img/blog/repo_pipeline_yml.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.sa89iv8mw8q.png" alt="" /></p>
 
 <p><code>Pipeline</code>配置如下：</p>
 <div class="highlight"><div class="chroma">
@@ -344,21 +344,21 @@
 
 <p>配置好我们就可以进行下测试了，选择<code>分支</code>页面，如图：</p>
 
-<p><img src="/img/blog/repo_branch.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.nog2pm6mqf.png" alt="" /></p>
 
 <p>点击<code>Build</code>后可以看到当前的<code>Build</code>进度，第一次<code>Build</code>一般会因为上传镜像所以稍微有点慢</p>
 
-<p><img src="/img/blog/repo_build_log.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.qwuxh7r27yq.png" alt="" /></p>
 
 <p><code>Build</code>完成后如下右上角有绿色确定图标指示成功：</p>
 
-<p><img src="/img/blog/repo_build_log2.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.3ae4iq6pb7w.png" alt="" /></p>
 
 <p><code>crun/docker</code>会自动上传镜像到对应的仓库中，所以观察日志可以看到上传后的镜像地址是：<code>r.crun.top/hellwen/hellwen/coderun-demo:latest</code>，其中<code>hellwen/hellwen</code>并不是<code>Bug</code>第一个<code>hellwen</code>是<code>Coderun</code>账号，第二个<code>hellwen</code>是<code>Github</code>账号(我们添加的仓库的前缀)</p>
 
 <p>我们到<code>镜像</code>页面可以看到我们刚刚上传的镜像：</p>
 
-<p><img src="/img/blog/images.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.ispdiiloue.png" alt="" /></p>
 
 <h3 id="kubernetes部署">Kubernetes部署</h3>
 
@@ -370,11 +370,11 @@
 
 <p><code>Coderun</code>不支持账号密码，因此我们需要一个<code>Token</code>，可通过<code>整合</code>-&gt;<code>Token</code>获取：</p>
 
-<p><img src="/img/blog/token.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.9zgzba6b2xn.png" alt="" /></p>
 
 <p>点击<code>生成Token</code>，任何输入一个名称，点击<code>生成</code>，如下：</p>
 
-<p><img src="/img/blog/token_gen.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.gg8g3ivra4q.png" alt="" /></p>
 
 <p>复制上图的<code>Token</code>备用：<code>bj8pikhk57kg00fn9vd0</code></p>
 
@@ -567,7 +567,7 @@ coderun   kubernetes.io/dockerconfigjson   <span class="m">1</span>      1m</cod
 </div>
 <p>在执行一次<code>Build</code>，如下：</p>
 
-<p><img src="/img/blog/repo_build_log3.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.qwuxh7r27yq.png" alt="" /></p>
 
 <p>上图的左边列表我们可以看到多了一个<code>deploy</code>，右边的日志显示我们部署了<code>Deployment</code>，<code>Service</code>和<code>Ingress</code></p>
 
@@ -613,7 +613,7 @@ r.crun.top/hellwen/hellwen/coderun-demo:latest</code></pre></td></tr></table>
 
 <p>如果有<code>ingress</code>控制器，直接使用<code>ingress</code>的地址<code>47.110.164.15</code>进行访问：</p>
 
-<p><img src="/img/blog/demo_view_for_k8s.png" alt="" /></p>
+<p><img src="https://raw.githubusercontent.com/hellwen/images/master/blog/image.y7ldoy9vir.png" alt="" /></p>
 
 <p>下次你如果往代码仓库中提交代码，<code>Coderun</code>就会自动触发并自动部署，完全自动哦。</p>
 
